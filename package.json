@@ -2,7 +2,7 @@
   "name": "europesim-bot",
   "version": "1.0.0",
   "description": "lol",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
