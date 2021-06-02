@@ -4,7 +4,7 @@
   "description": "lol",
   "main": "index.js",
   "scripts": {
-    "test": "npm index.js"
+    "start": "npm index.js"
   },
   "keywords": [
     "bot"
