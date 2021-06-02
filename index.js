@@ -129,15 +129,15 @@ client.on('ready', async() => {
     };
     let VCchannel = guild.channels.cache.get(VCID);
 
-    // button time
-    let yesbutton = new disbut.MessageButton()
-    .setStyle('green')
-    .setLabel('yea')
-    .setID('yes')
-    let nobutton = new disbut.MessageButton()
-    .setStyle('red')
-    .setLabel('nah')
-    .setID('no')
+    // // button time
+    // let yesbutton = new disbut.MessageButton()
+    // .setStyle('green')
+    // .setLabel('yea')
+    // .setID('yes')
+    // let nobutton = new disbut.MessageButton()
+    // .setStyle('red')
+    // .setLabel('nah')
+    // .setID('no')
 
     channel.send(`hi im online \nor am i? *vsause moment*`);
     client.on('message', function(message) {
