@@ -1,5 +1,4 @@
 const Discord = require('discord.js');
-const { send } = require('process');
 const client = new Discord.Client();
 const disbut = require('discord-buttons')(client);
 const guildID = (`846807940727570433`); // 846807940727570433
