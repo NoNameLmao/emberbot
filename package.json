@@ -6,6 +6,10 @@
   "scripts": {
     "start": "node server.js"
   },
+  "dependencies": {
+    "discord.js": "*",
+    "discord-buttons": "*"
+  },
   "keywords": [
     "bot"
   ],
