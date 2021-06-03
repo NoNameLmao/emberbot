@@ -145,7 +145,7 @@ client.on('ready', async() => {
     // .setLabel('nah')
     // .setID('no')
 
-    channel.send(`hi im online \nor am i? *vsause moment*`);
+    channel.send(`hi im online`);
     client.on('message', function(message) {
         if (message.author.bot) return; // ignore all messages sent by other bots
         if (message.content.includes(`hi online`)) {
