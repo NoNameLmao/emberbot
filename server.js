@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
+const config = require('./config.json');
 const disbut = require('discord-buttons')(client);
 const guildID = (`846807940727570433`); // 846807940727570433
 const botchannelID = (`846811100338323497`); // 846811100338323497
@@ -412,4 +413,4 @@ let helpEmbed = {
     ]
 };
 
-client.login(token);
+client.login(config.token);
