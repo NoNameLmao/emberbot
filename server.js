@@ -12,7 +12,7 @@ const config = require('./config.json');
 const disbut = require('discord-buttons')(client);
 const guildID = (`846807940727570433`); // 846807940727570433
 const botchannelID = (`846811100338323497`); // 846811100338323497
-const VCID = (`848247855789375508`);
+const DateChannelID = (`848247855789375508`);
 const prefix = (`.`);
 const token = (`ODQ4MjE3OTM4Mjg4OTY3NzEw.YLJagw.BdRe4iX1emlnPxrzmQzCBgpaYJ0`);
 let europesimStartYear = 1800;
@@ -185,7 +185,7 @@ client.on('ready', async() => {
         console.log(`lmaoooooooo wrong guild id? or server non-existant :lmaoof: dm nnl lmao xddddd`);
         process.exit(0);
     };
-    let VCchannel = guild.channels.cache.get(VCID);
+    let DateChannel = guild.channels.cache.get(DateChannelID);
 
     // // button time
     // let yesbutton = new disbut.MessageButton()
@@ -312,7 +312,7 @@ client.on('ready', async() => {
         setTimeout(function() {
             updateMonth();
             updateYear();
-            VCchannel.setName(`${Math.floor(europesimCurrentYear)}, ${europesimCurrentMonth}`)
+            DateChannel.setName(`${Math.floor(europesimCurrentYear)}, ${europesimCurrentMonth}`)
             if (a > 0) {
                 updateDateLoop();
             }
