@@ -207,8 +207,8 @@ client.on('ready', async() => {
         }
         else if (command === `eval`) {
             if (message.author.id === `341123308844220447` || message.author.id === `707359017252683896` || message.author.id === `638422704550313984` || message.author.id === `638422704550313984`) {
+                let code = args.join(' ');
                 try {
-                    let code = args.join(' ');
                     let result = eval(code);
                     let output = result;
                     if (typeof output !== 'string') {
