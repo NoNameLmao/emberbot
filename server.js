@@ -197,7 +197,7 @@ client.on('ready', async() => {
     // .setLabel('nah')
     // .setID('no')
 
-    channel.send(`hi im online`);
+    channel.send(`hi im online (main branch - stable?)`);
     client.on('message', function(message) {
         if (message.author.bot) return; // ignore all messages sent by other bots
         if (message.content.includes(`hi online`)) {
@@ -212,7 +212,7 @@ client.on('ready', async() => {
         }
         if (command === `hi`) {
             logCommand();
-            channel.send(`hi im online`);
+            channel.send(`hi im online (main branch - stable?)`);
         }
         else if (command === `eval`) {
             if (message.author.id === `341123308844220447` || message.author.id === `707359017252683896` || message.author.id === `638422704550313984` || message.author.id === `638422704550313984`) {
@@ -370,7 +370,7 @@ let helpEmbed = {
     "description": `prefix: .`,
     "color": 53380,
     "footer": {
-        "text": "Undergoing changes! Expect a ton of notifications and error embeds and messages!"
+        "text": "This bot's branch is main. There is also beta where all new changes are tested, but it's very unstable at the moment."
     },
     "fields": [
         {
