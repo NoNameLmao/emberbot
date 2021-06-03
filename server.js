@@ -362,7 +362,7 @@ let helpEmbed = {
     "description": `prefix: .`,
     "color": 53380,
     "footer": {
-        "text": "Changed some things in the help menu. I hope you'll like it. Also changes to eval and emoji commands"
+        "text": "Undergoing changes! Expect a ton of notifications and error embeds and messages!"
     },
     "fields": [
         {
