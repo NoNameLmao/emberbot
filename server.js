@@ -133,11 +133,6 @@ const TechnobladeQuote = [
     {quote: 'a little known fact, im actually the best fortnite player of all time'}, // 34
     {quote: 'am i wearing pants right now? you just have to take my word for it'} // 35
 ];
-const technolaugh = '849319231937708102';
-const technojoy = '849319231937708102';
-const oops = '849319231937708102';
-const hedid = '849319231937708102';
-const friedlmao = '849319231937708102';
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -267,33 +262,6 @@ client.on('ready', async() => {
             quoteInt = getRandomInt(36);
             channel.send(TechnobladeQuote[quoteInt].quote);
         }
-        else if (command === "emoji") {
-            function getEmoji(name) {
-                return client.emojis.cache.find(emoji => emoji.name === name);
-            };
-
-            const emojiName = args.join(" ");
-            let list = 'technolaugh, technojoy, oops, hedid, friedlmao'
-            if (emojiName === technolaugh) {
-                channel.send(getEmoji(technolaugh));
-            }
-            else if (emojiName === technojoy) {
-                channel.send(getEmoji(technojoy));
-            }
-            else if (emojiName === oops) {
-                channel.send(getEmoji(oops));
-            }
-            else if (emojiName === hedid) {
-                channel.send(getEmoji(hedid));
-            }
-            else if (emojiName === friedlmao) {
-                channel.send(getEmoji(friedlmao));
-            }
-            else if (emojiName === list) {
-                channel.send(list);
-            }
-            else return channel.send('that emoji is unknown to me (yet?)');
-        }
         else if (command === "suggest") {
             const suggest = args.join(" ");
             client.users.fetch('341123308844220447').then((user) => {
@@ -374,7 +342,7 @@ let helpEmbed = {
     "description": `prefix: .`,
     "color": 53380,
     "footer": {
-        "text": "This bot's branch is main. There is also beta where all new changes are tested, but it's very unstable at the moment."
+        "text": "Temporarily removed emojis from main (this) branch due to some issues. They have been moved to beta branch."
     },
     "fields": [
         {
@@ -400,11 +368,6 @@ let helpEmbed = {
         {
           "name": "quote",
           "value": `${TechnobladeQuote[quoteInt].quote} (random technoblade quote)`,
-          "inline": true
-        },
-        {
-          "name": "emoji",
-          "value": `As of right now - a test command for emojis`,
           "inline": true
         },
         {
