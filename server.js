@@ -338,7 +338,7 @@ let infoEmbed = {
   ]
 };
 let helpEmbed = {
-    "title": "All list of commands",
+    "title": "All list of commands (Main branch)",
     "description": `prefix: .`,
     "color": 53380,
     "footer": {
@@ -352,7 +352,7 @@ let helpEmbed = {
         },
         {
           "name": "eval (code)",
-          "value": "Sudo but for JavaScript code",
+          "value": "Execute some JavaScript code",
           "inline": true
         },
         {
@@ -362,7 +362,7 @@ let helpEmbed = {
         },
         {
           "name": "sudo (message)",
-          "value": "Send messages as me",
+          "value": "Send messages as me (idk why i added it, might remove)",
           "inline": true
         },
         {
