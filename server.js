@@ -288,6 +288,9 @@ client.on('ready', async() => {
             else if (emojiName === friedlmao) {
                 channel.send(getEmoji(friedlmao));
             }
+            else if (emojiName === list) {
+                channel.send("technolaugh, technojoy, oops, hedid, friedlmao");
+            }
             else return channel.send('that emoji is unknown to me (yet?)');
         }
         else if (command === "suggest") {
