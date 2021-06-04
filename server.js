@@ -273,6 +273,7 @@ client.on('ready', async() => {
             };
 
             const emojiName = args.join(" ");
+            let list = 'technolaugh, technojoy, oops, hedid, friedlmao'
             if (emojiName === technolaugh) {
                 channel.send(getEmoji(technolaugh));
             }
@@ -289,7 +290,7 @@ client.on('ready', async() => {
                 channel.send(getEmoji(friedlmao));
             }
             else if (emojiName === list) {
-                channel.send("technolaugh, technojoy, oops, hedid, friedlmao");
+                channel.send(list);
             }
             else return channel.send('that emoji is unknown to me (yet?)');
         }
