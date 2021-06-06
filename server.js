@@ -274,17 +274,11 @@ client.on('ready', async() => {
             channel.send({embed:infoEmbed});
         }
         else if (command === "rng") {
-            message = "min max"
-            let split = message.split(' ');
-            let min = split[0];
-            let max = split[1];
-            function getRandomMinInt(min) {
-                return Math.floor(Math.random() * min);
-            };
-            function getRandomMaxInt(max) {
+            let max = args.join(' ');
+            function getRandomInt(max) {
                 return Math.floor(Math.random() * max);
             };
-            channel.send(`${getRandomMinInt(min)}, ${getRandomMaxInt(max)}`)
+            channel.send(`aaaaaand the number is ${getRandomInt(max)}`);
         }
         else if (command === "help") {
             channel.send({embed:helpEmbed});
@@ -394,7 +388,7 @@ let helpEmbed = {
             "inline": true
         },
         {
-            "name": "rng (min max)",
+            "name": "rng (maxNumber)",
             "value": "Random number generator (Currently in testing)",
             "inline": true
         },
