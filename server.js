@@ -273,18 +273,17 @@ client.on('ready', async() => {
         }
         else if (command === "rng") {
             let max = args.join(' ');
+            let nice = '69';
             function getRandomInt(max) {
                 return Math.floor(Math.random() * max);
             };
             if (max === NaN) {
                 return channel.send('what i just got is not a number, please check if u typed the command \*properly\*')
             }
-            else {
-                if (getRandomInt(max).includes('69')) {
-                    channel.send(`random number generator: \`${getRandomInt(max)}\` \*(nice)\*`);
-                }
-                else channel.send(`random number generator: \`${getRandomInt(max)}\``);
-            };
+            else if (getRandomInt(max).includes(nice)) {
+                return channel.send(`random number generator: \`${getRandomInt(max)}\` \*(nice)\*`);
+            }
+            else return channel.send(`random number generator: \`${getRandomInt(max)}\``);
         }
         else if (command === "help") {
             channel.send({embed:helpEmbed});
