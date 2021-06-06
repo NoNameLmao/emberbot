@@ -45,6 +45,7 @@ function updateMonth() {
 var http = require('http');
 var fs = require('fs');
 var path = require('path');
+const { randomInt } = require('crypto');
 
 http.createServer(function (request, response) {
 
@@ -273,23 +274,20 @@ client.on('ready', async() => {
         }
         else if (command === "rng") {
             let max = args.join(' ');
-            let nice = '69';
-            function getRandomInt(max) {
-                return Math.floor(Math.random() * max);
-            };
-            if (max === NaN) {
+            let randomInt = Math.floor(Math.random() * max);
+            if (randomInt === NaN) {
                 return channel.send('what i just got is not a number, please check if u typed the command \*properly\*')
-            }
-            else if (getRandomInt(max).includes(nice)) {
+            };
+            if (randomInt.includes('69')) {
                 return channel.send(`random number generator: \`${getRandomInt(max)}\` \*(nice)\*`);
             }
             else return channel.send(`random number generator: \`${getRandomInt(max)}\``);
         }
         else if (command === "help") {
-            channel.send({embed:helpEmbed});
+            return channel.send({embed:helpEmbed});
         }
         else if (command === "dn") {
-            channel.send('deez nuts');
+            return channel.send('deez nuts');
         }
         else if (command === "") {
             return message.reply('dont just dot me, you gotta send a command to me!');
