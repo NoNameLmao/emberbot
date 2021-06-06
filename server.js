@@ -278,7 +278,7 @@ client.on('ready', async() => {
             function getRandomInt(max) {
                 return Math.floor(Math.random() * max);
             };
-            channel.send(`aaaaaand the number is ${getRandomInt(max)}`);
+            channel.send(`\*drum roll\* \`${getRandomInt(max)}\``);
         }
         else if (command === "help") {
             channel.send({embed:helpEmbed});
