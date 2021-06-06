@@ -259,27 +259,24 @@ client.on('ready', async() => {
         }
         else if (command === "quote") {
             quoteInt = getRandomInt(36);
-            channel.send(TechnobladeQuote[quoteInt].quote);
+            return channel.send(TechnobladeQuote[quoteInt].quote);
         }
         else if (command === "suggest") {
             const suggest = args.join(" ");
             client.users.fetch('341123308844220447').then((user) => {
                 user.send(`Bot suggestion by ${message.author.tag}: ${suggest} \nSent at ${message.createdAt} in <#${message.channel.id}>`);
             });
-            channel.send(`Your suggestion has been sent! thanks`)
+            return channel.send(`Your suggestion has been sent! thanks`)
         }
         else if (command === "info") {
             hours = new Date().getUTCHours();
-            channel.send({embed:infoEmbed});
+            return channel.send({embed:infoEmbed});
         }
         else if (command === "rng") {
             let max = args.join(' ');
             let randomInt = Math.floor(Math.random() * max);
             if (randomInt === NaN) {
                 return channel.send('what i just got is not a number, please check if u typed the command \*properly\*')
-            };
-            if (randomInt.includes('69')) {
-                return channel.send(`random number generator: \`${getRandomInt(max)}\` \*(nice)\*`);
             }
             else return channel.send(`random number generator: \`${getRandomInt(max)}\``);
         }
@@ -291,9 +288,7 @@ client.on('ready', async() => {
         }
         else if (command === "") {
             return message.reply('dont just dot me, you gotta send a command to me!');
-        } else {
-            return channel.send(`whatever the hell that command was, i dont think it exists. have any doubts? check ${prefix}help`)
-        }
+        } else return channel.send(`whatever the hell that command was, i dont think it exists. have any doubts? check ${prefix}help`)
     });
     let a = 1;
     function updateDateLoop() {
@@ -403,7 +398,7 @@ let helpEmbed = {
         },
         {
             "name": "help",
-            "value": "Shows this swag embed",
+            "value": "It does exactly what you think it does.",
             "inline": false
         }
     ]
