@@ -285,6 +285,9 @@ client.on('ready', async() => {
         }
         else if (command === "help") {
             channel.send({embed:helpEmbed});
+        }
+        else if (command === "") {
+            return message.reply('dont just dot me, you gotta send a command to me!');
         } else {
             return channel.send(`whatever the hell that command was, i dont think it exists. have any doubts? check ${prefix}help`)
         }
