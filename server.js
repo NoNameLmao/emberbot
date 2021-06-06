@@ -192,7 +192,7 @@ client.on('ready', async() => {
     // .setLabel('nah')
     // .setID('no')
 
-    channel.send(`hi im online (main branch - stable?)`);
+    channel.send(`hi im online (main branch - stable)`);
     client.on('message', function(message) {
         if (message.author.bot) return; // ignore all messages sent by other bots
         if (message.content.includes(`hi online`)) {
@@ -207,7 +207,7 @@ client.on('ready', async() => {
         }
         if (command === `hi`) {
             logCommand();
-            channel.send(`hi im online (main branch - stable?)`);
+            channel.send(`hi im online (main branch - stable)`);
         }
         else if (command === `eval`) {
             if (message.author.id === `341123308844220447` || message.author.id === `707359017252683896` || message.author.id === `638422704550313984` || message.author.id === `638422704550313984`) {
@@ -224,9 +224,7 @@ client.on('ready', async() => {
                     channel.send(`\`Code ran with an error:\` \`\`\`xl\n${error}\n\`\`\``);
                     console.log(`recieved ${command} command from ${message.author.tag} @ ${new Date()} ${message.content} \n${code} \nThere was an error running this code: \n${error}`);
                 };
-            } else {
-                channel.send(`${TechnobladeQuote[quoteInt].quote} (No permission)`);
-            } return;
+            } else return channel.send(`${TechnobladeQuote[quoteInt].quote} (No permission)`);
         }
         else if (command === "exit") {
             if (message.author.id === `341123308844220447`) {
@@ -281,10 +279,18 @@ client.on('ready', async() => {
             if (max === NaN) {
                 return channel.send('what i just got is not a number, please check if u typed the command \*properly\*')
             }
-            else channel.send(`\*drum roll\* \`${getRandomInt(max)}\``);
+            else {
+                if (getRandomInt(max).includes('69')) {
+                    channel.send(`random number generator: \`${getRandomInt(max)}\` \*(nice)\*`);
+                }
+                else channel.send(`random number generator: \`${getRandomInt(max)}\``);
+            };
         }
         else if (command === "help") {
             channel.send({embed:helpEmbed});
+        }
+        else if (command === "dn") {
+            channel.send('deez nuts');
         }
         else if (command === "") {
             return message.reply('dont just dot me, you gotta send a command to me!');
