@@ -278,7 +278,10 @@ client.on('ready', async() => {
             function getRandomInt(max) {
                 return Math.floor(Math.random() * max);
             };
-            channel.send(`\*drum roll\* \`${getRandomInt(max)}\``);
+            if (max === NaN) {
+                return channel.send('what i just got is not a number, please check if u typed the command \*properly\*')
+            }
+            else channel.send(`\*drum roll\* \`${getRandomInt(max)}\``);
         }
         else if (command === "help") {
             channel.send({embed:helpEmbed});
