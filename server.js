@@ -275,16 +275,16 @@ client.on('ready', async() => {
         }
         else if (command === "rng") {
             message = "min max"
+            let split = message.split(' ');
+            let min = split[0];
+            let max = split[1];
             function getRandomMinInt(min) {
                 return Math.floor(Math.random() * min);
             };
             function getRandomMaxInt(max) {
                 return Math.floor(Math.random() * max);
             };
-            let split = message.split(' ');
-            let min = split[0];
-            let max = split[1];
-            channel.send(`${getRandomInt(min)}, ${getRandomInt(max)}`)
+            channel.send(`${getRandomMinInt(min)}, ${getRandomMaxInt(max)}`)
         }
         else if (command === "help") {
             channel.send({embed:helpEmbed});
