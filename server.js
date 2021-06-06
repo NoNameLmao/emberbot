@@ -273,6 +273,19 @@ client.on('ready', async() => {
             hours = new Date().getUTCHours();
             channel.send({embed:infoEmbed});
         }
+        else if (command === "rng") {
+            message = "min max"
+            function getRandomMinInt(min) {
+                return Math.floor(Math.random() * min);
+            };
+            function getRandomMaxInt(max) {
+                return Math.floor(Math.random() * max);
+            };
+            let split = message.split(' ');
+            let min = split[0];
+            let max = split[1];
+            channel.send(`${getRandomInt(min)}, ${getRandomInt(max)}`)
+        }
         else if (command === "help") {
             channel.send({embed:helpEmbed});
         } else {
@@ -342,7 +355,7 @@ let helpEmbed = {
     "description": `prefix: .`,
     "color": 53380,
     "footer": {
-        "text": "Temporarily removed emojis from main (this) branch due to some issues. They have been moved to beta branch."
+        "text": "Added rng, random number generator. It is currently being tested"
     },
     "fields": [
         {
@@ -381,8 +394,13 @@ let helpEmbed = {
             "inline": true
         },
         {
+            "name": "rng (min max)",
+            "value": "Random number generator (Currently in testing)",
+            "inline": true
+        },
+        {
             "name": "help",
-            "value": "Shows this very swag embed",
+            "value": "Shows this swag embed",
             "inline": false
         }
     ]
