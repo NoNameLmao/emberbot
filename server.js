@@ -361,7 +361,7 @@ let helpEmbed = {
     "description": `prefix: .`,
     "color": 53380,
     "footer": {
-        "text": "Added rng, random number generator. It is currently being tested"
+        "text": "Added random number generator!"
     },
     "fields": [
         {
@@ -401,7 +401,7 @@ let helpEmbed = {
         },
         {
             "name": "rng (maxNumber)",
-            "value": "Random number generator (Currently in testing)",
+            "value": "Random number generator",
             "inline": true
         },
         {
