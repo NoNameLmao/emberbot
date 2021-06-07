@@ -199,13 +199,14 @@ client.on('ready', async() => {
         if (message.content.includes(`hi online`)) {
             channel.send(`wrong. i am ${client.user.tag}. also hi ${message.author.tag}`);
         };
-        if (!message.content.startsWith(prefix)) return; // if message doesnt start with prefix, ignore it
         const commandBody = message.content.slice(prefix.length); // the command itself
         const args = commandBody.split(' '); // arguments after the command
         const command = args.shift().toLowerCase();
+        if (message.content.includes(command)) console.log(`Message from ${message.author.tag} in ${message.channel} at ${message.createdTimestamp}: ${message.content}`);
+        else if (!message.content.startsWith(prefix)) return; // if message doesnt start with prefix, ignore it
         function logCommand() {
             console.log(`recieved a command: ${command} from ${message.author.tag} @ ${new Date()}`);
-        }
+        };
         if (command === `hi`) {
             logCommand();
             channel.send(`hi im online (main branch - stable)`);
@@ -230,7 +231,7 @@ client.on('ready', async() => {
         else if (command === "exit") {
             if (message.author.id === `341123308844220447`) {
                 console.log(`recieved exit command from ${message.author.tag} @ ${new Date()}. goodbye`);
-                channel.send(`:sob:`).then(() => process.exit(1));
+                message.channel.send(`:sob:`).then(() => process.exit(1));
             }
             else {
                 console.log(`recieved exit command from ${message.author.tag} @ ${new Date()} lol permission denied have a technoblade quote instead nerd`)
@@ -259,36 +260,36 @@ client.on('ready', async() => {
         }
         else if (command === "quote") {
             quoteInt = getRandomInt(36);
-            return channel.send(TechnobladeQuote[quoteInt].quote);
+            return message.channel.send(TechnobladeQuote[quoteInt].quote);
         }
         else if (command === "suggest") {
             const suggest = args.join(" ");
-            client.users.fetch('341123308844220447').then((user) => {
-                user.send(`Bot suggestion by ${message.author.tag}: ${suggest} \nSent at ${message.createdAt} in <#${message.channel.id}>`);
+            client.users.fetch('341123308844220447').then((nnl) => {
+                nnl.send(`Bot suggestion by ${message.author.tag}: ${suggest} \nSent at ${message.createdAt} in <#${message.channel.id}>`);
             });
-            return channel.send(`Your suggestion has been sent! thanks`)
+            return message.channel.send(`Your suggestion has been sent! thanks`);
         }
         else if (command === "info") {
             hours = new Date().getUTCHours();
-            return channel.send({embed:infoEmbed});
+            return message.channel.send({embed:infoEmbed});
         }
         else if (command === "rng") {
             let max = args.join(' ');
             let randomInt = Math.floor(Math.random() * max);
             if (randomInt === NaN) {
-                return channel.send('what i just got is not a number, please check if u typed the command \*properly\*')
+                return message.channel.send('what i just got is not a number, please check if u typed the command \*properly\*')
             }
-            else return channel.send(`random number generator: \`${getRandomInt(max)}\``);
+            else return message.channel.send(`random number generator: \`${getRandomInt(max)}\``);
         }
         else if (command === "help") {
-            return channel.send({embed:helpEmbed});
+            return message.channel.send({embed:helpEmbed});
         }
         else if (command === "dn") {
-            return channel.send('deez nuts');
+            return message.channel.send('deez nuts');
         }
         else if (command === "") {
             return message.reply('dont just dot me, you gotta send a command to me!');
-        } else return channel.send(`whatever the hell that command was, i dont think it exists. have any doubts? check ${prefix}help`)
+        } else return message.channel.send(`whatever the hell that command was, i dont think it exists \ncheck .help`)
     });
     let a = 1;
     function updateDateLoop() {
