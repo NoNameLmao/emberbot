@@ -1,0 +1,58 @@
+[INFO]: Started logging...
+rning] onItemPlace handler was registered twice for redstone_torch
+June 7th 2021, 21:29:30 [Warning] onItemPlace handler was registered twice for repeater
+June 7th 2021, 21:29:30 [Warning] onItemPlace handler was registered twice for spruce_sign
+June 7th 2021, 21:29:30 [Warning] onItemPlace handler was registered twice for birch_sign
+June 7th 2021, 21:29:30 [Warning] onItemPlace handler was registered twice for jungle_sign
+June 7th 2021, 21:29:30 [Warning] onItemPlace handler was registered twice for oak_sign
+June 7th 2021, 21:29:30 [Warning] onItemPlace handler was registered twice for dark_oak_sign
+June 7th 2021, 21:29:30 [Warning] onItemPlace handler was registered twice for acacia_sign
+June 7th 2021, 21:29:30 [[32mINFO[39m]: Server listening on port 25565
+June 7th 2021, 21:29:30 seed: 659816006
+June 7th 2021, 21:35:10 [CHAT]: [Server] lol
+June 7th 2021, 21:36:37 [[31mERR[39m]: Client ::ffff:127.0.0.1:1032 : TypeError [ERR_INVALID_ARG_TYPE]: The "string" argument must be of type string or an instance of Buffer or ArrayBuffer. Received undefined
+    at new NodeError (node:internal/errors:278:15)
+    at Function.byteLength (node:buffer:714:11)
+    at Object.shortString (eval at compile (C:\Users\NoNameLmao\node_modules\protodef\src\compiler.js:246:12), <anonymous>:48:25)
+    at Object.sizeOfPString [as nbtTagName] (eval at compile (C:\Users\NoNameLmao\node_modules\protodef\src\compiler.js:246:12), <anonymous>:15:18)
+    at nbt (eval at compile (C:\Users\NoNameLmao\node_modules\protodef\src\compiler.js:246:12), <anonymous>:113:31)
+    at CompiledProtodef.sizeOf (C:\Users\NoNameLmao\node_modules\protodef\src\compiler.js:77:14)
+    at Object.sizeOfNbt [as nbt] (C:\Users\NoNameLmao\node_modules\minecraft-protocol\src\datatypes\minecraft.js:41:20)
+    at Object.packet_login (eval at compile (C:\Users\NoNameLmao\node_modules\protodef\src\compiler.js:246:12), <anonymous>:1078:24)
+    at eval (eval at compile (C:\Users\NoNameLmao\node_modules\protodef\src\compiler.js:246:12), <anonymous>:2292:50)
+    at packet (eval at compile (C:\Users\NoNameLmao\node_modules\protodef\src\compiler.js:246:12), <anonymous>:2346:9)
+June 7th 2021, 21:36:37 [[32mINFO[39m]: NoNameLmao disconnected
+June 7th 2021, 21:36:37 [[32mINFO[39m]: NoNameLmao (::ffff:127.0.0.1) connected
+June 7th 2021, 21:36:37 [[32mINFO[39m]: position written, player spawning...
+June 7th 2021, 21:37:45 [[31mERR[39m]: Client ::ffff:127.0.0.1:1100 : TypeError [ERR_INVALID_ARG_TYPE]: The "string" argument must be of type string or an instance of Buffer or ArrayBuffer. Received undefined
+    at new NodeError (node:internal/errors:278:15)
+    at Function.byteLength (node:buffer:714:11)
+    at Object.shortString (eval at compile (C:\Users\NoNameLmao\node_modules\protodef\src\compiler.js:246:12), <anonymous>:48:25)
+    at Object.sizeOfPString [as nbtTagName] (eval at compile (C:\Users\NoNameLmao\node_modules\protodef\src\compiler.js:246:12), <anonymous>:15:18)
+    at nbt (eval at compile (C:\Users\NoNameLmao\node_modules\protodef\src\compiler.js:246:12), <anonymous>:113:31)
+    at CompiledProtodef.sizeOf (C:\Users\NoNameLmao\node_modules\protodef\src\compiler.js:77:14)
+    at Object.sizeOfNbt [as nbt] (C:\Users\NoNameLmao\node_modules\minecraft-protocol\src\datatypes\minecraft.js:41:20)
+    at Object.packet_login (eval at compile (C:\Users\NoNameLmao\node_modules\protodef\src\compiler.js:246:12), <anonymous>:1078:24)
+    at eval (eval at compile (C:\Users\NoNameLmao\node_modules\protodef\src\compiler.js:246:12), <anonymous>:2292:50)
+    at packet (eval at compile (C:\Users\NoNameLmao\node_modules\protodef\src\compiler.js:246:12), <anonymous>:2346:9)
+June 7th 2021, 21:37:45 [[32mINFO[39m]: NoNameLmao (::ffff:127.0.0.1) connected
+June 7th 2021, 21:37:45 [[32mINFO[39m]: position written, player spawning...
+June 7th 2021, 21:37:45 [[31mERR[39m]: Client ::ffff:127.0.0.1:1100 : Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:213:20)
+June 7th 2021, 21:37:45 [[32mINFO[39m]: NoNameLmao disconnected
+June 7th 2021, 21:38:27 [[31mERR[39m]: Client ::ffff:127.0.0.1:23113 : TypeError [ERR_INVALID_ARG_TYPE]: The "string" argument must be of type string or an instance of Buffer or ArrayBuffer. Received undefined
+    at new NodeError (node:internal/errors:278:15)
+    at Function.byteLength (node:buffer:714:11)
+    at Object.shortString (eval at compile (C:\Users\NoNameLmao\node_modules\protodef\src\compiler.js:246:12), <anonymous>:48:25)
+    at Object.sizeOfPString [as nbtTagName] (eval at compile (C:\Users\NoNameLmao\node_modules\protodef\src\compiler.js:246:12), <anonymous>:15:18)
+    at nbt (eval at compile (C:\Users\NoNameLmao\node_modules\protodef\src\compiler.js:246:12), <anonymous>:113:31)
+    at CompiledProtodef.sizeOf (C:\Users\NoNameLmao\node_modules\protodef\src\compiler.js:77:14)
+    at Object.sizeOfNbt [as nbt] (C:\Users\NoNameLmao\node_modules\minecraft-protocol\src\datatypes\minecraft.js:41:20)
+    at Object.packet_login (eval at compile (C:\Users\NoNameLmao\node_modules\protodef\src\compiler.js:246:12), <anonymous>:1078:24)
+    at eval (eval at compile (C:\Users\NoNameLmao\node_modules\protodef\src\compiler.js:246:12), <anonymous>:2292:50)
+    at packet (eval at compile (C:\Users\NoNameLmao\node_modules\protodef\src\compiler.js:246:12), <anonymous>:2346:9)
+June 7th 2021, 21:38:27 [[32mINFO[39m]: NoNameLmao (::ffff:127.0.0.1) connected
+June 7th 2021, 21:38:27 [[32mINFO[39m]: position written, player spawning...
+June 7th 2021, 21:38:27 [[32mINFO[39m]: NoNameLmao disconnected
+June 7th 2021, 21:52:22 [[31mERR[39m]: Could not find player
+June 7th 2021, 21:53:33 [[31mERR[39m]: Command not found
