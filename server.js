@@ -202,7 +202,7 @@ client.on('ready', async() => {
         const commandBody = message.content.slice(prefix.length); // the command itself
         const args = commandBody.split(' '); // arguments after the command
         const command = args.shift().toLowerCase();
-        if (!message.content.includes(command)) console.log(`Message from ${message.author.tag} in ${message.channel} at ${message.createdTimestamp}: ${message.content}`);
+        if (!message.content.includes(prefix || command)) console.log(`Message from ${message.author.tag} in ${message.channel.name} at ${message.createdAt}: ${message.content}`);
         if (!message.content.startsWith(prefix)) return; // if message doesnt start with prefix, ignore it
         function logCommand() {
             console.log(`recieved a command: ${command} from ${message.author.tag} @ ${new Date()}`);
