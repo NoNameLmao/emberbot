@@ -7,8 +7,9 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "discord-buttons": "*",
     "discord.js": "*",
-    "discord-buttons": "*"
+    "flying-squid": "^1.4.0"
   },
   "keywords": [
     "bot"
