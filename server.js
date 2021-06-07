@@ -182,6 +182,7 @@ client.on('ready', async() => {
         process.exit(0);
     };
     let DateChannel = guild.channels.cache.get(DateChannelID);
+    DateChannel.join();
 
     // // button time
     // let yesbutton = new disbut.MessageButton()
