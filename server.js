@@ -196,9 +196,9 @@ client.on('ready', async() => {
 
     channel.send(`hi im online (main branch - stable)`);
     client.on('message', function(message) {
-        if (message.author.bot) return; // ignore all messages sent by other bots
+        // if (message.author.bot) return; // ignore all messages sent by other bots
         if (message.content.includes(`hi online`)) {
-            channel.send(`wrong. i am ${client.user.tag}. also hi ${message.author.tag}`);
+            message.channel.send(`wrong. i am ${client.user.tag}. also hi ${message.author.tag}`);
         };
         const commandBody = message.content.slice(prefix.length); // the command itself
         const args = commandBody.split(' '); // arguments after the command
@@ -221,10 +221,10 @@ client.on('ready', async() => {
                     if (typeof output !== 'string') {
                         output = require('util').inspect(result);
                     }
-                    channel.send(output, {code: 'js'});
+                    message.channel.send(output, {code: 'js'});
                     console.log(`recieved ${command} command from ${message.author.tag} @ ${new Date()} ${message.content} \n${output, {code: 'js'}}`);
                 } catch (error) {
-                    channel.send(`\`Code ran with an error:\` \`\`\`xl\n${error}\n\`\`\``);
+                    message.channel.send(`\`Code ran with an error:\` \`\`\`xl\n${error}\n\`\`\``);
                     console.log(`recieved ${command} command from ${message.author.tag} @ ${new Date()} ${message.content} \n${code} \nThere was an error running this code: \n${error}`);
                 };
             } else return channel.send(`${TechnobladeQuote[quoteInt].quote} (No permission)`);
