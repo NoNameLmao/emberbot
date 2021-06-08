@@ -243,23 +243,27 @@ client.on('ready', async() => {
         }
         else if (command === "sudo") {
             logCommand();
-            if (message.content.includes(`whatever the hell that command was, i dont think it exists. have any doubts? check .help`)) {
-                channel.send(`stop`);
-                return;
-            }
-            else if (message.content.includes(`I hate orphans`) || message.content.includes(`i hate orphans`)) {
-                channel.send(`<@${message.author.id}> hates orphans. Blood for the blood god.`);
-                return;
-            }
-            else if (message.content.includes(`who is joe`) || message.content.includes("who's joe")) {
-                channel.send(`i do not wish to know who joe is. snap back to reality`);
-                return;
-            }
-            else {
+            if (message.author.id === `341123308844220447`) {
+                // if (message.content.includes(`whatever the hell that command was, i dont think it exists. have any doubts? check .help`)) {
+                //     channel.send(`stop`);
+                //     return;
+                // }
+                // else if (message.content.includes(`I hate orphans`) || message.content.includes(`i hate orphans`)) {
+                //     channel.send(`<@${message.author.id}> hates orphans. Blood for the blood god.`);
+                //     return;
+                // }
+                // else if (message.content.includes(`who is joe`) || message.content.includes("who's joe")) {
+                //     channel.send(`i do not wish to know who joe is. snap back to reality`);
+                //     return;
+                // }
+                // else {
+                // const sudo = args.join(" ");
+                // channel.send(sudo);
                 const sudo = args.join(" ");
                 channel.send(sudo);
             }
-        }
+            else return channel.send(`${TechnobladeQuote[quoteInt].quote} (No permission)`);
+        }  
         else if (command === "quote") {
             quoteInt = getRandomInt(37);
             return message.channel.send(TechnobladeQuote[quoteInt].quote);
