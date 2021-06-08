@@ -282,7 +282,7 @@ client.on('ready', async() => {
         else if (command === "rng") {
             let max = args.join(' ');
             let randomInt = Math.floor(Math.random() * max);
-            if (randomInt === NaN) {
+            if (typeof randomInt === 'number') {
                 return message.channel.send('what i just got is not a number, please check if u typed the command \*properly\*')
             }
             else return message.channel.send(`random number generator: \`${getRandomInt(max)}\``);
