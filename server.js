@@ -95,7 +95,7 @@ console.log('Server running at http://127.0.0.1:5000/');
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 };
-let quoteInt = getRandomInt(36);
+let quoteInt = getRandomInt(37);
 
 const TechnobladeQuote = [
     {quote: 'NOT EVEN CLOSE BABY TECHNOBLADE NEVER DIES'}, // 1
@@ -132,7 +132,8 @@ const TechnobladeQuote = [
     {quote: 'weapons are for casuals'}, // 32
     {quote: 'the cyberbullying is off to a good start'}, // 33
     {quote: 'a little known fact, im actually the best fortnite player of all time'}, // 34
-    {quote: 'am i wearing pants right now? you just have to take my word for it'} // 35
+    {quote: 'am i wearing pants right now? you just have to take my word for it'}, // 35
+    {quote: 'cant run away from your problems when they have ender pearls'} // 36
 ];
 
 function sleep(ms) {
@@ -236,7 +237,7 @@ client.on('ready', async() => {
             }
             else {
                 console.log(`recieved exit command from ${message.author.tag} @ ${new Date()} lol permission denied have a technoblade quote instead nerd`)
-                let quoteInt = getRandomInt(36);
+                let quoteInt = getRandomInt(37);
                 channel.send(TechnobladeQuote[quoteInt].quote);    
             } return;
         }
@@ -260,7 +261,7 @@ client.on('ready', async() => {
             }
         }
         else if (command === "quote") {
-            quoteInt = getRandomInt(36);
+            quoteInt = getRandomInt(37);
             return message.channel.send(TechnobladeQuote[quoteInt].quote);
         }
         else if (command === "suggest") {
