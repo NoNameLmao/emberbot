@@ -285,7 +285,7 @@ client.on('ready', async() => {
             if (!typeof randomInt === 'number') {
                 return message.channel.send('what i just got is not a number, please check if u typed the command \*properly\*')
             }
-            else return message.channel.send(`random number generator: \`${getRandomInt(max)}\``);
+            else return message.channel.send(`random number generator: \`${getRandomInt(max)}\`\nbtw if you do, for example, .rng 20 then the number it will actually give will be 1-19, but ill change that later`);
         }
         else if (command === "help") {
             return message.channel.send({embed:helpEmbed});
