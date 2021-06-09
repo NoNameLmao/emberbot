@@ -280,10 +280,10 @@ client.on('ready', async() => {
         else if (command === "rng") {
             let max = args.join(' ');
             let randomInt = Math.floor(Math.random() * max);
-            if (!typeof randomInt === 'number') {
-                return message.channel.send('what i just got is not a number, please check if u typed the command \*properly\*')
+            if (typeof randomInt === 'number') {
+                return message.channel.send(`random number generator: \`${getRandomInt(max)}\`\nbtw if you do, for example, .rng 20 then the number it will actually give will be 1-19`);
             }
-            else return message.channel.send(`random number generator: \`${getRandomInt(max)}\`\nbtw if you do, for example, .rng 20 then the number it will actually give will be 1-19, but ill change that later`);
+            else return message.channel.send('what i just got is not a number, please check if u typed the command \*properly\*');
         }
         else if (command === "help") {
             return message.channel.send({embed:helpEmbed});
