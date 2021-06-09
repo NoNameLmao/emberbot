@@ -207,7 +207,7 @@ client.on('ready', async() => {
         if (!message.content.includes(prefix || command)) console.log(`Message from ${message.author.tag} in ${message.channel.name} at ${message.createdAt}: ${message.content}`);
         if (!message.content.startsWith(prefix)) return; // if message doesnt start with prefix, ignore it
         function logCommand() {
-            console.log(`recieved a command: ${command} from ${message.author.tag} @ ${new Date()}`);
+            console.log(`recieved a ${command} command from ${message.author.tag} @ ${new Date()}: ${args}`);
         };
         if (command === `hi`) {
             logCommand();
@@ -257,8 +257,6 @@ client.on('ready', async() => {
                 //     return;
                 // }
                 // else {
-                // const sudo = args.join(" ");
-                // channel.send(sudo);
                 const sudo = args.join(" ");
                 channel.send(sudo);
             }
@@ -282,7 +280,7 @@ client.on('ready', async() => {
         else if (command === "rng") {
             let max = args.join(' ');
             let randomInt = Math.floor(Math.random() * max);
-            if (!typeof randomInt === 'number') {
+            if (typeof randomInt !== 'number') {
                 return message.channel.send('what i just got is not a number, please check if u typed the command \*properly\*')
             }
             else return message.channel.send(`random number generator: \`${getRandomInt(max)}\`\nbtw if you do, for example, .rng 20 then the number it will actually give will be 1-19, but ill change that later`);
