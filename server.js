@@ -279,11 +279,10 @@ client.on('ready', async() => {
         }
         else if (command === "rng") {
             let max = args.join(' ');
-            if (typeof max === 'number') {
+            if (isNaN(max) === false) {
                 return message.channel.send(`random number generator: \`${getRandomInt(max)}\`\nbtw if you do, for example, .rng 20 then the number it will actually give will be 1-19`);
             }
-            else if (typeof max === 'string') return message.channel.send('thats a string, not a number');
-            else return message.channel.send('wtf is this');
+            else if (isNaN(max) === true) return message.channel.send(`${max} is not a number`);
         }
         else if (command === "help") {
             return message.channel.send({embed:helpEmbed});
