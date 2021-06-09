@@ -282,7 +282,7 @@ client.on('ready', async() => {
             if (isNaN(max) === false) {
                 return message.channel.send(`random number generator: \`${getRandomInt(max)}\`\nbtw if you do, for example, .rng 20 then the number it will actually give will be 1-19`);
             }
-            else if (isNaN(max) === true) return message.channel.send(`${max} is not a number`);
+            else if (isNaN(max) === true) return message.channel.send(`sorry to break it up to you, but \`${max}\` is not a number`);
         }
         else if (command === "help") {
             return message.channel.send({embed:helpEmbed});
