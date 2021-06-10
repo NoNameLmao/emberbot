@@ -10,8 +10,8 @@ const client = new Discord.Client({
 });
 const config = require('./config.json');
 const disbut = require('discord-buttons')(client);
-const guildID = (`846807940727570433`); // 846807940727570433
-const botchannelID = (`846811100338323497`); // 846811100338323497
+const guild = client.guilds.fetch('846807940727570433');
+const botchannelID = (`846811100338323497`);
 const DateChannelID = (`848247855789375508`);
 const prefix = (`.`);
 const token = (`ODQ4MjE3OTM4Mjg4OTY3NzEw.YLJagw.BdRe4iX1emlnPxrzmQzCBgpaYJ0`);
@@ -177,7 +177,6 @@ client.on('ready', async() => {
         console.log(`Cannot find the bot channel! ping spam NoNameLmao(emberglaze lmao) to fix it`);
         process.exit(0);
     };
-    let guild = await client.guilds.fetch(guildID);
     if (!guild) {
         console.log(`lmaoooooooo wrong guild id? or server non-existant :lmaoof: dm nnl lmao xddddd`);
         process.exit(0);
@@ -195,7 +194,7 @@ client.on('ready', async() => {
     // .setLabel('nah')
     // .setID('no')
 
-    channel.send(`hi im online (main branch - stable)`);
+    channel.send(`hi im online (main branch)`);
     client.on('message', function(message) {
         // if (message.author.bot) return; // ignore all messages sent by other bots
         if (message.content.includes(`hi online`)) {
@@ -211,7 +210,7 @@ client.on('ready', async() => {
         };
         if (command === `hi`) {
             logCommand();
-            channel.send(`hi im online (main branch - stable)`);
+            channel.send(`hi im online what do u want (main branch)`);
         }
         else if (command === `eval`) {
             if (message.author.id === `341123308844220447` || message.author.id === `707359017252683896` || message.author.id === `638422704550313984` || message.author.id === `638422704550313984`) {
@@ -348,6 +347,11 @@ let infoEmbed = {
     {
       "name": "Europesim year, month",
       "value": `${Math.floor(europesimCurrentYear)}, ${europesimCurrentMonth}`,
+      "inline": true
+    },
+    {
+      "name": "Server member count",
+      "value": `${message.guild.memberCount}`,
       "inline": true
     }
   ]
