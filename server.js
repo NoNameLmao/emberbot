@@ -291,7 +291,7 @@ client.on('ready', async() => {
             return message.channel.send('deez nuts');
         }
         else if (command === "") {
-            return message.reply('dont just dot me, you gotta send a command to me!');
+            return;
         } else return message.channel.send(`whatever the hell that command was, i dont think it exists \ncheck .help`)
 
         let infoEmbed = {
