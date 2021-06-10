@@ -177,7 +177,7 @@ client.on('ready', async() => {
         console.log(`Cannot find the bot channel! ping spam NoNameLmao(emberglaze lmao) to fix it`);
         process.exit(0);
     };
-    let guild = client.guilds.fetch(guildID);
+    let guild = await client.guilds.fetch(guildID);
     if (!guild) {
         console.log(`lmaoooooooo wrong guild id? or server non-existant :lmaoof: dm nnl lmao xddddd`);
         process.exit(0);
