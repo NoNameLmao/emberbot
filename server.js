@@ -185,6 +185,92 @@ client.on('ready', async() => {
     let DateChannel = guild.channels.cache.get(DateChannelID);
     DateChannel.join();
 
+    let infoEmbed = {
+        "plainText": "some info on the bot",
+      "title": "when /europesim is sus",
+      "description": "owopus!!!!!!!!",
+      "author": {
+        "name": "Bot information",
+        "icon_url": "https://cdn.discordapp.com/icons/846807940727570433/4bbf13c1ce8bfb351fc7eafdc898e7d1.png"
+      },
+      "color": 53380,
+      "footer": {
+        "text": "https://ourworldofpixels.com/europesim"
+      },
+      "fields": [
+        {
+          "name": "Current UTC hour",
+          "value": `${hours}`,
+          "inline": true
+        },
+        {
+          "name": "Europesim year, month",
+          "value": `${Math.floor(europesimCurrentYear)}, ${europesimCurrentMonth}`,
+          "inline": true
+        },
+        {
+          "name": "Server member count",
+          "value": `${message.guild.memberCount}`,
+          "inline": true
+        }
+      ]
+    };
+    let helpEmbed = {
+        "title": "All list of commands (Main branch)",
+        "description": `prefix: .`,
+        "color": 53380,
+        "footer": {
+            "text": "Added random number generator!"
+        },
+        "fields": [
+            {
+              "name": "hi",
+              "value": "Usually used to check if bot is responding or not",
+              "inline": true
+            },
+            {
+              "name": "eval (code)",
+              "value": "Execute some JavaScript code",
+              "inline": true
+            },
+            {
+              "name": "exit",
+              "value": "Shortcut to process.exit(1);",
+              "inline": true
+            },
+            {
+              "name": "sudo (message)",
+              "value": "Send messages as me (idk why i added it, might remove)",
+              "inline": true
+            },
+            {
+              "name": "quote",
+              "value": `${TechnobladeQuote[quoteInt].quote} (random technoblade quote)`,
+              "inline": true
+            },
+            {
+                "name": "suggest",
+                "value": "Suggest some ideas, might add it to the bot",
+                "inline": true
+            },
+            {
+                "name": "info",
+                "value": "General bot information",
+                "inline": true
+            },
+            {
+                "name": "rng (maxNumber)",
+                "value": "Random number generator",
+                "inline": true
+            },
+            {
+                "name": "help",
+                "value": "It does exactly what you think it does.",
+                "inline": false
+            }
+        ]
+    };
+
     // // button time
     // let yesbutton = new disbut.MessageButton()
     // .setStyle('green')
@@ -293,92 +379,6 @@ client.on('ready', async() => {
         else if (command === "") {
             return;
         } else return message.channel.send(`whatever the hell that command was, i dont think it exists \ncheck .help`)
-
-        let infoEmbed = {
-            "plainText": "some info on the bot",
-          "title": "when /europesim is sus",
-          "description": "owopus!!!!!!!!",
-          "author": {
-            "name": "Bot information",
-            "icon_url": "https://cdn.discordapp.com/icons/846807940727570433/4bbf13c1ce8bfb351fc7eafdc898e7d1.png"
-          },
-          "color": 53380,
-          "footer": {
-            "text": "https://ourworldofpixels.com/europesim"
-          },
-          "fields": [
-            {
-              "name": "Current UTC hour",
-              "value": `${hours}`,
-              "inline": true
-            },
-            {
-              "name": "Europesim year, month",
-              "value": `${Math.floor(europesimCurrentYear)}, ${europesimCurrentMonth}`,
-              "inline": true
-            },
-            {
-              "name": "Server member count",
-              "value": `${message.guild.memberCount}`,
-              "inline": true
-            }
-          ]
-        };
-        let helpEmbed = {
-            "title": "All list of commands (Main branch)",
-            "description": `prefix: .`,
-            "color": 53380,
-            "footer": {
-                "text": "Added random number generator!"
-            },
-            "fields": [
-                {
-                  "name": "hi",
-                  "value": "Usually used to check if bot is responding or not",
-                  "inline": true
-                },
-                {
-                  "name": "eval (code)",
-                  "value": "Execute some JavaScript code",
-                  "inline": true
-                },
-                {
-                  "name": "exit",
-                  "value": "Shortcut to process.exit(1);",
-                  "inline": true
-                },
-                {
-                  "name": "sudo (message)",
-                  "value": "Send messages as me (idk why i added it, might remove)",
-                  "inline": true
-                },
-                {
-                  "name": "quote",
-                  "value": `${TechnobladeQuote[quoteInt].quote} (random technoblade quote)`,
-                  "inline": true
-                },
-                {
-                    "name": "suggest",
-                    "value": "Suggest some ideas, might add it to the bot",
-                    "inline": true
-                },
-                {
-                    "name": "info",
-                    "value": "General bot information",
-                    "inline": true
-                },
-                {
-                    "name": "rng (maxNumber)",
-                    "value": "Random number generator",
-                    "inline": true
-                },
-                {
-                    "name": "help",
-                    "value": "It does exactly what you think it does.",
-                    "inline": false
-                }
-            ]
-        };
         
     });
     let a = 1;
