@@ -92,6 +92,9 @@ http.createServer(function (request, response) {
 
 console.log('Server running at http://127.0.0.1:5000/');
 
+function getRandomArbitrary(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+};
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 };
@@ -197,7 +200,7 @@ client.on('ready', async() => {
 
     channel.send(`hi im online (main branch)`);
     client.on('message', function(message) {
-        
+
         let infoEmbed = {
             "plainText": "some info on the bot",
           "title": "when /europesim is sus",
@@ -272,8 +275,8 @@ client.on('ready', async() => {
                     "inline": true
                 },
                 {
-                    "name": "rng (maxNumber)",
-                    "value": "Random number generator",
+                    "name": "rng (minNumber) (maxNumber)",
+                    "value": "Random number generator (min value is optional)",
                     "inline": true
                 },
                 {
@@ -365,11 +368,17 @@ client.on('ready', async() => {
             return message.channel.send({embed:infoEmbed});
         }
         else if (command === "rng") {
-            let max = args.join(' ');
-            if (isNaN(max) === false) {
-                return message.channel.send(`random number generator: \`${getRandomInt(max)}\`\nbtw if you do, for example, .rng 20 then the number it will actually give will be 1-19`);
-            }
-            else if (isNaN(max) === true) return message.channel.send(`sorry to break it up to you, but \`${max}\` is not a number`);
+            if (!args[1].length) {
+                const max = args[0];
+                if (isNaN(max) === true) return message.channel.send(`sorry to break it up to you, but \`${max}\` is not a number`);
+                else return message.channel.send(`random integer generator: \`${getRandomInt(max)}\`\nbtw if you do, for example, .rng 20 then the number it will actually give will be 1-19`);
+            } else {
+                const min = args[0];
+                const max = args[1];
+                if (isNaN(min) || isNaN(max) === false) {
+                    return message.channel.send(`random arbitrary generator: \`${getRandomArbitrary(min, max)}\`\nunder testing rn`);
+                };
+            };
         }
         else if (command === "help") {
             return message.channel.send({embed:helpEmbed});
