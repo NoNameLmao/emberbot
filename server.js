@@ -10,7 +10,7 @@ const client = new Discord.Client({
 });
 const config = require('./config.json');
 const disbut = require('discord-buttons')(client);
-const guild = client.guilds.fetch('846807940727570433');
+const guildID = (`846807940727570433`); // 846807940727570433
 const botchannelID = (`846811100338323497`);
 const DateChannelID = (`848247855789375508`);
 const prefix = (`.`);
@@ -177,6 +177,7 @@ client.on('ready', async() => {
         console.log(`Cannot find the bot channel! ping spam NoNameLmao(emberglaze lmao) to fix it`);
         process.exit(0);
     };
+    let guild = client.guilds.fetch(guildID);
     if (!guild) {
         console.log(`lmaoooooooo wrong guild id? or server non-existant :lmaoof: dm nnl lmao xddddd`);
         process.exit(0);
