@@ -9,6 +9,7 @@ const client = new Discord.Client({
     },
 });
 const config = require('./config.json');
+const mongo = require('./mongo');
 const disbut = require('discord-buttons')(client);
 const guildID = (`846807940727570433`); // 846807940727570433
 const botchannelID = (`846811100338323497`);
@@ -145,6 +146,13 @@ function sleep(ms) {
 let channel;
 client.on('ready', async() => {
     console.log(`Logged in successfully as ${client.user.tag}!`);
+    await mongo().then(mongoose => {
+        try {
+            console.log('connected to mongo');
+        } finally {
+            mongoose.connection.close();
+        };
+    });
     process.on('uncaughtException', function (err) {
         console.error(new Date() + ' uncaughtException:', err.stack);
         const errEmbed = {
@@ -291,8 +299,7 @@ client.on('ready', async() => {
         if (message.content.includes(`hi online`)) {
             message.channel.send(`wrong. i am ${client.user.tag}. also hi ${message.author.tag}`);
         };
-        const commandBody = message.content.slice(prefix.length); // the command itself
-        const args = commandBody.split(' '); // arguments after the command
+        const args = message.content.slice(prefix.length).trim().split(/ +/g); // arguments after the command
         const command = args.shift().toLowerCase();
         if (!message.content.includes(prefix || command)) console.log(`Message from ${message.author.tag} in ${message.channel.name} at ${message.createdAt}: ${message.content}`);
         if (!message.content.startsWith(prefix)) return; // if message doesnt start with prefix, ignore it
@@ -368,17 +375,13 @@ client.on('ready', async() => {
             return message.channel.send({embed:infoEmbed});
         }
         else if (command === "rng") {
-            if (!args[1].length) {
-                const max = args[0];
-                if (isNaN(max) === true) return message.channel.send(`sorry to break it up to you, but \`${max}\` is not a number`);
-                else return message.channel.send(`random integer generator: \`${getRandomInt(max)}\`\nbtw if you do, for example, .rng 20 then the number it will actually give will be 1-19`);
-            } else {
+            if (isNaN(args[1]) === true) {
+                return message.channel.send(`random integer generator: \`${getRandomInt(args[0])}\`\nbtw if you do, for example, .rng 20 then the number it will actually give will be 1-19`);
+            } else if (isNaN(args[1]) === false) {
                 const min = args[0];
                 const max = args[1];
-                if (isNaN(min) || isNaN(max) === false) {
-                    return message.channel.send(`random arbitrary generator: \`${getRandomArbitrary(min, max)}\`\nunder testing rn`);
-                };
-            };
+                return message.channel.send(`random arbitrary generator: \`${getRandomArbitrary(min, max)}\`\nunder testing rn`);
+            }
         }
         else if (command === "help") {
             return message.channel.send({embed:helpEmbed});

@@ -7,13 +7,12 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "discord-buttons": "*",
-    "discord.js": "*",
-    "flying-squid": "^1.4.0"
+    "discord-buttons": "^3.2.1",
+    "discord.js": "^12.5.3",
+    "flying-squid": "^1.4.0",
+    "mongoose": "^5.12.13"
   },
-  "keywords": [
-    "bot"
-  ],
+  "keywords": [],
   "author": "NoNameLmao/emberglaze",
   "license": "ISC"
 }
