@@ -146,13 +146,13 @@ function sleep(ms) {
 let channel;
 client.on('ready', async() => {
     console.log(`Logged in successfully as ${client.user.tag}!`);
-    await mongo().then(mongoose => {
-        try {
-            console.log('connected to mongo');
-        } finally {
-            mongoose.connection.close();
-        };
-    });
+//     await mongo().then(mongoose => {
+//         try {
+//             console.log('connected to mongo');
+//         } finally {
+//             mongoose.connection.close();
+//         };
+//     });
     process.on('uncaughtException', function (err) {
         console.error(new Date() + ' uncaughtException:', err.stack);
         const errEmbed = {
