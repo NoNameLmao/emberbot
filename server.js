@@ -206,7 +206,7 @@ client.on('ready', async() => {
     // .setLabel('nah')
     // .setID('no')
 
-    channel.send(`hi im online (main branch)`);
+    channel.send(`https://media.discordapp.net/attachments/742059535484846150/761954413869793340/image0-16.gif`);
     client.on('message', function(message) {
 
         let infoEmbed = {
