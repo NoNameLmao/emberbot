@@ -387,12 +387,11 @@ client.on('ready', async() => {
             return message.channel.send({embed:helpEmbed});
         }
         else if (command === "dn") {
+            logCommand();
             return message.channel.send('deez nuts');
         }
-        else if (command === "") {
-            return;
-        } else return message.channel.send(`sorry, ${command} doesnt exist\ncheck .help`)
-        
+        else if (command === "") return;
+        else return message.channel.send(`sorry, "${prefix}${command}" doesnt exist\ncheck ".help"`);
     });
     let a = 1;
     function updateDateLoop() {
