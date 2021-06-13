@@ -355,7 +355,7 @@ client.on('ready', async() => {
                 // }
                 // else {
                 const sudo = args.join(" ");
-                channel.send(sudo);
+                message.channel.send(sudo);
             }
             else return channel.send(`${TechnobladeQuote[quoteInt].quote} (No permission)`);
         }  
@@ -391,7 +391,7 @@ client.on('ready', async() => {
         }
         else if (command === "") {
             return;
-        } else return message.channel.send(`whatever the hell that command was, i dont think it exists \ncheck .help`)
+        } else return message.channel.send(`sorry, ${command} doesnt exist\ncheck .help`)
         
     });
     let a = 1;
