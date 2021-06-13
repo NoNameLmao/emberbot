@@ -165,7 +165,7 @@ client.on('ready', async() => {
             },
             "color": 15158332,
             "footer": {
-                "text": "i got owned by an error smh"
+                "text": "not even close baby i never go offline"
             },
             "fields": [
                 {
