@@ -299,6 +299,9 @@ client.on('ready', async() => {
         if (message.content.includes(`hi online`)) {
             message.channel.send(`wrong. i am ${client.user.tag}. also hi ${message.author.tag}`);
         };
+        if (message.content.includes('lichestien') || message.content.includes('lichistint') || message.content.includes('lichtenstein')) {
+            message.channel.send('liechtenstein*');
+        };
         const args = message.content.slice(prefix.length).trim().split(/ +/g); // arguments after the command
         const command = args.shift().toLowerCase();
         if (!message.content.includes(prefix || command)) console.log(`Message from ${message.author.tag} in ${message.channel.name} at ${message.createdAt}: ${message.content}`);
