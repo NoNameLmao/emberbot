@@ -139,6 +139,12 @@ const TechnobladeQuote = [
     {quote: 'am i wearing pants right now? you just have to take my word for it'}, // 35
     {quote: 'cant run away from your problems when they have ender pearls'} // 36
 ];
+const liechtenstein = [
+    {misspell: 'lichestien'},
+    {misspell: 'lichistint'},
+    {misspell: 'lichtenstein'},
+    {misspell: 'liehctenstein'}
+]
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -299,7 +305,7 @@ client.on('ready', async() => {
         if (message.content.includes(`hi online`)) {
             message.channel.send(`wrong. i am ${client.user.tag}. also hi ${message.author.tag}`);
         };
-        if (message.content.includes('lichestien') || message.content.includes('lichistint') || message.content.includes('lichtenstein')) {
+        if (liechtenstein.includes(message.content)) {
             message.channel.send('liechtenstein*');
         };
         const args = message.content.slice(prefix.length).trim().split(/ +/g); // arguments after the command
