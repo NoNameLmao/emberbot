@@ -23,7 +23,7 @@ function updateYear() {
     let europesimStartDate = Date.parse('May 25 2021 00:00:00 GMT');
     let currentDate = Date.now();
     let differenceInDays = (currentDate - europesimStartDate) / (1000 * 3600 * 24);
-    europesimCurrentYear = europesimStartYear + differenceInDays;
+    europesimCurrentYear = Math.floor(europesimStartYear + differenceInDays);
 };
 let europesimCurrentMonth;
 function updateMonth() {
@@ -274,7 +274,7 @@ client.on('ready', async() => {
             },
             {
               "name": "Europesim year, month",
-              "value": `${Math.floor(europesimCurrentYear)}, ${europesimCurrentMonth}`,
+              "value": `${europesimCurrentYear}, ${europesimCurrentMonth}`,
               "inline": true
             },
             {
@@ -446,7 +446,7 @@ client.on('ready', async() => {
         setTimeout(function() {
             updateMonth();
             updateYear();
-            DateChannel.setName(`${Math.floor(europesimCurrentYear)}, ${europesimCurrentMonth}`)
+            DateChannel.setName(`${europesimCurrentYear}, ${europesimCurrentMonth}`)
             if (a > 0) {
                 updateDateLoop();
             }
@@ -460,18 +460,44 @@ let hours = now.getUTCHours();
 let europesimStartDate = Date.parse('May 25 2021 00:00:00 GMT');
 let currentDate = Date.now();
 let differenceInDays = (currentDate - europesimStartDate) / (1000 * 3600 * 24);
-europesimCurrentYear = europesimStartYear + differenceInDays;
-if (hours === 0 || hours === 1) europesimCurrentMonth = `January`
-else if (hours === 2 || hours === 3) europesimCurrentMonth = `Febuary`
-else if (hours === 4 || hours === 5) europesimCurrentMonth = `March`
-else if (hours === 6 || hours === 7) europesimCurrentMonth = `April`
-else if (hours === 8 || hours === 9) europesimCurrentMonth = `May`
-else if (hours === 10 || hours === 11) europesimCurrentMonth = `June`
-else if (hours === 12 || hours === 13) europesimCurrentMonth = `July`
-else if (hours === 14 || hours === 15) europesimCurrentMonth = `August`
-else if (hours === 16 || hours === 17) europesimCurrentMonth = `September`
-else if (hours === 18 || hours === 19) europesimCurrentMonth = `October`
-else if (hours === 20 || hours === 21) europesimCurrentMonth = `November`
-else europesimCurrentMonth = `December`
+europesimCurrentYear = Math.floor(europesimStartYear + differenceInDays);
+switch (new Date().getUTCHours()) {
+    case 0, 1:
+        europesimCurrentMonth = 'January'
+        break;
+    case 2, 3:
+        europesimCurrentMonth = 'Febuary'
+        break;
+    case 4, 5:
+        europesimCurrentMonth = 'March'
+        break;
+    case 6, 7:
+        europesimCurrentMonth = 'April'
+        break;
+    case 8, 9:
+        europesimCurrentMonth = 'May'
+        break;
+    case 10, 11:
+        europesimCurrentMonth = 'June'
+        break;
+    case 12, 13:
+        europesimCurrentMonth = 'July'
+        break;  
+    case 14, 15:
+        europesimCurrentMonth = 'August'
+        break;  
+    case 16, 17:
+        europesimCurrentMonth = 'September'
+        break;
+    case 18, 19:
+        europesimCurrentMonth = 'October'
+        break;
+    case 20, 21:
+        europesimCurrentMonth = 'November'
+        break;
+    case 22, 23:
+        europesimCurrentMonth = 'December'
+        break;
+};
 
 client.login(config.token);
