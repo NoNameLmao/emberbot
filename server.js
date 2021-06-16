@@ -137,7 +137,6 @@ function getRandomArbitrary(min, max) {
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 };
-let quoteInt = getRandomInt(37);
 
 const TechnobladeQuote = [
     {quote: 'NOT EVEN CLOSE BABY TECHNOBLADE NEVER DIES'}, // 1
@@ -177,6 +176,8 @@ const TechnobladeQuote = [
     {quote: 'am i wearing pants right now? you just have to take my word for it'}, // 35
     {quote: 'cant run away from your problems when they have ender pearls'} // 36
 ];
+let quoteInt = getRandomInt(TechnobladeQuote.length + 1);
+
 const liechtenstein = [
     {misspell: 'lichestien'},
     {misspell: 'lichistint'},
