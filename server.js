@@ -14,6 +14,7 @@ const disbut = require('discord-buttons')(client);
 const guildID = (`846807940727570433`); // 846807940727570433
 const botchannelID = (`846811100338323497`);
 const DateChannelID = (`848247855789375508`);
+const pingNNL = ('<@341123308844220447>');
 const prefix = (`.`);
 const token = (`ODQ4MjE3OTM4Mjg4OTY3NzEw.YLJagw.BdRe4iX1emlnPxrzmQzCBgpaYJ0`);
 let europesimStartYear = 1800;
@@ -105,8 +106,7 @@ http.createServer(function (request, response) {
        case '.css':
            contentType = 'text/css';
            break;
-   }
-
+    };
    fs.access(filePath, function(exists) {
 
        if (exists) {
@@ -333,6 +333,11 @@ client.on('ready', async() => {
                     "inline": true
                 },
                 {
+                    "name": "warmode (on/off)",
+                    "value": `Alerts ${pingNNL} about an ongoing war so he will leave the bot in peace and stop doing anything with it`,
+                    "inline": true
+                },
+                {
                     "name": "help",
                     "value": "It does exactly what you think it does.",
                     "inline": false
@@ -438,8 +443,24 @@ client.on('ready', async() => {
             logCommand();
             return message.channel.send('deez nuts');
         }
+        else if (command === "warmode") {
+            let mode = args.join(" ");
+            let warmode = 'off';
+            if (mode = 'on') {
+                logCommand();
+                return message.channel.send(`${pingNNL} dude there is a war going on rn dont turn me off i beg u ppl need rng bro!!!!!!`);
+            } else if (mode = 'off') {
+                logCommand();
+                return message.channel.send(`${pingNNL} war over now you can do whatever with the code in peace`);
+            };
+            if (warmode = 'on') {
+                setInterval(() => {
+                    return channel.send(`just a quick reminder that ${prefix}warmode is still on. if war is finished PLEASE TURN IT OFF\n thanks`);
+                }, 30000 * 60);
+            } else return;
+        }
         else if (command === "") return;
-        else return message.channel.send(`sorry, "${prefix}${command}" doesnt exist\ncheck ".help"`);
+        else return message.channel.send(`sorry, "${prefix}${command}" doesnt exist\ncheck "${prefix}help"`);
     });
     let a = 1;
     function updateDateLoop() {
