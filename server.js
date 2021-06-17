@@ -254,7 +254,7 @@ client.on('ready', async() => {
 
     channel.send(`https://media.discordapp.net/attachments/742059535484846150/761954413869793340/image0-16.gif`);
     client.on('message', function(message) {
-
+        let memberCount = message.guild.memberCount;
         let infoEmbed = {
             "plainText": "some info on the bot",
           "title": "when /europesim is sus",
@@ -280,7 +280,7 @@ client.on('ready', async() => {
             },
             {
               "name": "Server member count",
-              "value": `${message.guild.memberCount}`,
+              "value": `${memberCount}`,
               "inline": true
             }
           ]
