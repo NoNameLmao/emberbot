@@ -182,7 +182,8 @@ const liechtenstein = [
     {misspell: 'lichestien'},
     {misspell: 'lichistint'},
     {misspell: 'lichtenstein'},
-    {misspell: 'liehctenstein'}
+    {misspell: 'liehctenstein'},
+    {misspell: 'liechtenstien'}
 ]
 
 function sleep(ms) {
@@ -448,11 +449,15 @@ client.on('ready', async() => {
             let warmode = 'off';
             if (mode = 'on') {
                 logCommand();
-                return message.channel.send(`${pingNNL} dude there is a war going on rn dont turn me off i beg u ppl need rng bro!!!!!!`);
+                message.channel.send(`${pingNNL} dude there is a war going on rn dont turn me off i beg u ppl need rng bro!!!!!!`);
+                return warmode = on;
             } else if (mode = 'off') {
                 logCommand();
-                return message.channel.send(`${pingNNL} war over now you can do whatever with the code in peace`);
-            };
+                message.channel.send(`${pingNNL} war over now you can do whatever with the code in peace`);
+                return warmode = off;
+            } else {
+                message.channel.send(`what the fuck bro`);
+            }
             if (warmode = 'on') {
                 setInterval(() => {
                     return channel.send(`just a quick reminder that ${prefix}warmode is still on. if war is finished PLEASE TURN IT OFF\n thanks`);
