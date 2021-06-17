@@ -15,6 +15,8 @@ const guildID = (`846807940727570433`); // 846807940727570433
 const botchannelID = (`846811100338323497`);
 const DateChannelID = (`848247855789375508`);
 const pingNNL = ('<@341123308844220447>');
+let now = new Date();
+let nowUTC = now.getUTCHours();
 const prefix = (`.`);
 const token = (`ODQ4MjE3OTM4Mjg4OTY3NzEw.YLJagw.BdRe4iX1emlnPxrzmQzCBgpaYJ0`);
 let europesimStartYear = 1800;
@@ -28,7 +30,7 @@ function updateYear() {
 };
 let europesimCurrentMonth;
 function updateMonth() {
-    switch (new Date().getUTCHours()) {
+    switch (nowUTC) {
         case 0, 1:
             europesimCurrentMonth = 'January'
             break;
@@ -66,7 +68,6 @@ function updateMonth() {
             europesimCurrentMonth = 'December'
             break;
     }
-    // let now = new Date();
     // let hours = now.getUTCHours()
     // if (hours === 0 || hours === 1) europesimCurrentMonth = `January`
     // else if (hours === 2 || hours === 3) europesimCurrentMonth = `Febuary`
@@ -200,7 +201,7 @@ client.on('ready', async() => {
 //         };
 //     });
     process.on('uncaughtException', function (err) {
-        console.error(new Date() + ' uncaughtException:', err.stack);
+        console.error(now + ' uncaughtException:', err.stack);
         const errEmbed = {
             "plainText": "<@341123308844220447> lol ur so bad fix me",
             "title": "uncaught exception or smth ",
@@ -225,7 +226,7 @@ client.on('ready', async() => {
         setTimeout(() => {
            channel.send(`some error idk, go fix <@341123308844220447> \n\`\`\`${err.stack}\`\`\``); 
         }, 5000);
-        console.error(new Date() + ' uncaughtException:', err.stack);
+        console.error(now + ' uncaughtException:', err.stack);
         // process.exit(0);
     });    
     channel = await client.channels.fetch(botchannelID);
@@ -270,7 +271,7 @@ client.on('ready', async() => {
           "fields": [
             {
               "name": "Current UTC hour",
-              "value": `${hours}`,
+              "value": `${nowUTC}`,
               "inline": true
             },
             {
@@ -358,7 +359,7 @@ client.on('ready', async() => {
         if (!message.content.includes(prefix || command)) console.log(`Message from ${message.author.tag} in ${message.channel.name} at ${message.createdAt}: ${message.content}`);
         if (!message.content.startsWith(prefix)) return; // if message doesnt start with prefix, ignore it
         function logCommand() {
-            console.log(`recieved a ${command} command from ${message.author.tag} @ ${new Date()}: ${args}`);
+            console.log(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
         };
         if (command === `hi`) {
             logCommand();
@@ -374,20 +375,20 @@ client.on('ready', async() => {
                         output = require('util').inspect(result);
                     }
                     message.channel.send(output, {code: 'js'});
-                    console.log(`recieved ${command} command from ${message.author.tag} @ ${new Date()} ${message.content} \n${output, {code: 'js'}}`);
+                    console.log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${output, {code: 'js'}}`);
                 } catch (error) {
                     message.channel.send(`\`Code ran with an error:\` \`\`\`xl\n${error}\n\`\`\``);
-                    console.log(`recieved ${command} command from ${message.author.tag} @ ${new Date()} ${message.content} \n${code} \nThere was an error running this code: \n${error}`);
+                    console.log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${code} \nThere was an error running this code: \n${error}`);
                 };
             // } else return channel.send(`${TechnobladeQuote[quoteInt].quote} (No permission)`);
         }
         else if (command === "exit") {
             if (message.author.id === `341123308844220447`) {
-                console.log(`recieved exit command from ${message.author.tag} @ ${new Date()}. goodbye`);
+                console.log(`recieved exit command from ${message.author.tag} @ ${now.toString()}. goodbye`);
                 message.channel.send(`:sob:`).then(() => process.exit(1));
             }
             else {
-                console.log(`recieved exit command from ${message.author.tag} @ ${new Date()} lol permission denied have a technoblade quote instead nerd`)
+                console.log(`recieved exit command from ${message.author.tag} @ ${now.toString()} lol permission denied have a technoblade quote instead nerd`)
                 let quoteInt = getRandomInt(37);
                 channel.send(TechnobladeQuote[quoteInt].quote);    
             } return;
@@ -425,7 +426,7 @@ client.on('ready', async() => {
             return message.channel.send(`Your suggestion has been sent! thanks`);
         }
         else if (command === "info") {
-            hours = new Date().getUTCHours();
+            hours = nowUTC;
             return message.channel.send({embed:infoEmbed});
         }
         else if (command === "rng") {
@@ -481,13 +482,11 @@ client.on('ready', async() => {
     updateDateLoop();
 });
 
-let now = new Date();
-let hours = now.getUTCHours();
 let europesimStartDate = Date.parse('May 25 2021 00:00:00 GMT');
 let currentDate = Date.now();
 let differenceInDays = (currentDate - europesimStartDate) / (1000 * 3600 * 24);
 europesimCurrentYear = Math.floor(europesimStartYear + differenceInDays);
-switch (new Date().getUTCHours()) {
+switch (nowUTC) {
     case 0, 1:
         europesimCurrentMonth = 'January'
         break;
