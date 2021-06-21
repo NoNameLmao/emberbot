@@ -30,44 +30,8 @@ function updateYear() {
 };
 let europesimCurrentMonth;
 function updateMonth() {
-    switch (nowUTC) {
-        case 0, 1:
-            europesimCurrentMonth = 'January'
-            break;
-        case 2, 3:
-            europesimCurrentMonth = 'Febuary'
-            break;
-        case 4, 5:
-            europesimCurrentMonth = 'March'
-            break;
-        case 6, 7:
-            europesimCurrentMonth = 'April'
-            break;
-        case 8, 9:
-            europesimCurrentMonth = 'May'
-            break;
-        case 10, 11:
-            europesimCurrentMonth = 'June'
-            break;
-        case 12, 13:
-            europesimCurrentMonth = 'July'
-            break;  
-        case 14, 15:
-            europesimCurrentMonth = 'August'
-            break;  
-        case 16, 17:
-            europesimCurrentMonth = 'September'
-            break;
-        case 18, 19:
-            europesimCurrentMonth = 'October'
-            break;
-        case 20, 21:
-            europesimCurrentMonth = 'November'
-            break;
-        case 22, 23:
-            europesimCurrentMonth = 'December'
-            break;
-    }
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    europesimCurrentMonth = months[Math.floor(nowUTC / 2)];
     // let hours = now.getUTCHours()
     // if (hours === 0 || hours === 1) europesimCurrentMonth = `January`
     // else if (hours === 2 || hours === 3) europesimCurrentMonth = `Febuary`
@@ -486,43 +450,7 @@ let europesimStartDate = Date.parse('May 25 2021 00:00:00 GMT');
 let currentDate = Date.now();
 let differenceInDays = (currentDate - europesimStartDate) / (1000 * 3600 * 24);
 europesimCurrentYear = Math.floor(europesimStartYear + differenceInDays);
-switch (nowUTC) {
-    case 0, 1:
-        europesimCurrentMonth = 'January'
-        break;
-    case 2, 3:
-        europesimCurrentMonth = 'Febuary'
-        break;
-    case 4, 5:
-        europesimCurrentMonth = 'March'
-        break;
-    case 6, 7:
-        europesimCurrentMonth = 'April'
-        break;
-    case 8, 9:
-        europesimCurrentMonth = 'May'
-        break;
-    case 10, 11:
-        europesimCurrentMonth = 'June'
-        break;
-    case 12, 13:
-        europesimCurrentMonth = 'July'
-        break;  
-    case 14, 15:
-        europesimCurrentMonth = 'August'
-        break;  
-    case 16, 17:
-        europesimCurrentMonth = 'September'
-        break;
-    case 18, 19:
-        europesimCurrentMonth = 'October'
-        break;
-    case 20, 21:
-        europesimCurrentMonth = 'November'
-        break;
-    case 22, 23:
-        europesimCurrentMonth = 'December'
-        break;
-};
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+europesimCurrentMonth = months[Math.floor(nowUTC / 2)];
 
 client.login(config.token);
