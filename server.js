@@ -17,9 +17,7 @@ const pingNNL = ('<@341123308844220447>');
 let now = new Date();
 let nowUTC = now.getUTCHours();
 const prefix = require('./config.json');
-const token = (`ODQ4MjE3OTM4Mjg4OTY3NzEw.YLJagw.BdRe4iX1emlnPxrzmQzCBgpaYJ0`);
 let europesimStartYear = 1800;
-
 let europesimCurrentYear;
 function updateYear() {
     let europesimStartDate = Date.parse('May 25 2021 00:00:00 GMT');
