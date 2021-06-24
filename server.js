@@ -289,7 +289,6 @@ client.on('ready', async() => {
             ]
         };
 
-        // if (message.author.bot) return; // ignore all messages sent by other bots
         if (message.content.includes(`hi online`)) {
             message.channel.send(`wrong. i am ${client.user.tag}. also hi ${message.author.tag}`);
         };
