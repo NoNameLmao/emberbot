@@ -380,7 +380,7 @@ client.on('ready', async() => {
             }
         }
         else if (command === "mark") {
-
+            return;
         }
         else if (command === "help") {
             return message.channel.send({embed:helpEmbed});
