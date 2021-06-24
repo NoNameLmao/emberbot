@@ -30,19 +30,6 @@ function updateYear() {
 function updateMonth() {
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     europesimCurrentMonth = months[Math.floor(nowUTC / 2)];
-    // let hours = now.getUTCHours()
-    // if (hours === 0 || hours === 1) europesimCurrentMonth = `January`
-    // else if (hours === 2 || hours === 3) europesimCurrentMonth = `Febuary`
-    // else if (hours === 4 || hours === 5) europesimCurrentMonth = `March`
-    // else if (hours === 6 || hours === 7) europesimCurrentMonth = `April`
-    // else if (hours === 8 || hours === 9) europesimCurrentMonth = `May`
-    // else if (hours === 10 || hours === 11) europesimCurrentMonth = `June`
-    // else if (hours === 12 || hours === 13) europesimCurrentMonth = `July`
-    // else if (hours === 14 || hours === 15) europesimCurrentMonth = `August`
-    // else if (hours === 16 || hours === 17) europesimCurrentMonth = `September`
-    // else if (hours === 18 || hours === 19) europesimCurrentMonth = `October`
-    // else if (hours === 20 || hours === 21) europesimCurrentMonth = `November`
-    // else europesimCurrentMonth = `December`
 };
 
 var http = require('http');
