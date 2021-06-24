@@ -10,7 +10,7 @@
     "discord-buttons": "^3.2.1",
     "discord.js": "^12.5.3",
     "flying-squid": "^1.4.0",
-    "markovchain": "^1.0.2"
+    "markovChain": "^1.0.2"
   },
   "keywords": [],
   "author": "NoNameLmao/emberglaze",
