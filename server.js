@@ -19,7 +19,6 @@ const quotes = new MarkovChain(fs.readFileSync('./quotes.txt', 'utf8'));
 const pingNNL = ('<@341123308844220447>');
 let now = new Date();
 let nowUTC = now.getUTCHours();
-const prefix = require('./config.json');
 let europesimStartYear = 1800;
 let europesimCurrentYear;
 let europesimCurrentMonth;
@@ -313,10 +312,10 @@ client.on('ready', async() => {
         if (liechtenstein.includes(message.content)) {
             message.channel.send('liechtenstein*');
         };
-        const args = message.content.slice(prefix.length).trim().split(/ +/g); // arguments after the command
+        const args = message.content.slice(config.prefix.length).trim().split(/ +/g); // arguments after the command
         const command = args.shift().toLowerCase();
-        if (!message.content.includes(prefix || command)) console.log(`Message from ${message.author.tag} in ${message.channel.name} at ${message.createdAt}: ${message.content}`);
-        if (!message.content.startsWith(prefix)) return; // if message doesnt start with prefix, ignore it
+        if (!message.content.includes(config.prefix || command)) console.log(`Message from ${message.author.tag} in ${message.channel.name} at ${message.createdAt}: ${message.content}`);
+        if (!message.content.startsWith(config.prefix)) return; // if message doesnt start with prefix, ignore it
         function logCommand() {
             console.log(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
         };
@@ -423,12 +422,12 @@ client.on('ready', async() => {
             }
             if (warmode = 'on') {
                 setInterval(() => {
-                    return channel.send(`just a quick reminder that ${prefix}warmode is still on. if war is finished PLEASE TURN IT OFF\n thanks`);
+                    return channel.send(`just a quick reminder that ${config.prefix}warmode is still on. if war is finished PLEASE TURN IT OFF\n thanks`);
                 }, 30000 * 60);
             } else return;
         }
         else if (command === "") return;
-        else return message.channel.send(`sorry, "${prefix}${command}" doesnt exist\ncheck "${prefix}help"`);
+        else return message.channel.send(`sorry, "${config.prefix}${command}" doesnt exist\ncheck "${cconfig.prefix}help"`);
     });
     let a = 1;
     function updateDateLoop() {
