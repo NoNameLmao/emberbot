@@ -329,14 +329,14 @@ client.on('ready', async() => {
                     let output = result;
                     if (typeof output !== 'string') {
                         output = require('util').inspect(result);
-                    }
+                    };
                     message.channel.send(output, {code: 'js'});
                     console.log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${output, {code: 'js'}}`);
                 } catch (error) {
                     message.channel.send(`\`Code ran with an error:\` \`\`\`xl\n${error}\n\`\`\``);
                     console.log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${code} \nThere was an error running this code: \n${error}`);
                 };
-            } else return channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
+            } else return message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
         }
         else if (command === "exit") {
             if (message.author.id === `341123308844220447`) {
@@ -344,9 +344,9 @@ client.on('ready', async() => {
                 message.channel.send(`:sob:`).then(() => process.exit(1));
             }
             else {
-                console.log(`recieved exit command from ${message.author.tag} @ ${now.toString()} lol permission denied have a technoblade quote instead nerd`)
+                console.log(`recieved exit command from ${message.author.tag} @ ${now.toString()} lol permission denied have a technoblade quote instead nerd`);
                 let quoteInt = getRandomInt(37);
-                channel.send(TechnobladeQuote[quoteInt]);    
+                message.channel.send(TechnobladeQuote[quoteInt]);    
             } return;
         }
         else if (command === "sudo") {
