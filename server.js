@@ -13,6 +13,9 @@ const disbut = require('discord-buttons')(client);
 const guildID = (`846807940727570433`); // 846807940727570433
 const botchannelID = (`846811100338323497`);
 const DateChannelID = (`848247855789375508`);
+const fs = require('fs');
+const MarkovChain = require('markovChain');
+const quotes = new MarkovChain(fs.readFileSync('./quotes.txt', 'utf8'));
 const pingNNL = ('<@341123308844220447>');
 let now = new Date();
 let nowUTC = now.getUTCHours();
@@ -32,10 +35,8 @@ function updateMonth() {
     europesimCurrentMonth = months[Math.floor(nowUTC / 2)];
 };
 
-var http = require('http');
-var fs = require('fs');
-var path = require('path');
-const { randomInt } = require('crypto');
+const http = require('http');
+const path = require('path');
 
 http.createServer(function (request, response) {
 
