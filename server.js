@@ -372,7 +372,7 @@ client.on('ready', async() => {
         }  
         else if (command === "quote") {
             quoteInt = getRandomInt(37);
-            return message.channel.send(TechnobladeQuote[quoteInt]);
+            return message.channel.send(`quote number ${quoteInt}: \n"${TechnobladeQuote[quoteInt]}"`);
         }
         else if (command === "suggest") {
             const suggest = args.join(" ");
