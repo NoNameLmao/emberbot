@@ -96,7 +96,7 @@ http.createServer(function (request, response) {
 console.log('Server running at http://127.0.0.1:5000/');
 
 function getRandomArbitrary(min, max) {
-    return Math.floor(Math.random() * (max - min) + min);
+    return Math.floor(Math.random() * (max - min + 1) + min);
 };
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
@@ -387,11 +387,11 @@ client.on('ready', async() => {
         }
         else if (command === "rng") {
             if (isNaN(args[1]) === true) {
-                return message.channel.send(`random integer generator: \`${getRandomInt(args[0])}\`\nbtw if you do, for example, .rng 20 then the number it will actually give will be 1-19`);
+                return message.channel.send(`random integer generator: \`${getRandomInt(args[0])}\`\nthis generator is inclusive at 0 but not at ${args[0]} PLEASE keep that in mind\ntldr gives only 0 to ${args[0]}`);
             } else if (isNaN(args[1]) === false) {
                 const min = args[0];
                 const max = args[1];
-                return message.channel.send(`random arbitrary generator: \`${getRandomArbitrary(min, max)}\`\nunder testing rn`);
+                return message.channel.send(`random arbitrary generator: \`${getRandomArbitrary(min, max)}\`\nthis generator is inclusive at both ${min} and ${max}\nbasically gives values between ${min} and ${max} including them`);
             }
         }
         else if (command === "help") {
