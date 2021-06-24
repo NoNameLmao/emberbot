@@ -380,6 +380,9 @@ client.on('ready', async() => {
                 return message.channel.send(`random arbitrary generator: \`${getRandomArbitrary(min, max)}\`\nthis generator is inclusive at both ${min} and ${max}\nbasically gives values between ${min} and ${max} including them`);
             }
         }
+        else if (command === "mark") {
+
+        }
         else if (command === "help") {
             return message.channel.send({embed:helpEmbed});
         }
