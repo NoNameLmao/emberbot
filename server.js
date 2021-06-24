@@ -44,7 +44,7 @@ http.createServer(function (request, response) {
    console.log(request);
 
    const filePath = '.' + request.url;
-   if (filePath == './') filePath = './index.html';
+   if (filePath == './') filePath = './page.html';
 
    console.log(filePath);
    const extname = path.extname(filePath);
