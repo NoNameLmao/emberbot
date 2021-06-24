@@ -43,13 +43,12 @@ http.createServer(function (request, response) {
    console.log('request starting for ');
    console.log(request);
 
-   var filePath = '.' + request.url;
-   if (filePath == './')
-       filePath = './index.html';
+   const filePath = '.' + request.url;
+   if (filePath == './') filePath = './index.html';
 
    console.log(filePath);
-   var extname = path.extname(filePath);
-   var contentType = 'text/html';
+   const extname = path.extname(filePath);
+   const contentType = 'text/html';
    switch (extname) {
        case '.js':
            contentType = 'text/javascript';
