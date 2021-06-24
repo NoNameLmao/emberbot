@@ -126,7 +126,7 @@ const TechnobladeQuote = [
     'am i wearing pants right now? you just have to take my word for it',
     'cant run away from your problems when they have ender pearls'
 ];
-let quoteInt = getRandomInt(TechnobladeQuote.length + 1);
+let quoteInt = getRandomInt(TechnobladeQuote.length + 1); // +1 bc not inclusive!!!!!!!!!!!!!!!!!!!!!!!
 
 const liechtenstein = [
     'lichestien',
@@ -134,7 +134,23 @@ const liechtenstein = [
     'lichtenstein',
     'liehctenstein',
     'liechtenstien'
-]
+];
+
+const hiMessage = [
+    'https://tenor.com/view/troll-pilled-gif-19289988', // troll
+    'hi im online',
+    'https://cdn.discordapp.com/attachments/603303568317087798/857659695062188084/IMG_20210623_095302.jpg', // wap
+    'https://cdn.discordapp.com/attachments/813423631795355680/815953736307572816/image0-85.gif', // ong
+    'https://tenor.com/view/i-love-it-gif-18812641', // democracy for the win
+    'https://canary.discord.com/channels/752218282253353031/777486219910840331/857711152985014293', // did not ask
+    'https://media.discordapp.net/attachments/399408989684891651/808734416737796156/image0.gif',
+    'https://media.discordapp.net/attachments/664305979050950657/816984557852950539/freeze.gif',
+    'https://cdn.discordapp.com/attachments/510632855601152013/774693195614257212/image0.gif',
+    'https://media.discordapp.net/attachments/801529722513129543/801564698763067402/caption-2.gif',
+    'https://cdn.discordapp.com/attachments/655219751739457547/802619982755528704/image0_5.gif',
+    'https://tenor.com/view/get-real-cat-skate-funny-meme-gif-18666878'
+];
+let hiMsgInt = getRandomInt(hiMessage.length + 1);
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -195,7 +211,7 @@ client.on('ready', async() => {
     // .setLabel('nah')
     // .setID('no')
 
-    channel.send(`https://media.discordapp.net/attachments/742059535484846150/761954413869793340/image0-16.gif`);
+    channel.send(`${hiMessage[hiMsgInt]}`);
     client.on('message', function(message) {
         let memberCount = message.guild.memberCount;
         let infoEmbed = {
