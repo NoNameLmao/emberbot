@@ -16,7 +16,7 @@ const DateChannelID = (`848247855789375508`);
 const pingNNL = ('<@341123308844220447>');
 let now = new Date();
 let nowUTC = now.getUTCHours();
-const prefix = (`.`);
+const prefix = require('./config.json');
 const token = (`ODQ4MjE3OTM4Mjg4OTY3NzEw.YLJagw.BdRe4iX1emlnPxrzmQzCBgpaYJ0`);
 let europesimStartYear = 1800;
 
