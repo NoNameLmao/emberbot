@@ -387,7 +387,7 @@ client.on('ready', async() => {
         }
         else if (command === "rng") {
             if (isNaN(args[1]) === true) {
-                return message.channel.send(`random integer generator: \`${getRandomInt(args[0])}\`\nthis generator is inclusive at 0 but not at ${args[0]} PLEASE keep that in mind\ntldr gives only 0 to ${args[0]}`);
+                return message.channel.send(`random integer generator: \`${getRandomInt(args[0])}\`\nthis generator is inclusive at 0 but not at ${args[0] - 1} PLEASE keep that in mind\ntldr gives only 0 to ${args[0]}`);
             } else if (isNaN(args[1]) === false) {
                 const min = args[0];
                 const max = args[1];
