@@ -133,7 +133,9 @@ const liechtenstein = [
     'lichistint',
     'lichtenstein',
     'liehctenstein',
-    'liechtenstien'
+    'liechtenstien',
+    'lechteinstei',
+    'lechtenstei'
 ];
 
 const hiMessage = [
