@@ -43,7 +43,7 @@ http.createServer(function (request, response) {
    console.log('request starting for ');
    console.log(request);
 
-   const filePath = '.' + request.url;
+   let filePath = '.' + request.url;
    if (filePath == './') filePath = './page.html';
 
    console.log(filePath);
