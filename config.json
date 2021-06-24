@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
     "token": "ODQ4MjE3OTM4Mjg4OTY3NzEw.YLJagw.BdRe4iX1emlnPxrzmQzCBgpaYJ0",
     "prefix": ".",
+=======
+    "token": "ODQ4MjE3OTM4Mjg4OTY3NzEw.YLJagw.kzBDo2rtDjdpER_y7URolwKXaBs",
+>>>>>>> b81f7b3b66d50d4558ad5f6cb10e4bc375125846
     "mongoPath": "mongodb://localhost:27017"
 }
