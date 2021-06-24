@@ -9,8 +9,7 @@
   "dependencies": {
     "discord-buttons": "^3.2.1",
     "discord.js": "^12.5.3",
-    "flying-squid": "^1.4.0",
-    "mongoose": "^5.12.13"
+    "flying-squid": "^1.4.0"
   },
   "keywords": [],
   "author": "NoNameLmao/emberglaze",

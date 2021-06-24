@@ -1,5 +1,4 @@
 {
     "token": "ODQ4MjE3OTM4Mjg4OTY3NzEw.YLJagw.kzBDo2rtDjdpER_y7URolwKXaBs",
-    "prefix": ".",
-    "mongoPath": "mongodb://localhost:27017"
+    "prefix": "."
 }

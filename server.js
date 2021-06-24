@@ -9,7 +9,6 @@ const client = new Discord.Client({
     },
 });
 const config = require('./config.json');
-const mongo = require('./mongo');
 const disbut = require('discord-buttons')(client);
 const guildID = (`846807940727570433`); // 846807940727570433
 const botchannelID = (`846811100338323497`);
@@ -157,13 +156,6 @@ function sleep(ms) {
 let channel;
 client.on('ready', async() => {
     console.log(`Logged in successfully as ${client.user.tag}!`);
-//     await mongo().then(mongoose => {
-//         try {
-//             console.log('connected to mongo');
-//         } finally {
-//             mongoose.connection.close();
-//         };
-//     });
     process.on('uncaughtException', function (err) {
         console.error(now + ' uncaughtException:', err.stack);
         const errEmbed = {
