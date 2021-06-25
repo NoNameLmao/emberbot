@@ -13,6 +13,7 @@ const disbut = require('discord-buttons')(client);
 const guildID = (`846807940727570433`); // 846807940727570433
 const botchannelID = (`846811100338323497`);
 const DateChannelID = (`848247855789375508`);
+const prefix = config.prefix
 const fs = require('fs');
 const MarkovChain = require('./markovchain');
 const quotes = new MarkovChain(fs.readFileSync('./quotes.txt', 'utf8'));
@@ -247,7 +248,7 @@ client.on('ready', async() => {
         };
         let helpEmbed = {
             "title": "All list of commands",
-            "description": `prefix: ${config.prefix}`,
+            "description": `prefix: ${prefix}`,
             "color": 53380,
             "footer": {
                 "text": "hey maybe its a great thing that the entire bot is in one file lol idc that much"
@@ -312,10 +313,10 @@ client.on('ready', async() => {
         if (liechtenstein.includes(message.content)) {
             message.channel.send('liechtenstein*');
         };
-        const args = message.content.slice(config.prefix.length).trim().split(/ +/g); // arguments after the command
+        const args = message.content.slice(prefix.length).trim().split(/ +/g); // arguments after the command
         const command = args.shift().toLowerCase();
-        if (!message.content.includes(config.prefix || command)) console.log(`Message from ${message.author.tag} in ${message.channel.name} at ${message.createdAt}: ${message.content}`);
-        if (!message.content.startsWith(config.prefix)) return; // if message doesnt start with prefix, ignore it
+        if (!message.content.includes(prefix || command)) console.log(`Message from ${message.author.tag} in ${message.channel.name} at ${message.createdAt}: ${message.content}`);
+        if (!message.content.startsWith(prefix)) return; // if message doesnt start with prefix, ignore it
         function logCommand() {
             console.log(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
         };
@@ -422,12 +423,12 @@ client.on('ready', async() => {
             }
             if (warmode = 'on') {
                 setInterval(() => {
-                    return channel.send(`just a quick reminder that ${config.prefix}warmode is still on. if war is finished PLEASE TURN IT OFF\n thanks`);
+                    return channel.send(`just a quick reminder that ${prefix}warmode is still on. if war is finished PLEASE TURN IT OFF\n thanks`);
                 }, 30000 * 60);
             } else return;
         }
         else if (command === "") return;
-        else return message.channel.send(`sorry, "${config.prefix}${command}" doesnt exist\ncheck "${cconfig.prefix}help"`);
+        else return message.channel.send(`sorry, "${prefix}${command}" doesnt exist\ncheck "${cprefix}help"`);
     });
     let a = 1;
     function updateDateLoop() {
