@@ -140,7 +140,7 @@ const liechtenstein = [
 
 const hiMessage = [
     'https://tenor.com/view/troll-pilled-gif-19289988', // troll
-    'hi im online',
+    'https://cdn.discordapp.com/attachments/512345897577742339/857129762409414716/1624424716634.jpeg',
     'https://cdn.discordapp.com/attachments/603303568317087798/857659695062188084/IMG_20210623_095302.jpg', // wap
     'https://cdn.discordapp.com/attachments/813423631795355680/815953736307572816/image0-85.gif', // ong
     'https://tenor.com/view/i-love-it-gif-18812641', // democracy for the win
