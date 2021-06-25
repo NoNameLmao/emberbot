@@ -153,7 +153,8 @@ const hiMessage = [
     'https://cdn.discordapp.com/attachments/655219751739457547/802619982755528704/image0_5.gif',
     'https://tenor.com/view/get-real-cat-skate-funny-meme-gif-18666878',
     'https://media.discordapp.net/attachments/512345897577742339/856844900564598804/Screenshot_20210620-020741.png?width=534&height=537',
-    'https://cdn.discordapp.com/attachments/512345897577742339/852661473020215376/FB_IMG_16233607158116289.jpg'
+    'https://cdn.discordapp.com/attachments/512345897577742339/852661473020215376/FB_IMG_16233607158116289.jpg',
+    'https://cdn.discordapp.com/attachments/653987873548271616/828690882092990524/unknown.png'
 ];
 let hiMsgInt = getRandomInt(hiMessage.length + 1);
 
