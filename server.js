@@ -423,7 +423,7 @@ client.on('ready', async() => {
         }
         else if (command === "info") {
             hours = nowUTC;
-            return message.channel.send({embed:infoEmbed});
+            return message.channel.send({embed:infoEmbed}).catch(console.error);
         }
         else if (command === "rng") {
             if (isNaN(args[1]) === true) {
