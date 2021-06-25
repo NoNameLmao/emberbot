@@ -465,7 +465,7 @@ client.on('ready', async() => {
             } else return;
         }
         else if (command === "") return;
-        else return message.channel.send(`sorry, "${prefix}${command}" doesnt exist\ncheck "${cprefix}help"`);
+        else return message.channel.send(`sorry, "${prefix}${command}" doesnt exist\ncheck "${prefix}help"`);
     });
     let a = 1;
     function updateDateLoop() {
