@@ -37,6 +37,7 @@ function updateMonth() {
 
 const http = require('http');
 const path = require('path');
+const { constants } = require('buffer');
 
 http.createServer(function (request, response) {
 
@@ -216,7 +217,39 @@ client.on('ready', async() => {
     // .setID('no')
     let stats = fs.statSync('server.js');
     let fileSizeInBytes = stats.size;
-    channel.send(`${hiMessage[hiMsgInt]}\n\`Bot file size: ${fileSizeInBytes} bytes\``);
+    let lastBotSizeFile = 'last_bot_size.txt';
+    fs.access(lastBotSizeFile, constants.F_OK, (err) => {                                                   // check if file exists
+        if (err) {                                                                                              // if got an error
+            console.log('Cannot find last_bot_size.txt, creating one!');                                            // complain
+            fs.appendFileSync(lastBotSizeFile, fileSizeInBytes.toString(), (err) => {                                              // create file
+                if (err) {                                                                                              // if got an error
+                    console.log('I had a problem creating last_bot_size.txt! pls check');                                   // "complain.bat"
+                    throw err;                                                                                              // throw the error to your face
+                } else {                                                                                                // or if no error
+                    console.log('Created last_bot_size.txt!');                                                              // say that file is created
+                };                                                                                                      // (or if no error)
+            });                                                                                                     // (create file)
+        } else {                                                                                                // if no error
+            console.log('Found last_bot_size.txt!');                                                                // i found it!111!
+            fs.readFile(lastBotSizeFile, (err, data) => {                                                           // read it
+                if (err) {                                                                                                  // if error
+                    console.log('I had issue reading last_bot_size.txt! please help');                                          // beg for help
+                    throw err;                                                                                                  // a fuck you right next to the "pls help"
+                } else {                                                                                                    // if no error
+                    console.log(`Last bot size was ${data}, now it is ${fileSizeInBytes}!`);                                    // say what is about to be changed
+                    fs.writeFile(lastBotSizeFile, fileSizeInBytes.toString(), (err) => {                                                   // change it
+                        if (err) {                                                                                                  // if error
+                            console.log('I had trouble writing file size to last_bot_size.js! pls check');                              // complain again
+                            throw err;                                                                                                  // fuck you again
+                        } else {                                                                                                    // if no error
+                            console.log('Writing to last_bot_size.txt successful!');                                                    // mission success
+                            channel.send(`${hiMessage[hiMsgInt]}\n\`Current bot file size: ${fileSizeInBytes} bytes. Before it was ${data} bytes.\`\n\`Difference: ${fileSizeInBytes - data} bytes.\``);
+                        };
+                    });
+                }; // lol
+            });
+        };
+    });
     client.on('message', function(message) {
         let memberCount = message.guild.memberCount;
         let infoEmbed = {
