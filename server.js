@@ -214,8 +214,9 @@ client.on('ready', async() => {
     // .setStyle('red')
     // .setLabel('nah')
     // .setID('no')
-
-    channel.send(`${hiMessage[hiMsgInt]}`);
+    let stats = fs.statSync('server.js');
+    let fileSizeInBytes = stats.size;
+    channel.send(`${hiMessage[hiMsgInt]}\n\`Bot file size: ${fileSizeInBytes} bytes\``);
     client.on('message', function(message) {
         let memberCount = message.guild.memberCount;
         let infoEmbed = {
