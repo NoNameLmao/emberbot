@@ -212,6 +212,9 @@ client.on('ready', async() => {
     };
     let DateChannel = guild.channels.cache.get(DateChannelID);
     DateChannel.join();
+    if (config.debug === true) {
+        channel.send('ran DateChannel.join()');
+    };
 
     // // button time
     // let yesbutton = new disbut.MessageButton()
@@ -226,31 +229,55 @@ client.on('ready', async() => {
     let stats = fs.statSync('server.js');
     let fileSizeInBytes = stats.size;
     let lastBotSizeFile = 'last_bot_size.txt';
-    fs.access(lastBotSizeFile, constants.F_OK, (err) => {                                                   // check if file exists
-        if (err) {                                                                                              // if got an error
-            console.log('Cannot find last_bot_size.txt, creating one!');                                            // complain
-            fs.appendFileSync(lastBotSizeFile, fileSizeInBytes.toString(), (err) => {                                              // create file
-                if (err) {                                                                                              // if got an error
-                    console.log('I had a problem creating last_bot_size.txt! pls check');                                   // "complain.bat"
-                    throw err;                                                                                              // throw the error to your face
-                } else {                                                                                                // or if no error
-                    console.log('Created last_bot_size.txt!');                                                              // say that file is created
-                };                                                                                                      // (or if no error)
-            });                                                                                                     // (create file)
-        } else {                                                                                                // if no error
-            console.log('Found last_bot_size.txt!');                                                                // i found it!111!
-            fs.readFile(lastBotSizeFile, (err, data) => {                                                           // read it
-                if (err) {                                                                                                  // if error
-                    console.log('I had issue reading last_bot_size.txt! please help');                                          // beg for help
-                    throw err;                                                                                                  // a fuck you right next to the "pls help"
-                } else {                                                                                                    // if no error
-                    console.log(`Last bot size was ${data}, now it is ${fileSizeInBytes}!`);                                    // say what is about to be changed
-                    fs.writeFile(lastBotSizeFile, fileSizeInBytes.toString(), (err) => {                                                   // change it
-                        if (err) {                                                                                                  // if error
-                            console.log('I had trouble writing file size to last_bot_size.txt! pls check');                              // complain again
-                            throw err;                                                                                                  // fuck you again
-                        } else {                                                                                                    // if no error
-                            console.log('Writing to last_bot_size.txt successful!');                                                    // mission success
+    fs.access(lastBotSizeFile, constants.F_OK, (err) => {
+        if (err) {
+            console.log('Cannot find last_bot_size.txt, creating one!');
+            if (config.debug === true) {
+                channel.send('Cannot find last_bot_size.txt, creating one!');
+            };
+            fs.appendFileSync(lastBotSizeFile, fileSizeInBytes.toString(), (err) => {
+                if (err) {
+                    console.log('I had a problem creating last_bot_size.txt! pls check');
+                    if (config.debug === true) {
+                        channel.send('I had a problem creating last_bot_size.txt! pls check');
+                    };
+                    throw err;
+                } else {
+                    console.log('Created last_bot_size.txt!');
+                    if (config.debug === true) {
+                        channel.send('Created last_bot_size.txt!');
+                    };
+                };
+            });
+        } else {
+            console.log('Found last_bot_size.txt!');
+            if (config.debug === true) {
+                channel.send('Found last_bot_size.txt!');
+            };
+            fs.readFile(lastBotSizeFile, (err, data) => {
+                if (err) {
+                    console.log('I had issue reading last_bot_size.txt! please help');
+                    if (config.debug === true) {
+                        channel.send('I had issue reading last_bot_size.txt! please help');
+                    };
+                    throw err;
+                } else {
+                    console.log(`Last bot size was ${data}, now it is ${fileSizeInBytes}!`);
+                    if (config.debug === true) {
+                        channel.send(`Last bot size was ${data}, now it is ${fileSizeInBytes}!`);
+                    };
+                    fs.writeFile(lastBotSizeFile, fileSizeInBytes.toString(), (err) => {
+                        if (err) {
+                            console.log('I had trouble writing file size to last_bot_size.txt! pls check');
+                            if (config.debug === true) {
+                                channel.send(`I had trouble writing file size to last_bot_size.txt! pls check`);
+                            };        
+                            throw err;
+                        } else {
+                            console.log('Writing to last_bot_size.txt successful!');
+                            if (config.debug === true) {
+                                channel.send(`Writing to last_bot_size.txt successful!`);
+                            };
                             channel.send(`${hiMessage[hiMsgInt]}\n\`Current bot file size: ${fileSizeInBytes} bytes. Before it was ${data} bytes.\`\n\`Difference: ${fileSizeInBytes - data} bytes.\``);
                             // TODO different messages for different file differences (>, =, <)
                         };
@@ -470,21 +497,60 @@ client.on('ready', async() => {
             logCommand();
             return message.channel.send('deez nuts');
         }
+        else if (command === "debug") {
+            // REVIEW relook at this code some of it doesnt even work lol
+            let state = args.join(" ");
+            if (state === true) {
+                if (config.debug === false) {
+                    message.channel.send('okie dokie');
+                    config.debug = true;
+                    fs.writeFile('./config.json', JSON.stringify(config, null, 4), function writeJSON(err) {
+                        if (err) {
+                            console.log('error');
+                            throw err;
+                        } else {
+                            console.log(JSON.stringify(config));
+                            console.log('writing to config.json');
+                            message.channel.send('writing to config.json');
+                        };
+                    });
+                } else if (config.debug === true) {
+                    return message.channel.send('its already on jeez');
+                };
+            } else if (state === false) {
+                if (config.debug === false) {
+                    return message.channel.send('its already off jeez');
+                } else if (config.debug === true) {
+                    config.debug = false;
+                    message.channel.send('okie dokie');
+                    fs.writeFile('./config.json', JSON.stringify(config, null, 4), function writeJSON(err) {
+                        if (err) {
+                            console.log('error');
+                            throw err;
+                        } else {
+                            console.log(JSON.stringify(config));
+                            console.log('writing to config.json');
+                            message.channel.send('writing to config.json');
+                        };
+                    });
+                };
+            };
+        }
         else if (command === "warmode") {
             let mode = args.join(" ");
             let warmode = 'off';
-            if (mode = 'on') {
+            if (mode === 'on') {
                 logCommand();
                 message.channel.send(`${pingNNL} dude there is a war going on rn dont turn me off i beg u ppl need rng bro!!!!!!`);
                 return warmode = 'on';
-            } else if (mode = 'off') {
+            } else if (mode === 'off') {
                 logCommand();
                 message.channel.send(`${pingNNL} war over now you can do whatever with the code in peace`);
                 return warmode = 'off';
             } else {
                 message.channel.send(`what the fuck bro`);
             }
-            if (warmode = 'on') {
+            if (warmode === 'on') {
                 setInterval(() => {
                     return channel.send(`just a quick reminder that ${prefix}warmode is still on. if war is finished PLEASE TURN IT OFF\n thanks`);
                 }, 30000 * 60);
