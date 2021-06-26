@@ -8,11 +8,6 @@ const client = new Discord.Client({
         },
     },
 });
-const intents = new Intents([
-    intents.NON_PRIVILEGED,
-    "GUILD_MEMBERS",
-    "GUILD_PRESENCES"
-]);
 const config = require('./config.json');
 const disbut = require('discord-buttons')(client);
 const guildID = (`846807940727570433`); // 846807940727570433
@@ -154,7 +149,7 @@ const hiMessage = [
     'https://cdn.discordapp.com/attachments/603303568317087798/857659695062188084/IMG_20210623_095302.jpg', // wap
     'https://cdn.discordapp.com/attachments/813423631795355680/815953736307572816/image0-85.gif', // ong
     'https://tenor.com/view/i-love-it-gif-18812641', // democracy for the win
-    'https://canary.discord.com/channels/752218282253353031/777486219910840331/857711152985014293', // did not ask
+    'https://tenor.com/view/i-did-not-ask-i-didnt-ask-i-didnt-asked-asked-smh-gif-17286176', // did not ask
     'https://media.discordapp.net/attachments/399408989684891651/808734416737796156/image0.gif',
     'https://media.discordapp.net/attachments/664305979050950657/816984557852950539/freeze.gif',
     'https://cdn.discordapp.com/attachments/510632855601152013/774693195614257212/image0.gif',
@@ -267,7 +262,7 @@ client.on('ready', async() => {
         let memberCount = message.guild.memberCount;
         let userCount = guild.members.cache.filter(member => !member.user.bot).size;
         let botCount = memberCount - userCount;
-        let onlineMembers = (await guild.members.fetch()).filter((member) => !member.user.bot && member.user.presence.status !== 'offline');
+        let onlineUsers = guild.members.cache.filter(member => member.presence.status !== 'offline' && !member.user.bot).size;
         // TODO add more to .info?
         let infoEmbed = {
             "plainText": "some info on the bot",
@@ -299,7 +294,7 @@ client.on('ready', async() => {
             },
             {
               "name": "Server member count",
-              "value": `${userCount} users + ${botCount} bots = ${memberCount} members overall. Online members: ${onlineMembers}`,
+              "value": `${userCount} users + ${botCount} bots = ${memberCount} members overall. Online users: ${onlineUsers}`,
               "inline": false
             }
           ]
