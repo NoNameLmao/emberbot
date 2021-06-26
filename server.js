@@ -82,6 +82,7 @@ http.createServer(function (request, response) {
 
 console.log('Server running at http://127.0.0.1:5000/');
 
+// ANCHOR rng functions
 function getRandomArbitrary(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 };
@@ -90,6 +91,7 @@ function getRandomInt(max) {
 };
 
 const TechnobladeQuote = [
+    // ANCHOR TechnobladeQuote
     'NOT EVEN CLOSE BABY TECHNOBLADE NEVER DIES',
     'technoblade never dies',
     'dude these orphans are getting destroyed',
@@ -130,6 +132,7 @@ const TechnobladeQuote = [
 let quoteInt = getRandomInt(TechnobladeQuote.length + 1); // +1 bc not inclusive!!!!!!!!!!!!!!!!!!!!!!!
 
 const liechtenstein = [
+    // ANCHOR liechtenstein
     'lichestien',
     'lichistint',
     'lichtenstein',
@@ -140,6 +143,7 @@ const liechtenstein = [
 ];
 
 const hiMessage = [
+    // ANCHOR hiMessage
     'https://tenor.com/view/troll-pilled-gif-19289988', // troll
     'https://cdn.discordapp.com/attachments/512345897577742339/857129762409414716/1624424716634.jpeg',
     'https://cdn.discordapp.com/attachments/603303568317087798/857659695062188084/IMG_20210623_095302.jpg', // wap
@@ -217,6 +221,7 @@ client.on('ready', async() => {
     // .setStyle('red')
     // .setLabel('nah')
     // .setID('no')
+
     let stats = fs.statSync('server.js');
     let fileSizeInBytes = stats.size;
     let lastBotSizeFile = 'last_bot_size.txt';
@@ -241,11 +246,12 @@ client.on('ready', async() => {
                     console.log(`Last bot size was ${data}, now it is ${fileSizeInBytes}!`);                                    // say what is about to be changed
                     fs.writeFile(lastBotSizeFile, fileSizeInBytes.toString(), (err) => {                                                   // change it
                         if (err) {                                                                                                  // if error
-                            console.log('I had trouble writing file size to last_bot_size.js! pls check');                              // complain again
+                            console.log('I had trouble writing file size to last_bot_size.txt! pls check');                              // complain again
                             throw err;                                                                                                  // fuck you again
                         } else {                                                                                                    // if no error
                             console.log('Writing to last_bot_size.txt successful!');                                                    // mission success
                             channel.send(`${hiMessage[hiMsgInt]}\n\`Current bot file size: ${fileSizeInBytes} bytes. Before it was ${data} bytes.\`\n\`Difference: ${fileSizeInBytes - data} bytes.\``);
+                            // TODO different messages for different file differences (>, =, <)
                         };
                     });
                 }; // lol
@@ -254,6 +260,10 @@ client.on('ready', async() => {
     });
     client.on('message', function(message) {
         let memberCount = message.guild.memberCount;
+        let userCount = guild.members.cache.filter(member => !member.user.bot).size;
+        let botCount = memberCount - userCount
+        let onlineCount = guild.members.cache.filter(member => member.presence.status !== "offline");
+        // TODO add more to .info?
         let infoEmbed = {
             "plainText": "some info on the bot",
           "title": "when /europesim is sus",
@@ -278,9 +288,14 @@ client.on('ready', async() => {
               "inline": true
             },
             {
+                "name": "Bot file size",
+                "value": `${fileSizeInBytes} bytes`,
+                "inline": true
+            },
+            {
               "name": "Server member count",
-              "value": `${memberCount}`,
-              "inline": true
+              "value": `${userCount} users + ${botCount} bots = ${memberCount} members overall. Online members: ${onlineCount}`,
+              "inline": false
             }
           ]
         };
@@ -348,6 +363,14 @@ client.on('ready', async() => {
         if (message.content.includes(`hi online`)) {
             message.channel.send(`wrong. i am ${client.user.tag}. also hi ${message.author.tag}`);
         };
+        // REVIEW nice
+        if (message.content.includes('69')) {
+            if (message.author.tag === '/europesim bot#1478') {
+                if (message.editable === true) {
+                    return message.edit(`${message.content} \*nice\*`);
+                } else return message.channel.send('\*nice\*');
+            };
+        };
         if (liechtenstein.includes(message.content)) {
             message.channel.send('liechtenstein*');
         };
@@ -358,6 +381,7 @@ client.on('ready', async() => {
         function logCommand() {
             console.log(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
         };
+        // TODO slash commands?
         if (command === `hi`) {
             logCommand();
             channel.send(`hi im online what do u want (main branch)`);
@@ -380,14 +404,14 @@ client.on('ready', async() => {
             } else return message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
         }
         else if (command === "exit") {
-            if (message.author.id === `341123308844220447`) {
+            if (message.author.id === `341123308844220447` || message.member.roles.find(r => r.name === 'Admin')) {
                 console.log(`recieved exit command from ${message.author.tag} @ ${now.toString()}. goodbye`);
                 message.channel.send(`:sob:`).then(() => process.exit(1));
             }
             else {
                 console.log(`recieved exit command from ${message.author.tag} @ ${now.toString()} lol permission denied have a technoblade quote instead nerd`);
                 let quoteInt = getRandomInt(37);
-                message.channel.send(TechnobladeQuote[quoteInt]);    
+                message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);    
             } return;
         }
         else if (command === "sudo") {
