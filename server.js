@@ -159,7 +159,8 @@ const hiMessage = [
     'https://media.discordapp.net/attachments/512345897577742339/856844900564598804/Screenshot_20210620-020741.png?width=534&height=537',
     'https://cdn.discordapp.com/attachments/512345897577742339/852661473020215376/FB_IMG_16233607158116289.jpg',
     'https://cdn.discordapp.com/attachments/653987873548271616/828690882092990524/unknown.png',
-    'https://cdn.discordapp.com/attachments/603303568317087798/858130347581767700/image0-2.png'
+    'https://cdn.discordapp.com/attachments/603303568317087798/858130347581767700/image0-2.png',
+    'https://media.discordapp.net/attachments/598579533813252113/857916661193113620/image0-2-2.gif'
 ];
 let hiMsgInt = getRandomInt(hiMessage.length + 1);
 
