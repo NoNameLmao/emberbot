@@ -8,6 +8,11 @@ const client = new Discord.Client({
         },
     },
 });
+const intents = new Intents([
+    intents.NON_PRIVILEGED,
+    "GUILD_MEMBERS",
+    "GUILD_PRESENCES"
+]);
 const config = require('./config.json');
 const disbut = require('discord-buttons')(client);
 const guildID = (`846807940727570433`); // 846807940727570433
@@ -261,8 +266,8 @@ client.on('ready', async() => {
     client.on('message', function(message) {
         let memberCount = message.guild.memberCount;
         let userCount = guild.members.cache.filter(member => !member.user.bot).size;
-        let botCount = memberCount - userCount
-        let onlineCount = guild.members.cache.filter(member => member.presence.status !== "offline");
+        let botCount = memberCount - userCount;
+        let onlineMembers = (await guild.members.fetch()).filter((member) => !member.user.bot && member.user.presence.status !== 'offline');
         // TODO add more to .info?
         let infoEmbed = {
             "plainText": "some info on the bot",
@@ -294,7 +299,7 @@ client.on('ready', async() => {
             },
             {
               "name": "Server member count",
-              "value": `${userCount} users + ${botCount} bots = ${memberCount} members overall. Online members: ${onlineCount}`,
+              "value": `${userCount} users + ${botCount} bots = ${memberCount} members overall. Online members: ${onlineMembers}`,
               "inline": false
             }
           ]
