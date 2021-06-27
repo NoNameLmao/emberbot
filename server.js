@@ -139,7 +139,8 @@ const liechtenstein = [
     'liehctenstein',
     'liechtenstien',
     'lechteinstei',
-    'lechtenstei'
+    'lechtenstei',
+    'iechtenstein'
 ];
 
 const hiMessage = [
@@ -164,12 +165,41 @@ const hiMessage = [
 ];
 let hiMsgInt = getRandomInt(hiMessage.length + 1);
 
+function jsonRead(filePath) {
+    return new Promise((resolve, reject) => {
+        fs.readFile(filePath, 'utf8', (err, content) => {
+            if (err) {
+                reject(err);
+            } else try {
+                resolve(JSON.parse(content));
+            } catch (err) {
+                reject(err);
+            };
+        });
+    });
+};
+function jsonWrite(filePath, data) {
+    return new Promise((resolve, reject) => {
+        fs.writeFile(filePath, JSON.stringify(data), (err) => {
+            if (err) {
+                reject(err);
+            };
+            resolve(true);
+        });
+    });
+};
+function getDebugState() {
+    if (config.debug === true) return true
+    else if (config.debug === false) return false
+};
+
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 };
 let channel;
 client.on('ready', async() => {
     console.log(`Logged in successfully as ${client.user.tag}!`);
+    const filePath = path.resolve(__dirname, './config.json');
     process.on('uncaughtException', function (err) {
         console.error(now + ' uncaughtException:', err.stack);
         const errEmbed = {
@@ -286,6 +316,9 @@ client.on('ready', async() => {
             });
         };
     });
+    client.on('error', error => {
+        console.log(error);
+    });
     client.on('message', function(message) {
         let memberCount = message.guild.memberCount;
         let userCount = guild.members.cache.filter(member => !member.user.bot).size;
@@ -396,8 +429,8 @@ client.on('ready', async() => {
             if (message.author.tag === '/europesim bot#1478') {
                 if (message.editable === true) {
                     return message.edit(`${message.content} \*nice\*`);
-                } else return message.channel.send('\*nice\*');
-            };
+                };
+            } else return message.channel.send('\*nice\*');
         };
         if (liechtenstein.includes(message.content)) {
             message.channel.send('liechtenstein*');
@@ -408,6 +441,9 @@ client.on('ready', async() => {
         if (!message.content.startsWith(prefix)) return; // if message doesnt start with prefix, ignore it
         function logCommand() {
             console.log(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
+            if (config.debug === 'true') {
+                message.channel.send(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
+            };
         };
         // TODO slash commands?
         if (command === `hi`) {
@@ -432,15 +468,20 @@ client.on('ready', async() => {
             } else return message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
         }
         else if (command === "exit") {
-            if (message.author.id === `341123308844220447` || message.member.roles.find(r => r.name === 'Admin')) {
-                console.log(`recieved exit command from ${message.author.tag} @ ${now.toString()}. goodbye`);
-                message.channel.send(`:sob:`).then(() => process.exit(1));
-            }
-            else {
-                console.log(`recieved exit command from ${message.author.tag} @ ${now.toString()} lol permission denied have a technoblade quote instead nerd`);
-                let quoteInt = getRandomInt(37);
-                message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);    
-            } return;
+            try {
+                if (message.author.id === `341123308844220447` || message.member.roles.find(r => r.name === 'Admin')) {
+                    console.log(`recieved exit command from ${message.author.tag} @ ${now.toString()}. goodbye`);
+                    message.channel.send(`:sob:`).then(() => process.exit(1));
+                } else {
+                    console.log(`recieved exit command from ${message.author.tag} @ ${now.toString()} lol permission denied have a technoblade quote instead nerd`);
+                    let quoteInt = getRandomInt(37);
+                    message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);    
+                } return;    
+            } catch(error) {
+                message.channel.send(`I got an error executing the command!`);
+                message.channel.send(error);
+                return;
+            };
         }
         else if (command === "sudo") {
             logCommand();
@@ -498,41 +539,30 @@ client.on('ready', async() => {
             return message.channel.send('deez nuts');
         }
         else if (command === "debug") {
-            // REVIEW relook at this code some of it doesnt even work lol
-            let state = args.join(" ");
-            if (state === true) {
+            logCommand();
+            if (args[0] === 'true') {
                 if (config.debug === false) {
                     message.channel.send('okie dokie');
                     config.debug = true;
-                    fs.writeFile('./config.json', JSON.stringify(config, null, 4), function writeJSON(err) {
-                        if (err) {
-                            console.log('error');
-                            throw err;
-                        } else {
-                            console.log(JSON.stringify(config));
-                            console.log('writing to config.json');
-                            message.channel.send('writing to config.json');
-                        };
-                    });
+                    jsonWrite(filePath, config);
+                    return message.channel.send('Success!');
                 } else if (config.debug === true) {
-                    return message.channel.send('its already on jeez');
+                    return message.channel.send('It is already on lol');
                 };
-            } else if (state === false) {
+            } else if (args[0] === 'false') {
                 if (config.debug === false) {
-                    return message.channel.send('its already off jeez');
+                    return message.channel.send('It is already off lol dont panic');
                 } else if (config.debug === true) {
                     config.debug = false;
                     message.channel.send('okie dokie');
-                    fs.writeFile('./config.json', JSON.stringify(config, null, 4), function writeJSON(err) {
-                        if (err) {
-                            console.log('error');
-                            throw err;
-                        } else {
-                            console.log(JSON.stringify(config));
-                            console.log('writing to config.json');
-                            message.channel.send('writing to config.json');
-                        };
-                    });
+                    jsonWrite(filePath, config);
+                    return message.channel.send('Success!');
+                };
+            } else if (args[0] === "") {
+                if (config.debug === true) {
+                    message.channel.send('Debug mode is currently on.');
+                } else if (config.debug === false) {
+                    message.channel.send('Debug mode is currently off.');
                 };
             };
         }
