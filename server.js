@@ -606,7 +606,7 @@ client.on('ready', async() => {
 let europesimStartDate = Date.parse('May 25 2021 00:00:00 GMT');
 let currentDate = Date.now();
 let differenceInDays = (currentDate - europesimStartDate) / (1000 * 3600 * 24);
-europesimCurrentYear = Math.floor(europesimStartYear + differenceInDays);
+europesimCurrentYear = (Math.floor(europesimStartYear + differenceInDays)) - 2; // two year setback bc frozensmp took all activity everyone forgot about esim lol
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 europesimCurrentMonth = months[Math.floor(nowUTC / 2)];
 
