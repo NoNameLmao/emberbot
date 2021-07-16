@@ -254,7 +254,6 @@ client.on('ready', async() => {
     // .setStyle('red')
     // .setLabel('nah')
     // .setID('no')
-    });
     client.on('error', error => {
         console.log(error);
     });
