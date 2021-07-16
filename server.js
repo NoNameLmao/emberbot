@@ -287,11 +287,6 @@ client.on('ready', async() => {
               "inline": true
             },
             {
-                "name": "Bot file size",
-                "value": `${fileSizeInBytes} bytes`,
-                "inline": true
-            },
-            {
               "name": "Server member count",
               "value": `${userCount} users + ${botCount} bots = ${memberCount} members overall. Online users: ${onlineUsers}`,
               "inline": false
