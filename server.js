@@ -25,13 +25,12 @@ let europesimCurrentYear;
 let europesimCurrentMonth;
 
 function updateYear() {
-    let europesimStartDate = Date.parse('May 25 2021 00:00:00 GMT');
-    let currentDate = Date.now();
-    let differenceInDays = (currentDate - europesimStartDate) / (1000 * 3600 * 24);
-    europesimCurrentYear = (Math.floor(europesimStartYear + differenceInDays)) - 2;
+    europesimStartDate = Date.parse('May 25 2021 00:00:00 GMT');
+    currentDate = Date.now();
+    differenceInDays = (currentDate - europesimStartDate) / (1000 * 3600 * 24);
+    europesimCurrentYear = (Math.floor(europesimStartYear + differenceInDays)) - 2 - 18;
 };
 function updateMonth() {
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     europesimCurrentMonth = months[Math.floor(nowUTC / 2)];
 };
 
@@ -49,7 +48,7 @@ http.createServer(function (request, response) {
 
    console.log(filePath);
    const extname = path.extname(filePath);
-   const contentType = 'text/html';
+   let contentType = 'text/html';
    switch (extname) {
        case '.js':
            contentType = 'text/javascript';
@@ -255,66 +254,6 @@ client.on('ready', async() => {
     // .setStyle('red')
     // .setLabel('nah')
     // .setID('no')
-
-    let stats = fs.statSync('server.js');
-    let fileSizeInBytes = stats.size;
-    let lastBotSizeFile = 'last_bot_size.txt';
-    fs.access(lastBotSizeFile, constants.F_OK, (err) => {
-        if (err) {
-            console.log('Cannot find last_bot_size.txt, creating one!');
-            if (config.debug === true) {
-                channel.send('Cannot find last_bot_size.txt, creating one!');
-            };
-            fs.appendFileSync(lastBotSizeFile, fileSizeInBytes.toString(), (err) => {
-                if (err) {
-                    console.log('I had a problem creating last_bot_size.txt! pls check');
-                    if (config.debug === true) {
-                        channel.send('I had a problem creating last_bot_size.txt! pls check');
-                    };
-                    throw err;
-                } else {
-                    console.log('Created last_bot_size.txt!');
-                    if (config.debug === true) {
-                        channel.send('Created last_bot_size.txt!');
-                    };
-                };
-            });
-        } else {
-            console.log('Found last_bot_size.txt!');
-            if (config.debug === true) {
-                channel.send('Found last_bot_size.txt!');
-            };
-            fs.readFile(lastBotSizeFile, (err, data) => {
-                if (err) {
-                    console.log('I had issue reading last_bot_size.txt! please help');
-                    if (config.debug === true) {
-                        channel.send('I had issue reading last_bot_size.txt! please help');
-                    };
-                    throw err;
-                } else {
-                    console.log(`Last bot size was ${data}, now it is ${fileSizeInBytes}!`);
-                    if (config.debug === true) {
-                        channel.send(`Last bot size was ${data}, now it is ${fileSizeInBytes}!`);
-                    };
-                    fs.writeFile(lastBotSizeFile, fileSizeInBytes.toString(), (err) => {
-                        if (err) {
-                            console.log('I had trouble writing file size to last_bot_size.txt! pls check');
-                            if (config.debug === true) {
-                                channel.send(`I had trouble writing file size to last_bot_size.txt! pls check`);
-                            };        
-                            throw err;
-                        } else {
-                            console.log('Writing to last_bot_size.txt successful!');
-                            if (config.debug === true) {
-                                channel.send(`Writing to last_bot_size.txt successful!`);
-                            };
-                            channel.send(`${hiMessage[hiMsgInt]}\n\`Current bot file size: ${fileSizeInBytes} bytes. Before it was ${data} bytes.\`\n\`Difference: ${fileSizeInBytes - data} bytes.\``);
-                            // TODO different messages for different file differences (>, =, <)
-                        };
-                    });
-                }; // lol
-            });
-        };
     });
     client.on('error', error => {
         console.log(error);
@@ -474,7 +413,7 @@ client.on('ready', async() => {
                     message.channel.send(`:sob:`).then(() => process.exit(1));
                 } else {
                     console.log(`recieved exit command from ${message.author.tag} @ ${now.toString()} lol permission denied have a technoblade quote instead nerd`);
-                    let quoteInt = getRandomInt(37);
+                    quoteInt = getRandomInt(37);
                     message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);    
                 } return;    
             } catch(error) {
@@ -516,7 +455,6 @@ client.on('ready', async() => {
             return message.channel.send(`Your suggestion has been sent! thanks`);
         }
         else if (command === "info") {
-            hours = nowUTC;
             return message.channel.send({embed:infoEmbed}).catch(console.error);
         }
         else if (command === "rng") {
@@ -606,7 +544,7 @@ client.on('ready', async() => {
 let europesimStartDate = Date.parse('May 25 2021 00:00:00 GMT');
 let currentDate = Date.now();
 let differenceInDays = (currentDate - europesimStartDate) / (1000 * 3600 * 24);
-europesimCurrentYear = (Math.floor(europesimStartYear + differenceInDays)) - 2; // two year setback bc frozensmp took all activity everyone forgot about esim lol
+europesimCurrentYear = (Math.floor(europesimStartYear + differenceInDays)) - 2 - 18; // 20 year setback bc of inactivity
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 europesimCurrentMonth = months[Math.floor(nowUTC / 2)];
 
