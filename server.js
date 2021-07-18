@@ -367,7 +367,7 @@ client.on('ready', async() => {
             channel.send(`hi im online what do u want (main branch)`);
         }
         else if (command === `eval`) {
-            if (message.author.id === `341123308844220447` || message.author.id === `707359017252683896` || message.author.id === `638422704550313984` || message.author.id === `638422704550313984`) {
+            if (message.member.roles.find(r => r.name === "Admin") || message.author.id === '341123308844220447') {
                 let code = args.join(' ');
                 try {
                     let result = eval(code);
