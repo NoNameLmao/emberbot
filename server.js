@@ -340,17 +340,16 @@ client.on('ready', async() => {
             let yes = client.emojis.cache.get('866325679830073394');
             message.channel.send(`${yes}`);
         };
-        // REVIEW nice
-        function checkForNice() {
-            message.content.replace(/<[@#:].*?>/g, "");
-            if (message.content.includes('69')) {
-                if (message.author.tag === '/europesim bot#1478') {
-                    if (message.editable === true) {
-                        return message.edit(`${message.content} \*(nice)\*`);
-                    };
-                } else return message.channel.send('\*nice\*');
-            };
+
+        message.content.replace(/<[@#:].*?>/g, "");
+        if (message.content.includes('69')) {
+            if (message.author.tag === '/europesim bot#1478') {
+                if (message.editable === true) {
+                    return message.edit(`${message.content} \*(nice)\*`);
+                };
+            } else return message.channel.send('\*nice\*');
         };
+        
         if (liechtenstein.includes(message.content)) {
             message.channel.send('liechtenstein*');
         };
