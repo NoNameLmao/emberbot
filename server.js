@@ -223,15 +223,16 @@ client.on('ready', async() => {
         channel.send('ran DateChannel.join()');
     };
 
-    // // button time
-    // let yesbutton = new disbut.MessageButton()
-    // .setStyle('green')
-    // .setLabel('yea')
-    // .setID('yes')
-    // let nobutton = new disbut.MessageButton()
-    // .setStyle('red')
-    // .setLabel('nah')
-    // .setID('no')
+    // button time
+    let yesbutton = new disbut.MessageButton()
+    .setStyle('green')
+    .setLabel('yea')
+    .setID('yes')
+    let nobutton = new disbut.MessageButton()
+    .setStyle('red')
+    .setLabel('nah')
+    .setID('no')
+    
     client.on('error', error => {
         console.log(error);
     });
