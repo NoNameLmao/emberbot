@@ -142,28 +142,6 @@ const liechtenstein = [
     'iechtenstein'
 ];
 
-const hiMessage = [
-    // ANCHOR hiMessage
-    'https://tenor.com/view/troll-pilled-gif-19289988', // troll
-    'https://cdn.discordapp.com/attachments/512345897577742339/857129762409414716/1624424716634.jpeg',
-    'https://cdn.discordapp.com/attachments/603303568317087798/857659695062188084/IMG_20210623_095302.jpg', // wap
-    'https://cdn.discordapp.com/attachments/813423631795355680/815953736307572816/image0-85.gif', // ong
-    'https://tenor.com/view/i-love-it-gif-18812641', // democracy for the win
-    'https://tenor.com/view/i-did-not-ask-i-didnt-ask-i-didnt-asked-asked-smh-gif-17286176', // did not ask
-    'https://media.discordapp.net/attachments/399408989684891651/808734416737796156/image0.gif',
-    'https://media.discordapp.net/attachments/664305979050950657/816984557852950539/freeze.gif',
-    'https://cdn.discordapp.com/attachments/510632855601152013/774693195614257212/image0.gif',
-    'https://media.discordapp.net/attachments/801529722513129543/801564698763067402/caption-2.gif',
-    'https://cdn.discordapp.com/attachments/655219751739457547/802619982755528704/image0_5.gif',
-    'https://tenor.com/view/get-real-cat-skate-funny-meme-gif-18666878',
-    'https://media.discordapp.net/attachments/512345897577742339/856844900564598804/Screenshot_20210620-020741.png?width=534&height=537',
-    'https://cdn.discordapp.com/attachments/512345897577742339/852661473020215376/FB_IMG_16233607158116289.jpg',
-    'https://cdn.discordapp.com/attachments/653987873548271616/828690882092990524/unknown.png',
-    'https://cdn.discordapp.com/attachments/603303568317087798/858130347581767700/image0-2.png',
-    'https://media.discordapp.net/attachments/598579533813252113/857916661193113620/image0-2-2.gif'
-];
-let hiMsgInt = getRandomInt(hiMessage.length + 1);
-
 function jsonRead(filePath) {
     return new Promise((resolve, reject) => {
         fs.readFile(filePath, 'utf8', (err, content) => {
