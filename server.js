@@ -357,6 +357,9 @@ client.on('ready', async() => {
         if (message.content.includes(`hi online`)) {
             message.channel.send(`wrong. i am ${client.user.tag}. also hi ${message.author.tag}`);
         };
+        if (message.content.includes(`https://cdn.discordapp.com/attachments/245001780138606593/866145759917637662/image0-2-3.gif`)) {
+            message.channel.send(`<:yes:866325679830073394>`);
+        };
         // REVIEW nice
         if (message.content.includes('69')) {
             if (message.author.tag === '/europesim bot#1478') {
