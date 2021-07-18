@@ -128,7 +128,7 @@ const TechnobladeQuote = [
     'am i wearing pants right now? you just have to take my word for it',
     'cant run away from your problems when they have ender pearls'
 ];
-let quoteInt = getRandomInt(TechnobladeQuote.length + 1); // +1 bc not inclusive!!!!!!!!!!!!!!!!!!!!!!!
+let quoteInt = getRandomInt(TechnobladeQuote.length + 1); // +1 bc not inclusive
 
 const liechtenstein = [
     // ANCHOR liechtenstein
@@ -232,7 +232,7 @@ client.on('ready', async() => {
     .setStyle('red')
     .setLabel('nah')
     .setID('no')
-    
+
     client.on('error', error => {
         console.log(error);
     });
