@@ -10,7 +10,7 @@ const client = new Discord.Client({
 });
 const config = require('./config.json');
 const disbut = require('discord-buttons')(client);
-const guildID = (`846807940727570433`); // 846807940727570433
+const guildID = (`846807940727570433`);
 const botchannelID = (`846811100338323497`);
 const DateChannelID = (`848247855789375508`);
 const prefix = config.prefix
@@ -525,4 +525,4 @@ europesimCurrentYear = (Math.floor(europesimStartYear + differenceInDays)) - 2 -
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 europesimCurrentMonth = months[Math.floor(nowUTC / 2)];
 
-client.login(config.token);
+client.login(process.env.DJS_TOKEN);
