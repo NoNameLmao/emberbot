@@ -343,7 +343,6 @@ client.on('ready', async() => {
         };
         
         if (liechtenstein.includes(message.content)) message.channel.send('liechtenstein*');
-        if (message.content.toLowerCase().includes("imposter")) message.channel.send('impostor*');
 
         const args = message.content.slice(prefix.length).trim().split(/ +/g);
         const command = args.shift().toLowerCase();
