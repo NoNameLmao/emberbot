@@ -59,29 +59,26 @@ http.createServer(function (request, response) {
     };
    fs.access(filePath, function(exists) {
 
-       if (exists) {
+        if (exists) {
            fs.readFile(filePath, function(error, content) {
-               if (error) {
-                   response.writeHead(500);
-                   response.end();
-               }
-               else {
-                   response.writeHead(200, { 'Content-Type': contentType });
-                   response.end(content, 'utf-8');
-               }
+                if (error) {
+                    response.writeHead(500);
+                    response.end();
+                } else {
+                    response.writeHead(200, { 'Content-Type': contentType });
+                    response.end(content, 'utf-8');
+                };
            });
-       }
-       else {
-           response.writeHead(404);
-           response.end();
-       }
+        } else {
+            response.writeHead(404);
+            response.end();
+        };
    });
 
 }).listen(process.env.PORT || 5000);
 
 console.log('Server running at http://127.0.0.1:5000/');
 
-// ANCHOR rng functions
 function getRandomArbitrary(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 };
@@ -90,7 +87,6 @@ function getRandomInt(max) {
 };
 
 const TechnobladeQuote = [
-    // ANCHOR TechnobladeQuote
     'NOT EVEN CLOSE BABY TECHNOBLADE NEVER DIES',
     'technoblade never dies',
     'dude these orphans are getting destroyed',
@@ -131,7 +127,6 @@ const TechnobladeQuote = [
 let quoteInt = getRandomInt(TechnobladeQuote.length + 1); // +1 bc not inclusive
 
 const liechtenstein = [
-    // ANCHOR liechtenstein
     'lichestien',
     'lichistint',
     'lichtenstein',
@@ -241,7 +236,6 @@ client.on('ready', async() => {
         let userCount = guild.members.cache.filter(member => !member.user.bot).size;
         let botCount = memberCount - userCount;
         let onlineUsers = guild.members.cache.filter(member => member.presence.status !== 'offline' && !member.user.bot).size;
-        // TODO add more to .info?
         let infoEmbed = {
             "plainText": "some info on the bot",
           "title": "when /europesim is sus",
@@ -344,24 +338,19 @@ client.on('ready', async() => {
         message.content.replace(/<[@#:].*?>/g, "");
         if (message.content.includes('69')) {
             if (message.author.tag === '/europesim bot#1478') {
-                if (message.editable === true) {
-                    return message.edit(`${message.content} \*(nice)\*`);
-                };
+                if (message.editable === true) return message.edit(`${message.content} \*(nice)\*`);
             } else return message.channel.send('\*nice\*');
         };
         
-        if (liechtenstein.includes(message.content)) {
-            message.channel.send('liechtenstein*');
-        };
-        const args = message.content.slice(prefix.length).trim().split(/ +/g); // arguments after the command
+        if (liechtenstein.includes(message.content)) message.channel.send('liechtenstein*');
+
+        const args = message.content.slice(prefix.length).trim().split(/ +/g);
         const command = args.shift().toLowerCase();
         if (!message.content.includes(prefix || command)) console.log(`Message from ${message.author.tag} in ${message.channel.name} at ${message.createdAt}: ${message.content}`);
-        if (!message.content.startsWith(prefix)) return; // if message doesnt start with prefix, ignore it
+        if (!message.content.startsWith(prefix)) return;
         function logCommand() {
             console.log(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
-            if (config.debug === 'true') {
-                message.channel.send(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
-            };
+            if (config.debug === 'true') message.channel.send(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
         };
         if (command === `hi`) {
             logCommand();
@@ -428,9 +417,8 @@ client.on('ready', async() => {
         } else if (command === "info") {
             return message.channel.send({embed:infoEmbed}).catch(console.error);
         } else if (command === "rng") {
-            if (isNaN(args[1]) === true) {
-                return message.channel.send(`random integer generator: \`${getRandomInt(args[0])}\`\nthis generator is inclusive at 0 but not at ${args[0] - 1} PLEASE keep that in mind\ntldr gives only 0 to ${args[0] - 1}`);
-            } else if (isNaN(args[1]) === false) {
+            if (isNaN(args[1]) === true) return message.channel.send(`random integer generator: \`${getRandomInt(args[0])}\`\nthis generator is inclusive at 0 but not at ${args[0] - 1} PLEASE keep that in mind\ntldr gives only 0 to ${args[0] - 1}`);
+            else if (isNaN(args[1]) === false) {
                 const min = args[0];
                 const max = args[1];
                 return message.channel.send(`random arbitrary generator: \`${getRandomArbitrary(min, max)}\`\nthis generator is inclusive at both ${min} and ${max}\nbasically gives values between ${min} and ${max} including them`);
