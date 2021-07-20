@@ -366,14 +366,12 @@ client.on('ready', async() => {
             logCommand();
             channel.send(`hi im online what do u want (main branch)`);
         } else if (command === `eval`) {
-            if (message.member.roles.find(r => r.name === "Admin") || message.author.id === '341123308844220447') {
+            if (message.member.roles.cache.some(r => r.name === "Admin") || message.author.id === '341123308844220447') {
                 let code = args.join(' ');
                 try {
                     let result = eval(code);
                     let output = result;
-                    if (typeof output !== 'string') {
-                        output = require('util').inspect(result);
-                    };
+                    if (typeof output !== 'string') output = require('util').inspect(result);
                     message.channel.send(output, {code: 'js'});
                     console.log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${output, {code: 'js'}}`);
                 } catch (error) {
