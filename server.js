@@ -347,9 +347,17 @@ client.on('ready', async() => {
 
         message.content.replace(/<[@#:].*?>/g, "");
         if (message.content.includes('69')) {
-            if (message.author.tag === '/europesim bot#1478') {
-                if (message.editable === true) return message.edit(`${message.content} \*(nice)\*`);
-            } else return message.channel.send('\*nice\*');
+            if (message.channel.id === '859719390927519744') {
+                return console.log('detected funny number but its in frozensmp console NOOOOOO');
+            } else if (message.author.tag === '/europesim bot#1478') {
+                if (message.editable === true) {
+                    message.edit(`${message.content} \*(nice)\*`);
+                    return console.log('detected funny number in my msg laf at my own 69');
+                };
+            } else {
+                message.channel.send('\*nice\*');
+                return console.log('detected the funny number, laf');
+            };
         };
         
         if (liechtenstein.includes(message.content)) message.channel.send('liechtenstein*');
