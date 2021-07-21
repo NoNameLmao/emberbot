@@ -282,12 +282,12 @@ client.on('ready', async() => {
             "description": `prefix: ${prefix}`,
             "color": 53380,
             "footer": {
-                "text": "hey maybe its a great thing that the entire bot is in one file lol idc that much"
+                "text": "Some text edited idk"
             },
             "fields": [
                 {
                   "name": "hi",
-                  "value": "Usually used to check if bot is responding or not",
+                  "value": "Usually used to check if bot is responding/online or not",
                   "inline": true
                 },
                 {
@@ -311,13 +311,13 @@ client.on('ready', async() => {
                   "inline": true
                 },
                 {
-                    "name": "suggest",
-                    "value": "Suggest some ideas, might add them to the bot",
+                    "name": "suggest (suggestion)",
+                    "value": "Send bot suggestions to NoNameLmao, may or may not be added :shrug:",
                     "inline": true
                 },
                 {
                     "name": "info",
-                    "value": "General bot information",
+                    "value": "Displays current UTC hour, ES year and month, server member count",
                     "inline": true
                 },
                 {
@@ -342,7 +342,6 @@ client.on('ready', async() => {
                 }
             ]
         };
-
         if (message.content.includes(`hi online`)) {
             message.channel.send(`wrong. i am ${client.user.tag}. also hi ${message.author.tag}`);
         };
