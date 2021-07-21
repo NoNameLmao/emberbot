@@ -360,6 +360,10 @@ client.on('ready', async() => {
                 return console.log('detected the funny number, laf');
             };
         };
+
+        if (message.content.startsWith('..')) {
+            return console.log(`"command" with .. start ignored`);
+        };
         
         if (liechtenstein.includes(message.content)) message.channel.send('liechtenstein*');
 
