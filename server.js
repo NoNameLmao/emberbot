@@ -331,6 +331,11 @@ client.on('ready', async() => {
                     "inline": true
                 },
                 {
+                    "name": "nickname (nickname)",
+                    "value": `Changes my guild name (Only available to NoNameLmao lol cry about it)`,
+                    "inline": true
+                },
+                {
                     "name": "help",
                     "value": "It does exactly what you think it does.",
                     "inline": false
@@ -446,6 +451,12 @@ client.on('ready', async() => {
             };
         } else if (command === "help") {
             return message.channel.send({embed:helpEmbed});
+        } else if (command === "nickname") {
+            logCommand();
+            if (message.author.id === '341123308844220447') {
+                guild.me.setNickname(args);
+                return message.channel.send('done lol');
+            } else return message.channel.send("either ask froz or dimedead or go away loser (no permission)");
         } else if (command === "dn") {
             logCommand();
             return message.channel.send('deez nuts');
