@@ -434,7 +434,7 @@ client.on('ready', async() => {
             logCommand();
             if (message.author.id === '341123308844220447') {
                 try {
-                    guild.me.setNickname(args);
+                    guild.me.setNickname(args.slice(2, -2));
                     message.channel.send(`set nickname to ${args}`);        
                 } catch (err) {
                     console.error(err);
