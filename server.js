@@ -311,11 +311,6 @@ client.on('ready', async() => {
                     "inline": true
                 },
                 {
-                    "name": "nickname (nickname)",
-                    "value": `Changes my guild name (Only available to NoNameLmao lol cry about it)`,
-                    "inline": true
-                },
-                {
                     "name": "help",
                     "value": "It does exactly what you think it does.",
                     "inline": false
