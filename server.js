@@ -440,8 +440,18 @@ client.on('ready', async() => {
                     let min = args[0];
                     let max = args[1];
                     return message.channel.send(`random floating point: ${chance.floating({ min: min, max: max })}`);
-                }
-            }
+                };
+            } else if (thing === "integer") {
+                return message.channel.send(`random integer: ${chance.integer()} (range is -9007199254740991 to 9007199254740991 lol)`);
+            } else if (thing === "letter") {
+                return message.channel.send(`random letter: ${chance.letter()}`);
+            } else if (thing === "natural") {
+                return message.channel.send(`random natural: ${chance.natural()}`);
+            } else if (thing === "prime") {
+                return message.channel.send(`random prime: ${chance.prime()}`);
+            } else if (thing === "string") {
+                return message.channel.send(`random string: ${chance.string()}`);
+            };
         } else if (command === "help") {
             return message.channel.send({embed:helpEmbed});
         } else if (command === "dn") {
