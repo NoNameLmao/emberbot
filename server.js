@@ -19,6 +19,7 @@ const MarkovChain = require('./markovchain');
 const quotes = new MarkovChain(fs.readFileSync('./quotes.txt', 'utf8'));
 const pingNNL = '<@341123308844220447>';
 const botID = '848217938288967710';
+const chance = require('chance').Chance();
 let now = new Date();
 let nowUTC = now.getUTCHours();
 let europesimStartYear = 1800;
@@ -423,6 +424,24 @@ client.on('ready', async() => {
                 const max = args[1];
                 return message.channel.send(`random arbitrary generator: \`${getRandomArbitrary(min, max)}\`\nthis generator is inclusive at both ${min} and ${max}\nbasically gives values between ${min} and ${max} including them`);
             };
+        } else if (command === "chance") {
+            let thing = args.join(" ");
+            if (thing === "bool") {
+                return message.channel.send(`random bool: ${chance.bool()}`);
+            } else if (thing === "falsy") {
+                return message.channel.send(`random falsy value: ${chance.falsy()}`);
+            } else if (thing === "character") {
+                return message.channel.send(`random character: ${chance.character()}`);
+            } else if (thing === "floating") {
+                if (args[0] === "fixed") {
+                    let fixedNumber = args[1];
+                    return message.channel.send(`random fixed floating value: ${chance.floating({ fixed: fixedNumber })}`)
+                } else if (args[0] === "min" && args[1] === "max") {
+                    let min = args[0];
+                    let max = args[1];
+                    return message.channel.send(`random floating point: ${chance.floating({ min: min, max: max })}`);
+                }
+            }
         } else if (command === "help") {
             return message.channel.send({embed:helpEmbed});
         } else if (command === "dn") {
