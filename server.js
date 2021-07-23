@@ -203,7 +203,7 @@ client.on('ready', async() => {
         // process.exit(0);
     });    
     channel = await client.channels.fetch(botchannelID);
-
+    channel.send(`hi i either (re)started or got back from heroku's dumb idling thing`);
     if (!channel) {
         console.log(`Cannot find the bot channel! ping spam NoNameLmao(emberglaze lmao) to fix it`);
         process.exit(0);
