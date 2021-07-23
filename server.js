@@ -453,8 +453,10 @@ client.on('ready', async() => {
         } else if (command === "nickname") {
             logCommand();
             if (message.author.id === '341123308844220447') {
-                guild.me.setNickname(args);
-                return message.channel.send('done lol');
+                setTimeout(() => {
+                    guild.me.setNickname(args);
+                    return message.channel.send('done lol');    
+                }, 1000);
             } else return message.channel.send("either ask froz or dimedead or go away loser (no permission)");
         } else if (command === "dn") {
             logCommand();
