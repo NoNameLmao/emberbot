@@ -172,26 +172,6 @@ function sleep(ms) {
 let channel;
 client.on('ready', async() => {
     console.log(`Logged in successfully as ${client.user.tag}!`);
-    client.api.applications(client.user.id).guilds('846807940727570433').commands.post({
-        data: {
-            name: "hello",
-            description: "hello world command"
-        },
-    });
-    client.ws.on('INTERACTION_CREATE', async interaction => {
-        let command = interaction.data.name.toLowerCase();
-        let args = interaction.data.options;
-        if (command === 'hello'){ 
-            client.api.interactions(interaction.id, interaction.token).callback.post({
-                data: {
-                    type: 4,
-                    data: {
-                        content: "hello world!!!"
-                    },
-                },
-            });
-        };
-    });
     const filePath = path.resolve(__dirname, './config.json');
     process.on('uncaughtException', function (err) {
         console.error(now + ' uncaughtException:', err.stack);
