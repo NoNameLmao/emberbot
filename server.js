@@ -435,7 +435,7 @@ client.on('ready', async() => {
             if (message.author.id === '341123308844220447') {
                 try {
                     guild.me.setNickname(args);
-                    message.channel.send('done lol');        
+                    message.channel.send(`set nickname to ${args}`);        
                 } catch (err) {
                     console.error(err);
                     message.channel.send(`i had a problem changing nick: ${err}`);
