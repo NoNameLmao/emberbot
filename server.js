@@ -433,11 +433,14 @@ client.on('ready', async() => {
         } else if (command === "nickname") {
             logCommand();
             if (message.author.id === '341123308844220447') {
-                setTimeout(() => {
+                try {
                     guild.me.setNickname(args);
-                    return message.channel.send('done lol');    
-                }, 1000);
-            } else return message.channel.send("either ask froz or dimedead or go away loser (no permission)");
+                    message.channel.send('done lol');        
+                } catch (err) {
+                    console.error(err);
+                    message.channel.send(`i had a problem changing nick: ${err}`);
+                };
+            } else return message.channel.send("either ask froz or dimedead or go away (no permission)");
         } else if (command === "dn") {
             logCommand();
             return message.channel.send('deez nuts');
