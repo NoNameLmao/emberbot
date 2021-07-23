@@ -433,12 +433,13 @@ client.on('ready', async() => {
         } else if (command === "nickname") {
             logCommand();
             if (message.author.id === '341123308844220447') {
+                let nick = message.content.split(' ');
                 try {
-                    guild.me.setNickname(args.slice(2, -2));
-                    message.channel.send(`set nickname to ${args}`);        
+                    guild.me.setNickname(nick);
+                    message.channel.send(`set nickname to "${nick}"`);        
                 } catch (err) {
                     console.error(err);
-                    message.channel.send(`i had a problem changing nick: ${err}`);
+                    message.channel.send(`i had a problem changing nick to "${nick}": ${err}`);
                 };
             } else return message.channel.send("either ask froz or dimedead or go away (no permission)");
         } else if (command === "dn") {
