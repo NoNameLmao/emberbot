@@ -432,7 +432,7 @@ client.on('ready', async() => {
                 return message.channel.send(`random falsy value: ${chance.falsy()}`);
             } else if (thing === "character") {
                 return message.channel.send(`random character: ${chance.character()}`);
-            } else if (thing === "floating") {
+            } else if (thing === "floating" || thing === "float") {
                 if (args[0] === "fixed") {
                     let fixedNumber = args[1];
                     return message.channel.send(`random fixed floating value: ${chance.floating({ fixed: fixedNumber })}`)
@@ -441,7 +441,7 @@ client.on('ready', async() => {
                     let max = args[1];
                     return message.channel.send(`random floating point: ${chance.floating({ min: min, max: max })}`);
                 };
-            } else if (thing === "integer") {
+            } else if (thing === "integer" || thing === "int") {
                 return message.channel.send(`random integer: ${chance.integer()} (range is -9007199254740991 to 9007199254740991 lol)`);
             } else if (thing === "letter") {
                 return message.channel.send(`random letter: ${chance.letter()}`);
