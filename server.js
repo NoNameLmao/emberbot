@@ -441,20 +441,27 @@ client.on('ready', async() => {
                     },
                     "fields": [
                         {
-                            "name": "bool",
-                            "value": "Return a random boolean value, \`true or false\` (likelihood of both true and false are 50%)",
-                            "inline": true
+                            "name": "boolean || bool (chance in percentage)",
+                            "value": "Return a random boolean value, \`true or false\` (by default, chance of true is 50% (same as false), if you specify chance, it will return true or false according to it)",
+                            "inline": false
                         },
                         {
                             "name": "falsy",
                             "value": "Return a random falsy value: \`false, null, undefined, 0, NaN, ''\`.",
-                            "inline": true
+                            "inline": false
+                        },
+                        {
+                            "name": "character",
+                            "value": "Return a random character. Character pool: \`a-z, A-Z, 0-9, !@#$%^&*()\`",
+                            "inline": false
                         }
                     ]
                 };
                 message.channel.send({embed:chanceHelp});
-            } else if (thing === "bool") {
-                return message.channel.send(`random bool: \`${chance.bool()}\``);
+            } else if (thing === "boolean" || thing === "bool") {
+                if (args[0] === "likelihood" || args[0] === "chance") {
+                    return message.channel.send(`\`Chance\`\nrandom boolean with chance of ${args[1]}%: \`${chance.bool({ likelihood: args[1] })}\``)
+                } else return message.channel.send(`\`Chance\`\nrandom boolean: \`${chance.bool()}\``);
             } else if (thing === "falsy") {
                 return message.channel.send(`random falsy value: \`${chance.falsy()}\``);
             } else if (thing === "character") {
