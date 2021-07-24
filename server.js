@@ -446,11 +446,11 @@ client.on('ready', async() => {
                     "description": "Chance is a minimalist generator of random strings, numbers, etc. to help reduce some monotomy particularly while writing automated tests or anywhere else you need anything random.",
                     "color": 53380,
                     "footer": {
-                        "text": "it will take me ages to implement everything brooooooooooooooooooooooooooo wtf"
+                        "text": "pain"
                     },
                     "fields": [
                         {
-                            "name": "boolean || bool (chance in percentage)",
+                            "name": "boolean || bool (chance in percentage doesn't work yet)",
                             "value": "Return a random boolean value, \`true or false\` (by default, chance of true is 50% (same as false), if you specify chance, it will return true or false according to it)",
                             "inline": false
                         },
