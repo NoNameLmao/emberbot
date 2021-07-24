@@ -258,6 +258,10 @@ client.on('ready', async() => {
             }
           ]
         };
+        /**
+         * Embed thats sent on .help command
+         * @returns {any} List of commands
+         */
         let helpEmbed = {
             "title": "All list of commands",
             "description": `prefix: ${prefix}`,
@@ -361,13 +365,17 @@ client.on('ready', async() => {
         const command = args.shift().toLowerCase();
         if (!message.content.includes(prefix || command)) console.log(`Message from ${message.author.tag} in ${message.channel.name} at ${message.createdAt}: ${message.content}`);
         if (!message.content.startsWith(prefix)) return;
+        /**
+         * Logs a discord command.
+         * @returns {any} console.log() about the command.
+         */
         function logCommand() {
             console.log(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
             if (config.debug === 'true') message.channel.send(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
         };
         if (command === `hi`) {
             logCommand();
-            channel.send(`hi im online what do u want (main branch)`);
+            message.channel.send(`hi im online what do u want (main branch)`);
         } else if (command === `eval`) {
             if (message.member.roles.cache.some(r => r.name === "Admin") || message.author.id === '341123308844220447') {
                 let code = args.join(' ');
@@ -507,6 +515,7 @@ client.on('ready', async() => {
                 return message.channel.send(`random word: \`${chance.word()}\``);
             }
         } else if (command === "help") {
+            logCommand();
             return message.channel.send({embed:helpEmbed});
         } else if (command === "dn") {
             logCommand();
