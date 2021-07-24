@@ -468,9 +468,12 @@ client.on('ready', async() => {
                 };
                 message.channel.send({embed:chanceHelp});
             } else if (thing === "boolean" || thing === "bool") { // .chance boolean/bool
-                if (args[1] === "likelihood" || args[1] === "chance") { // .chance boolean/bool likelihood/chance chance=number
-                    return message.channel.send(`\`Chance\`\nrandom boolean with chance of ${args[2]}%: \`${chance.bool({ likelihood: args[1] })}\``)
-                } else return message.channel.send(`\`Chance\`\nrandom boolean: \`${chance.bool()}\``);
+                let chancePercentage = args[1]
+                if (isNaN(chancePercentage) === false) {
+                    return message.channel.send(`\`Chance\`\nrandom boolean with chance of ${chancePercentage}: \`${chance.bool({ likelihood: chancePercentage })}\``);
+                } else if (!args[1]) {
+                    return message.channel.send(`\`Chance\`\nrandom boolean: \`${chance.bool()}\``);
+                } else return message.channel.send(`\`Chance\`\nchance percentage is NaN.`)
             } else if (thing === "falsy") {
                 return message.channel.send(`random falsy value: \`${chance.falsy()}\``);
             } else if (thing === "character") {
