@@ -317,6 +317,11 @@ client.on('ready', async() => {
                     "inline": true
                 },
                 {
+                    "name": "code (code thing)",
+                    "value": `Serves as a reminder to ${pingNNL} for some parts of code he frequently forgets about lol he is so bad he forgets his own code`,
+                    "inline": true
+                },
+                {
                     "name": "help",
                     "value": "It does exactly what you think it does.",
                     "inline": false
@@ -429,6 +434,10 @@ client.on('ready', async() => {
                 const max = args[1];
                 return message.channel.send(`random arbitrary generator: \`${getRandomArbitrary(min, max)}\`\nthis generator is inclusive at both ${min} and ${max}\nbasically gives values between ${min} and ${max} including them`);
             };
+        } else if (command === "code") {
+            if (args[0] === "args") {
+                return message.channel.send(`u forgot about it again? bruh\n\`.(command) (args[0]) (args[1])...\` etc\nget good lol`);
+            }
         } else if (command === "chance") {
             let thing = args.join(" ");
             if (!thing) {
