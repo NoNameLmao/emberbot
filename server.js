@@ -467,9 +467,9 @@ client.on('ready', async() => {
                     ]
                 };
                 message.channel.send({embed:chanceHelp});
-            } else if (thing === "boolean" || thing === "bool") {
-                if (args[0] === "likelihood" || args[0] === "chance") {
-                    return message.channel.send(`\`Chance\`\nrandom boolean with chance of ${args[1]}%: \`${chance.bool({ likelihood: args[1] })}\``)
+            } else if (thing === "boolean" || thing === "bool") { // .chance boolean/bool
+                if (args[1] === "likelihood" || args[1] === "chance") { // .chance boolean/bool likelihood/chance chance=number
+                    return message.channel.send(`\`Chance\`\nrandom boolean with chance of ${args[2]}%: \`${chance.bool({ likelihood: args[1] })}\``)
                 } else return message.channel.send(`\`Chance\`\nrandom boolean: \`${chance.bool()}\``);
             } else if (thing === "falsy") {
                 return message.channel.send(`random falsy value: \`${chance.falsy()}\``);
