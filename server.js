@@ -312,6 +312,11 @@ client.on('ready', async() => {
                     "inline": true
                 },
                 {
+                    "name": "chance (thing)",
+                    "value": "Generator of random strings, numbers, etc. To get full list of currently available 'things' do '.chance'",
+                    "inline": true
+                },
+                {
                     "name": "help",
                     "value": "It does exactly what you think it does.",
                     "inline": false
@@ -426,32 +431,61 @@ client.on('ready', async() => {
             };
         } else if (command === "chance") {
             let thing = args.join(" ");
-            if (thing === "bool") {
-                return message.channel.send(`random bool: ${chance.bool()}`);
+            if (!thing) {
+                let chanceHelp = {
+                    "title": "All list of things that 'Chance' can generate at this moment",
+                    "description": "Chance is a minimalist generator of random strings, numbers, etc. to help reduce some monotomy particularly while writing automated tests or anywhere else you need anything random.",
+                    "color": 53380,
+                    "footer": {
+                        "text": "it will take me ages to implement everything brooooooooooooooooooooooooooo wtf"
+                    },
+                    "fields": [
+                        {
+                            "name": "bool",
+                            "value": "Return a random boolean value, \`true or false\` (likelihood of both true and false are 50%)",
+                            "inline": true
+                        },
+                        {
+                            "name": "falsy",
+                            "value": "Return a random falsy value: \`false, null, undefined, 0, NaN, ''\`.",
+                            "inline": true
+                        }
+                    ]
+                };
+            } else if (thing === "bool") {
+                return message.channel.send(`random bool: \`${chance.bool()}\``);
             } else if (thing === "falsy") {
-                return message.channel.send(`random falsy value: ${chance.falsy()}`);
+                return message.channel.send(`random falsy value: \`${chance.falsy()}\``);
             } else if (thing === "character") {
-                return message.channel.send(`random character: ${chance.character()}`);
+                return message.channel.send(`random character: \`${chance.character()}\``);
             } else if (thing === "floating" || thing === "float") {
                 if (args[0] === "fixed") {
                     let fixedNumber = args[1];
-                    return message.channel.send(`random fixed floating value: ${chance.floating({ fixed: fixedNumber })}`)
+                    return message.channel.send(`random fixed floating value: \`${chance.floating({ fixed: fixedNumber })}\``)
                 } else if (args[0] === "min" && args[1] === "max") {
                     let min = args[0];
                     let max = args[1];
-                    return message.channel.send(`random floating point: ${chance.floating({ min: min, max: max })}`);
+                    return message.channel.send(`random floating point: \`${chance.floating({ min: min, max: max })}\``);
                 };
             } else if (thing === "integer" || thing === "int") {
-                return message.channel.send(`random integer: ${chance.integer()} (range is -9007199254740991 to 9007199254740991 lol)`);
+                return message.channel.send(`random integer: \`${chance.integer()}\` (range is -9007199254740991 to 9007199254740991 lol)`);
             } else if (thing === "letter") {
-                return message.channel.send(`random letter: ${chance.letter()}`);
+                return message.channel.send(`random letter: \`${chance.letter()}\``);
             } else if (thing === "natural") {
-                return message.channel.send(`random natural: ${chance.natural()}`);
+                return message.channel.send(`random natural: \`${chance.natural()}\``);
             } else if (thing === "prime") {
-                return message.channel.send(`random prime: ${chance.prime()}`);
+                return message.channel.send(`random prime: \`${chance.prime()}\``);
             } else if (thing === "string") {
-                return message.channel.send(`random string: ${chance.string()}`);
-            };
+                return message.channel.send(`random string: \`${chance.string()}\``);
+            } else if (thing === "paragraph") {
+                return message.channel.send(`random paragraph: \`${chance.paragraph()}\``);
+            } else if (thing === "sentence") {
+                return message.channel.send(`random sentence: \`${chance.sentence()}\``);
+            } else if (thing === "syllable") {
+                return message.channel.send(`random syllable: \`${chance.syllable()}\``);
+            } else if (thing === "word") {
+                return message.channel.send(`random word: \`${chance.word()}\``);
+            }
         } else if (command === "help") {
             return message.channel.send({embed:helpEmbed});
         } else if (command === "dn") {
