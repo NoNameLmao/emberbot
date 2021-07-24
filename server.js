@@ -452,6 +452,7 @@ client.on('ready', async() => {
                         }
                     ]
                 };
+                message.channel.send({embed:chanceHelp});
             } else if (thing === "bool") {
                 return message.channel.send(`random bool: \`${chance.bool()}\``);
             } else if (thing === "falsy") {
