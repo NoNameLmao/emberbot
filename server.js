@@ -40,7 +40,7 @@ const http = require('http');
 const path = require('path');
 const { constants } = require('buffer');
 
-http.createServer(function (request, response) {
+const server = http.createServer(function (request, response) {
 
    console.log('request starting for ');
    console.log(request);
@@ -52,15 +52,14 @@ http.createServer(function (request, response) {
    const extname = path.extname(filePath);
    let contentType = 'text/html';
    switch (extname) {
-       case '.js':
+        case '.js':
            contentType = 'text/javascript';
-           break;
-       case '.css':
+        break;
+        case '.css':
            contentType = 'text/css';
-           break;
+        break;
     };
    fs.access(filePath, function(exists) {
-
         if (exists) {
            fs.readFile(filePath, function(error, content) {
                 if (error) {
@@ -76,10 +75,15 @@ http.createServer(function (request, response) {
             response.end();
         };
    });
-
-}).listen(process.env.PORT || 5000);
-
-console.log('Server running at http://127.0.0.1:5000/');
+});
+server.listen('localhost', 8000, () => {
+    console.log(`Server is running on http://${host}:${port}`);
+});
+const requestListener = function (request, response) {
+    response.setHeader('Content-Type', "text/html");
+    response.writeHead(200);
+    response.end(`<html><body><h1>test lol</h1></body></html>`);
+};
 
 function getRandomArbitrary(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -487,6 +491,7 @@ client.on('ready', async() => {
             } else if (thing === "character") {
                 return message.channel.send(`random character: \`${chance.character()}\``);
             } else if (thing === "floating" || thing === "float") {
+                // FIXME code below doesnt work!!!!!!!!!!!
                 if (args[0] === "fixed") {
                     let fixedNumber = args[1];
                     return message.channel.send(`random fixed floating value: \`${chance.floating({ fixed: fixedNumber })}\``)
@@ -513,6 +518,8 @@ client.on('ready', async() => {
                 return message.channel.send(`random syllable: \`${chance.syllable()}\``);
             } else if (thing === "word") {
                 return message.channel.send(`random word: \`${chance.word()}\``);
+            } else if (thing === "age") {
+                return message.channel.send(`random age: \`${chance.age()}\``);
             }
         } else if (command === "help") {
             logCommand();
