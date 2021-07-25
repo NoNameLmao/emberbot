@@ -77,7 +77,7 @@ const server = http.createServer(function (request, response) {
    });
 });
 server.listen('localhost', 8000, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+    console.log(`Server is running on http://localhost:8000`);
 });
 const requestListener = function (request, response) {
     response.setHeader('Content-Type', "text/html");
