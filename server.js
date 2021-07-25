@@ -39,8 +39,8 @@ function updateMonth() {
     europesimCurrentMonth = months[Math.floor(nowUTC / 2)];
 };
 
-const httpHost = 'localhost';
-const httpPort = process.env.PORT || 5000;
+const httpHost = '0.0.0.0';
+const httpPort = process.env.PORT;
 let indexFile;
 const requestListener = function (req, res) {
     res.setHeader("Content-Type", "text/html");
