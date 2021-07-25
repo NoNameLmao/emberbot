@@ -49,7 +49,7 @@ const requestListener = function (req, res) {
 const httpServer = http.createServer(requestListener);
 fsp.readFile(__dirname + "/index.html").then(contents => {
     indexFile = contents;
-    httpServer.listen(port, host, () => {
+    httpServer.listen(httpPort, httpHost, () => {
         console.log(`Server is running on http://${httpHost}:${httpPort}`);
     });
 }).catch(err => {
