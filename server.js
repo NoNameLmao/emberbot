@@ -16,6 +16,7 @@ const DateChannelID = (`848247855789375508`);
 const prefix = config.prefix;
 const fs = require('fs');
 const fsp = require('fs').promises;
+const path = require('path');
 const MarkovChain = require('./markovchain');
 const http = require('http');
 const quotes = new MarkovChain(fs.readFileSync('./quotes.txt', 'utf8'));
