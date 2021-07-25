@@ -14,7 +14,7 @@ const guildID = (`846807940727570433`);
 const botchannelID = (`846811100338323497`);
 const DateChannelID = (`848247855789375508`);
 const prefix = config.prefix;
-const fs = require('fs');
+const fs = require('fs').promises;
 const MarkovChain = require('./markovchain');
 const http = require('http');
 const quotes = new MarkovChain(fs.readFileSync('./quotes.txt', 'utf8'));
@@ -49,7 +49,7 @@ const httpServer = http.createServer(requestListener);
 httpServer.listen(httpPort, httpHost, () => {
     console.log(`Server is running on http://${httpHost}:${httpPort}`);
 });
-fs.readFile(__dirname + "/index.html").then(contents => {
+fs.readFile(__dirname + "/index.html", 'utf8').then(contents => {
     indexFile = contents;
     server.listen(httpPort, httpHost, () => {
         console.log(`Server is running on http://${httpHost}:${httpPort}`);
