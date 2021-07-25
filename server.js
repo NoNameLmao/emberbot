@@ -13,9 +13,10 @@ const disbut = require('discord-buttons')(client);
 const guildID = (`846807940727570433`);
 const botchannelID = (`846811100338323497`);
 const DateChannelID = (`848247855789375508`);
-const prefix = config.prefix
+const prefix = config.prefix;
 const fs = require('fs');
 const MarkovChain = require('./markovchain');
+const http = require('http');
 const quotes = new MarkovChain(fs.readFileSync('./quotes.txt', 'utf8'));
 const pingNNL = '<@341123308844220447>';
 const botID = '848217938288967710';
@@ -36,54 +37,27 @@ function updateMonth() {
     europesimCurrentMonth = months[Math.floor(nowUTC / 2)];
 };
 
-const http = require('http');
-const path = require('path');
-const { constants } = require('buffer');
-
-const server = http.createServer(function (request, response) {
-
-   console.log('request starting for ');
-   console.log(request);
-
-   let filePath = '.' + request.url;
-   if (filePath == './') filePath = './page.html';
-
-   console.log(filePath);
-   const extname = path.extname(filePath);
-   let contentType = 'text/html';
-   switch (extname) {
-        case '.js':
-           contentType = 'text/javascript';
-        break;
-        case '.css':
-           contentType = 'text/css';
-        break;
-    };
-   fs.access(filePath, function(exists) {
-        if (exists) {
-           fs.readFile(filePath, function(error, content) {
-                if (error) {
-                    response.writeHead(500);
-                    response.end();
-                } else {
-                    response.writeHead(200, { 'Content-Type': contentType });
-                    response.end(content, 'utf-8');
-                };
-           });
-        } else {
-            response.writeHead(404);
-            response.end();
-        };
-   });
-});
-server.listen('localhost', 8000, () => {
-    console.log(`Server is running on http://localhost:8000`);
-});
-const requestListener = function (request, response) {
-    response.setHeader('Content-Type', "text/html");
-    response.writeHead(200);
-    response.end(`<html><body><h1>test lol</h1></body></html>`);
+const httpHost = 'localhost';
+const httpPort = 8000;
+let indexFile;
+const requestListener = function (req, res) {
+    res.setHeader("Content-Type", "text/html");
+    res.writeHead(200);
+    res.end(indexFile);
 };
+const httpServer = http.createServer(requestListener);
+httpServer.listen(httpPort, httpHost, () => {
+    console.log(`Server is running on http://${httpHost}:${httpPort}`);
+});
+fs.readFile(__dirname + "/index.html").then(contents => {
+    indexFile = contents;
+    server.listen(httpPort, httpHost, () => {
+        console.log(`Server is running on http://${httpHost}:${httpPort}`);
+    });
+}).catch(err => {
+    console.error(`Could not read index.html file: ${err}`);
+    process.exit(1);
+});
 
 function getRandomArbitrary(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
