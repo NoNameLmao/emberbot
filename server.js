@@ -56,9 +56,6 @@ fsp.readFile(__dirname + "/index.html").then(contents => {
     console.error(`Could not read index.html file: ${err}`);
     process.exit(1);
 });
-httpServer.listen(httpPort, httpHost, () => {
-    console.log(`Server is running on http://${httpHost}:${httpPort}`);
-});
 
 function getRandomArbitrary(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
