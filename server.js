@@ -14,7 +14,8 @@ const guildID = (`846807940727570433`);
 const botchannelID = (`846811100338323497`);
 const DateChannelID = (`848247855789375508`);
 const prefix = config.prefix;
-const fs = require('fs')
+const fs = require('fs');
+const fsp = require('fs').promises;
 const MarkovChain = require('./markovchain');
 const http = require('http');
 const quotes = new MarkovChain(fs.readFileSync('./quotes.txt', 'utf8'));
@@ -46,19 +47,17 @@ const requestListener = function (req, res) {
     res.end(indexFile);
 };
 const httpServer = http.createServer(requestListener);
-httpServer.listen(httpPort, httpHost, () => {
-    console.log(`Server is running on http://${httpHost}:${httpPort}`);
-});
-fs.readFile(__dirname + "/index.html", (err) => {
-    if (err) throw err;
-}).then(contents => {
+fsp.readFile(__dirname + "/index.html").then(contents => {
     indexFile = contents;
-    server.listen(httpPort, httpHost, () => {
+    server.listen(port, host, () => {
         console.log(`Server is running on http://${httpHost}:${httpPort}`);
     });
 }).catch(err => {
     console.error(`Could not read index.html file: ${err}`);
     process.exit(1);
+});
+httpServer.listen(httpPort, httpHost, () => {
+    console.log(`Server is running on http://${httpHost}:${httpPort}`);
 });
 
 function getRandomArbitrary(min, max) {
