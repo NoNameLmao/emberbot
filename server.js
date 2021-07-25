@@ -49,7 +49,9 @@ const httpServer = http.createServer(requestListener);
 httpServer.listen(httpPort, httpHost, () => {
     console.log(`Server is running on http://${httpHost}:${httpPort}`);
 });
-fs.readFile(__dirname + "/index.html", 'utf8').then(contents => {
+fs.readFile(__dirname + "/index.html", (err) => {
+    if (err) throw err;
+}).then(contents => {
     indexFile = contents;
     server.listen(httpPort, httpHost, () => {
         console.log(`Server is running on http://${httpHost}:${httpPort}`);
