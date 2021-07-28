@@ -206,22 +206,30 @@ client.on('ready', async() => {
             let request = new XMLHttpRequest();
             if (server === 'frozenworld') {
                 request.open("POST", process.env.EUROPESIM_GATEWAY_WEBHOOK_URL);
+                console.log(`opened request to ${server}`);
                 request.setRequestHeader("Content-type", "application/json");
+                console.log(`set request header`);
                 let webhook = {
                     "username": `${message.author.tag}`,
                     "avatar_url": `${message.author.avatarURL()}`,
                     "content": `${message.content.toString()}`
                 };
+                console.log('created webhook');
                 request.send(JSON.stringify(webhook));
+                console.log('sent webhook');
             } else if (server === 'europesim') {
                 request.open("POST", process.env.FROZENWORLD_GATEWAY_WEBHOOK_URL);
+                console.log(`opened request to ${server}`);
                 request.setRequestHeader("Content-type", "application/json");
+                console.log(`set request header`);
                 let webhook = {
                     "username": `${message.author.tag}`,
                     "avatar_url": `${message.author.avatarURL()}`,
                     "content": `${message.content.toString()}`
                 };
+                console.log('created webhook');
                 request.send(JSON.stringify(webhook));
+                console.log('sent webhook');
             } else return;
         }
         if (message.guild.id === "746145375169282160" && message.channel.id === "870017944380403772") sendWebhookMessage('frozenworld')
