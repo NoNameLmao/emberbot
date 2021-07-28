@@ -142,11 +142,11 @@ function jsonWrite(filePath, data) {
 function getDebugState() {
     if (config.debug === true) return true
     else if (config.debug === false) return false
-};
-
+}
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
-};
+}
+
 let channel;
 client.on('ready', async() => {
     console.log(`Logged in successfully as ${client.user.tag}!`);
@@ -201,6 +201,31 @@ client.on('ready', async() => {
 
     client.on('error', error => console.log(error));
     client.on('message', function(message) {
+        function sendWebhookMessage(server) {
+            let request = new XMLHttpRequest();
+            if (server === 'frozenworld') {
+                request.open("POST", process.env.EUROPESIM_GATEWAY_WEBHOOK_URL);
+                request.setRequestHeader("Content-type", "application/json");
+                let webhook = {
+                    "username": `${message.author.tag}`,
+                    "avatar_url": `${message.author.avatarURL()}`,
+                    "content": `${message.content.toString()}`
+                };
+                request.send(JSON.stringify(webhook));
+            } else if (server === 'europesim') {
+                request.open("POST", process.env.FROZENWORLD_GATEWAY_WEBHOOK_URL);
+                request.setRequestHeader("Content-type", "application/json");
+                let webhook = {
+                    "username": `${message.author.tag}`,
+                    "avatar_url": `${message.author.avatarURL()}`,
+                    "content": `${message.content.toString()}`
+                };
+                request.send(JSON.stringify(webhook));
+            } else return;
+        }
+        if (message.guild.id === "746145375169282160" && message.channel.id === "870017944380403772") sendWebhookMessage('frozenworld')
+        else if (message.guild.id === "846807940727570433" && message.channel.id === "870017916161097798") sendWebhookMessage('europesim');
+        
         let infoEmbed = {
             "plainText": "some info on the bot",
           "title": "when /europesim is sus",
