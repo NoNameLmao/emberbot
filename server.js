@@ -361,7 +361,7 @@ client.on('ready', async() => {
                 } catch (error) {
                     message.channel.send(`\`Code ran with an error:\` \`\`\`xl\n${error}\n\`\`\``);
                     console.log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${code} \nThere was an error running this code: \n${error}`);
-                };
+                }
             } else return message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
         } else if (command === "exit") {
             try {
@@ -381,40 +381,31 @@ client.on('ready', async() => {
         } else if (command === "sudo") {
             logCommand();
             if (message.author.id === `341123308844220447`) {
-                // if (message.content.includes(`whatever the hell that command was, i dont think it exists. have any doubts? check .help`)) {
-                //     channel.send(`stop`);
-                //     return;
-                // }
-                // else if (message.content.includes(`I hate orphans`) || message.content.includes(`i hate orphans`)) {
-                //     channel.send(`<@${message.author.id}> hates orphans. Blood for the blood god.`);
-                //     return;
-                // }
-                // else if (message.content.includes(`who is joe`) || message.content.includes("who's joe")) {
-                //     channel.send(`i do not wish to know who joe is. snap back to reality`);
-                //     return;
-                // }
-                // else {
                 const sudo = args.join(" ");
                 message.channel.send(sudo);
             } else return channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
         } else if (command === "quote") {
+            logCommand();
             quoteInt = getRandomInt(37);
             return message.channel.send(`quote number ${quoteInt}: \n"${TechnobladeQuote[quoteInt]}"`);
         } else if (command === "suggest") {
+            logCommand();
             const suggest = args.join(" ");
             client.users.fetch('341123308844220447').then((nnl) => {
-                nnl.send(`Bot suggestion by ${message.author.tag}: ${suggest} \nSent at ${message.createdAt} in <#${message.channel.id}>`);
+                nnl.send(`Bot suggestion by ${message.author.tag}: \`${suggest}\`\nSent at ${message.createdAt} in <#${message.channel.id}>`);
             });
             return message.channel.send(`Your suggestion has been sent! thanks`);
         } else if (command === "info") {
+            logCommand();
             return message.channel.send({embed:infoEmbed}).catch(console.error);
         } else if (command === "rng") {
+            logCommand();
             if (isNaN(args[1]) === true) return message.channel.send(`random integer generator: \`${getRandomInt(args[0])}\`\nthis generator is inclusive at 0 but not at ${args[0] - 1} PLEASE keep that in mind\ntldr gives only 0 to ${args[0] - 1}`);
             else if (isNaN(args[1]) === false) {
                 const min = args[0];
                 const max = args[1];
                 return message.channel.send(`random arbitrary generator: \`${getRandomArbitrary(min, max)}\`\nthis generator is inclusive at both ${min} and ${max}\nbasically gives values between ${min} and ${max} including them`);
-            };
+            }
         } else if (command === "code") {
             logCommand();
             if (args[0] === "args") {
