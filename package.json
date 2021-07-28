@@ -14,7 +14,8 @@
     "flying-squid": "^1.4.0",
     "minecraft-data": "^2.86.0",
     "mineflayer-navigate": "^0.0.10",
-    "pick-one-by-weight": "^1.0.2"
+    "pick-one-by-weight": "^1.0.2",
+    "xmlhttprequest": "^1.8.0"
   },
   "keywords": [],
   "author": "NoNameLmao/emberglaze",

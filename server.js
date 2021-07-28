@@ -14,6 +14,7 @@ const guildID = (`846807940727570433`);
 const botchannelID = (`846811100338323497`);
 const DateChannelID = (`848247855789375508`);
 const prefix = config.prefix;
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const fs = require('fs');
 const fsp = require('fs').promises;
 const path = require('path');
@@ -225,7 +226,7 @@ client.on('ready', async() => {
         }
         if (message.guild.id === "746145375169282160" && message.channel.id === "870017944380403772") sendWebhookMessage('frozenworld')
         else if (message.guild.id === "846807940727570433" && message.channel.id === "870017916161097798") sendWebhookMessage('europesim');
-        
+
         let infoEmbed = {
             "plainText": "some info on the bot",
           "title": "when /europesim is sus",
