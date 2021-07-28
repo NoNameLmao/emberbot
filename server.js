@@ -34,10 +34,10 @@ function updateYear() {
     currentDate = Date.now();
     differenceInDays = (currentDate - europesimStartDate) / (1000 * 3600 * 24);
     europesimCurrentYear = (Math.floor(europesimStartYear + differenceInDays)) - 2 - 18;
-};
+}
 function updateMonth() {
     europesimCurrentMonth = months[Math.floor(nowUTC / 2)];
-};
+}
 
 const httpHost = '0.0.0.0';
 const httpPort = process.env.PORT;
@@ -123,9 +123,9 @@ function jsonRead(filePath) {
                 reject(err);
             } else try {
                 resolve(JSON.parse(content));
-            } catch (err) {
-                reject(err);
-            };
+            } catch (error) {
+                reject(error);
+            }
         });
     });
 };
@@ -178,7 +178,6 @@ client.on('ready', async() => {
            channel.send(`some error idk, go fix <@341123308844220447> \n\`\`\`${err.stack}\`\`\``); 
         }, 5000);
         console.error(now + ' uncaughtException:', err.stack);
-        // process.exit(0);
     });    
     channel = await client.channels.fetch(botchannelID);
     channel.send(`hi i either (re)started or got back from heroku's dumb idling thing`);
@@ -199,7 +198,7 @@ client.on('ready', async() => {
     let DateChannel = guild.channels.cache.get(DateChannelID);
     DateChannel.join();
     if (config.debug === true) channel.send('ran DateChannel.join()');
-    
+
     client.on('error', error => console.log(error));
     client.on('message', function(message) {
         let infoEmbed = {
