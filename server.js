@@ -190,21 +190,18 @@ client.on('ready', async() => {
     if (!guild) {
         console.log(`lmaoooooooo wrong guild id? or server non-existant :lmaoof: dm nnl lmao xddddd`);
         process.exit(0);
-    };
+    }
+    let memberCount = guild.memberCount;
+    let userCount = guild.members.cache.filter(member => !member.user.bot).size;
+    let botCount = memberCount - userCount;
+    let onlineUsers = guild.members.cache.filter(member => member.presence.status !== 'offline' && !member.user.bot).size;
+
     let DateChannel = guild.channels.cache.get(DateChannelID);
     DateChannel.join();
-    if (config.debug === true) {
-        channel.send('ran DateChannel.join()');
-    };
-
-    client.on('error', error => {
-        console.log(error);
-    });
+    if (config.debug === true) channel.send('ran DateChannel.join()');
+    
+    client.on('error', error => console.log(error));
     client.on('message', function(message) {
-        let memberCount = message.guild.memberCount;
-        let userCount = guild.members.cache.filter(member => !member.user.bot).size;
-        let botCount = memberCount - userCount;
-        let onlineUsers = guild.members.cache.filter(member => member.presence.status !== 'offline' && !member.user.bot).size;
         let infoEmbed = {
             "plainText": "some info on the bot",
           "title": "when /europesim is sus",
@@ -420,80 +417,10 @@ client.on('ready', async() => {
                 return message.channel.send(`random arbitrary generator: \`${getRandomArbitrary(min, max)}\`\nthis generator is inclusive at both ${min} and ${max}\nbasically gives values between ${min} and ${max} including them`);
             };
         } else if (command === "code") {
+            logCommand();
             if (args[0] === "args") {
                 return message.channel.send(`u forgot about it again? bruh\n\`.(command) (args[0]) (args[1])...\` etc\nget good lol`);
-            }
-        } else if (command === "chance") {
-            let thing = args.join(" ");
-            if (!thing) {
-                let chanceHelp = {
-                    "title": "All list of things that 'Chance' can generate at this moment",
-                    "description": "Chance is a minimalist generator of random strings, numbers, etc. to help reduce some monotomy particularly while writing automated tests or anywhere else you need anything random.",
-                    "color": 53380,
-                    "footer": {
-                        "text": "pain"
-                    },
-                    "fields": [
-                        {
-                            "name": "boolean || bool (chance in percentage doesn't work yet)",
-                            "value": "Return a random boolean value, \`true or false\` (by default, chance of true is 50% (same as false), if you specify chance, it will return true or false according to it)",
-                            "inline": false
-                        },
-                        {
-                            "name": "falsy",
-                            "value": "Return a random falsy value: \`false, null, undefined, 0, NaN, ''\`.",
-                            "inline": false
-                        },
-                        {
-                            "name": "character",
-                            "value": "Return a random character. Character pool: \`a-z, A-Z, 0-9, !@#$%^&*()\`",
-                            "inline": false
-                        }
-                    ]
-                };
-                message.channel.send({embed:chanceHelp});
-            } else if (thing === "boolean" || thing === "bool") { // .chance boolean/bool
-                let chancePercentage = args[1]
-                if (isNaN(chancePercentage) === false) {
-                    return message.channel.send(`\`Chance\`\nrandom boolean with chance of ${chancePercentage}: \`${chance.bool({ likelihood: chancePercentage })}\``);
-                } else if (!args[1]) {
-                    return message.channel.send(`\`Chance\`\nrandom boolean: \`${chance.bool()}\``);
-                } else return message.channel.send(`\`Chance\`\nchance percentage is NaN.`)
-            } else if (thing === "falsy") {
-                return message.channel.send(`random falsy value: \`${chance.falsy()}\``);
-            } else if (thing === "character") {
-                return message.channel.send(`random character: \`${chance.character()}\``);
-            } else if (thing === "floating" || thing === "float") {
-                // FIXME code below doesnt work!!!!!!!!!!!
-                if (args[0] === "fixed") {
-                    let fixedNumber = args[1];
-                    return message.channel.send(`random fixed floating value: \`${chance.floating({ fixed: fixedNumber })}\``)
-                } else if (args[0] === "min" && args[1] === "max") {
-                    let min = args[0];
-                    let max = args[1];
-                    return message.channel.send(`random floating point: \`${chance.floating({ min: min, max: max })}\``);
-                };
-            } else if (thing === "integer" || thing === "int") {
-                return message.channel.send(`random integer: \`${chance.integer()}\` (range is -9007199254740991 to 9007199254740991 lol)`);
-            } else if (thing === "letter") {
-                return message.channel.send(`random letter: \`${chance.letter()}\``);
-            } else if (thing === "natural") {
-                return message.channel.send(`random natural: \`${chance.natural()}\``);
-            } else if (thing === "prime") {
-                return message.channel.send(`random prime: \`${chance.prime()}\``);
-            } else if (thing === "string") {
-                return message.channel.send(`random string: \`${chance.string()}\``);
-            } else if (thing === "paragraph") {
-                return message.channel.send(`random paragraph: \`${chance.paragraph()}\``);
-            } else if (thing === "sentence") {
-                return message.channel.send(`random sentence: \`${chance.sentence()}\``);
-            } else if (thing === "syllable") {
-                return message.channel.send(`random syllable: \`${chance.syllable()}\``);
-            } else if (thing === "word") {
-                return message.channel.send(`random word: \`${chance.word()}\``);
-            } else if (thing === "age") {
-                return message.channel.send(`random age: \`${chance.age()}\``);
-            }
+            } else return message.channel.send(`oh wtf what now? args again?`);
         } else if (command === "help") {
             logCommand();
             return message.channel.send({embed:helpEmbed});
