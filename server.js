@@ -7,6 +7,7 @@ const client = new Discord.Client({
             type: 'PLAYING',
         },
     },
+    disableMentions: 'everyone',
 });
 const config = require('./config.json');
 const disbut = require('discord-buttons')(client);
