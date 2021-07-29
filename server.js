@@ -235,11 +235,10 @@ client.on('ready', async() => {
             } catch (err) {
                 console.log(err);
                 message.channel.send(`epic fail:\n${err}`);
-            } finally {
-                if (message.guild.id === "746145375169282160" && message.channel.id === "870017944380403772") sendWebhookMessage('europesim')
-                else if (message.guild.id === "846807940727570433" && message.channel.id === "870017916161097798") sendWebhookMessage('frozenworld');        
             }
         }
+        if (message.guild.id === "746145375169282160" && message.channel.id === "870017944380403772") sendWebhookMessage('europesim')
+        else if (message.guild.id === "846807940727570433" && message.channel.id === "870017916161097798") sendWebhookMessage('frozenworld');
 
         let infoEmbed = {
             "plainText": "some info on the bot",
