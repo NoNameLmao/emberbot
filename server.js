@@ -18,9 +18,7 @@ const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const fs = require('fs');
 const fsp = require('fs').promises;
 const path = require('path');
-const MarkovChain = require('./markovchain');
 const http = require('http');
-const quotes = new MarkovChain(fs.readFileSync('./quotes.txt', 'utf8'));
 const webhook = require('webhook-discord');
 const esimHook = new webhook.Webhook(process.env.EUROPESIM_GATEWAY_WEBHOOK_URL);
 const frznwrldHook = new webhook.Webhook(process.env.FROZENWORLD_GATEWAY_WEBHOOK_URL);
@@ -66,10 +64,10 @@ fsp.readFile(__dirname + "/index.html").then(contents => {
 
 function getRandomArbitrary(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
-};
+}
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
-};
+}
 
 const TechnobladeQuote = [
     'NOT EVEN CLOSE BABY TECHNOBLADE NEVER DIES',
@@ -134,17 +132,16 @@ function jsonRead(filePath) {
             }
         });
     });
-};
+}
 function jsonWrite(filePath, data) {
     return new Promise((resolve, reject) => {
         fs.writeFile(filePath, JSON.stringify(data), (err) => {
             if (err) {
                 reject(err);
-            };
-            resolve(true);
+            } resolve(true);
         });
     });
-};
+}
 function getDebugState() {
     if (config.debug === true) return true
     else if (config.debug === false) return false
@@ -190,7 +187,7 @@ client.on('ready', async() => {
     if (!channel) {
         console.log(`Cannot find the bot channel! ping spam NoNameLmao(emberglaze lmao) to fix it`);
         process.exit(0);
-    };
+    }
     let guild = await client.guilds.fetch(guildID);
     if (!guild) {
         console.log(`lmaoooooooo wrong guild id? or server non-existant :lmaoof: dm nnl lmao xddddd`);
@@ -342,11 +339,11 @@ client.on('ready', async() => {
         };
         if (message.content.includes(`hi online`)) {
             message.channel.send(`wrong. i am ${client.user.tag}. also hi ${message.author.tag}`);
-        };
+        }
         if (message.content.includes(`https://cdn.discordapp.com/attachments/245001780138606593/866145759917637662/image0-2-3.gif`)) {
             let yes = client.emojis.cache.get('866325679830073394');
             message.channel.send(yes);
-        };
+        }
 
         message.content.replace(/<[@#:].*?>/g, "");
         if (message.content.includes('69')) {
@@ -356,16 +353,16 @@ client.on('ready', async() => {
                 if (message.editable === true) {
                     message.edit(`${message.content} \*(nice)\*`);
                     return console.log('detected funny number in my msg laf at my own 69');
-                };
+                }
             } else {
                 message.channel.send('\*nice\*');
                 return console.log('detected the funny number, laf');
-            };
-        };
+            }
+        }
 
         if (message.content.startsWith('..')) {
             return console.log(`"command" with .. start ignored`);
-        };
+        }
         
         if (liechtenstein.includes(message.content)) message.channel.send('liechtenstein*');
 
@@ -380,7 +377,7 @@ client.on('ready', async() => {
         function logCommand() {
             console.log(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
             if (config.debug === 'true') message.channel.send(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
-        };
+        }
         if (command === `hi`) {
             logCommand();
             message.channel.send(`hi im online what do u want (main branch)`);
@@ -412,7 +409,7 @@ client.on('ready', async() => {
                 message.channel.send(`I got an error executing the command!`);
                 message.channel.send(error);
                 return;
-            };
+            }
         } else if (command === "sudo") {
             logCommand();
             if (message.author.id === `341123308844220447`) {
@@ -452,29 +449,6 @@ client.on('ready', async() => {
         } else if (command === "dn") {
             logCommand();
             return message.channel.send('deez nuts');
-        } else if (command === "fallbackGateway") {
-            let fallbackGatewayState;
-            if (!args[0]) {
-                return message.channel.send(`currently fallbackGatewayState is ${fallbackGatewayState}`)
-            } else if (args[0] === 'off') {
-                message.channel.send(`turned off fallbackGateway`);
-                fallbackGatewayState = 'off'
-            } else if (args[1] === 'on') {
-                message.channel.send(`turned on fallbackGateway`);
-                fallbackGatewayState = 'on'
-            } else return message.channel.send(`dont type anything after to see current state, type on/off to enable/disable it`);
-            function fallbackGateway(server) {
-                if (server === "frozenworld") {
-                    return esimGatewayChannel.send(`<${message.author.tag}>: ${message.content.toString()}`);
-                } else if (server === "europesim") {
-                    return frozenworldGatewayChannel.send(`<${message.author.tag}>: ${message.content.toString()}`);
-                } else return;
-            }
-            if (message.guild.id === '746145375169282160' && message.channel.id === frozenworldGatewayID) {
-                fallbackGateway("frozenworld");
-            } else if (message.guild.id === '846807940727570433' && message.channel.id === esimGatewayID) {
-                fallbackGateway("europesim");
-            }
         } else if (command === "debug") {
             logCommand();
             if (args[0] === 'true') {
@@ -485,7 +459,7 @@ client.on('ready', async() => {
                     return message.channel.send('Success!');
                 } else if (config.debug === true) {
                     return message.channel.send('It is already on lol');
-                };
+                }
             } else if (args[0] === 'false') {
                 if (config.debug === false) {
                     return message.channel.send('It is already off lol dont panic');
@@ -529,12 +503,12 @@ client.on('ready', async() => {
         setTimeout(function() {
             updateMonth();
             updateYear();
-            DateChannel.setName(`${europesimCurrentYear}, ${europesimCurrentMonth}`)
+            DateChannel.setName(`${europesimCurrentYear}, ${europesimCurrentMonth}`);
             if (a > 0) {
                 updateDateLoop();
             }
         }, 10000);
-    };
+    }
     updateDateLoop();
 });
 
