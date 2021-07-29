@@ -212,7 +212,7 @@ client.on('ready', async() => {
         const sklicerHook = new webhook.Webhook(process.env.SKLICER_GATEWAY_WEBHOOK_URL); // siceon's server
         let noPingMessage;
         if (message.guild.id === "746145375169282160" && message.channel.id === "870017944380403772") {
-            noPingMessage = message.content.replace(/@(?=everyone|here)/g, "@\u200b");
+            noPingMessage = message.content.replace(/@/g, "@\u200b");
             if (message.webhookID) return;
             else try {
                 let msg = new webhook.MessageBuilder().setName(`${message.author.username} (${message.guild.name})`).setText(noPingMessage).setAvatar(message.author.avatarURL())
@@ -224,7 +224,7 @@ client.on('ready', async() => {
                 message.channel.send(`${pingNNL} epic fail:\n${err}`);
             }
         } else if (message.guild.id === "846807940727570433" && message.channel.id === "870017916161097798") {
-            noPingMessage = message.content.replace(/@(?=everyone|here)/g, "@\u200b");
+            noPingMessage = message.content.replace(/@/g, "@\u200b");
             if (message.webhookID) return;
             else try {
                 message.content.replace(/@(?=everyone|here)/g, "@\u200b")
