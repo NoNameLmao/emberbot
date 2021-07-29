@@ -237,7 +237,7 @@ client.on('ready', async() => {
                 message.channel.send(`${pingNNL} epic fail:\n${err}`);
             }
         } else if (message.guild.id === "818142970397065236" && message.channel.id === "870358054376448060") {
-            noPingMessage = message.content.replace(/@(?=everyone|here)/g, "@\u200b");
+            noPingMessage = message.content.replace(/@/g, "@\u200b");
             if (message.webhookID) return;
             else try {
                 message.content.replace(/@(?=everyone|here)/g, "@\u200b")
