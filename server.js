@@ -217,6 +217,7 @@ client.on('ready', async() => {
             else try {
                 let msg = new webhook.MessageBuilder().setName(`${message.author.username} (${message.guild.name})`).setText(noPingMessage).setAvatar(message.author.avatarURL())
                 europesimHook.send(msg);
+                sklicerHook.send(msg);
             } catch (err) {
                 console.log(err);
                 message.react('❌');
@@ -229,6 +230,7 @@ client.on('ready', async() => {
                 message.content.replace(/@(?=everyone|here)/g, "@\u200b")
                 let msg = new webhook.MessageBuilder().setName(`${message.author.username} (${message.guild.name})`).setText(noPingMessage).setAvatar(message.author.avatarURL()) 
                 frozenworldHook.send(msg);
+                sklicerHook.send(msg);
             } catch (err) {
                 console.log(err);
                 message.react('❌');
@@ -240,7 +242,8 @@ client.on('ready', async() => {
             else try {
                 message.content.replace(/@(?=everyone|here)/g, "@\u200b")
                 let msg = new webhook.MessageBuilder().setName(`${message.author.username} (${message.guild.name})`).setText(noPingMessage).setAvatar(message.author.avatarURL()) 
-                sklicerHook.send(msg);
+                frozenworldHook.send(msg);
+                europesimHook.send(msg);
             } catch (err) {
                 console.log(err);
                 message.react('❌');
