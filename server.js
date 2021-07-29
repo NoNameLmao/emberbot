@@ -206,9 +206,6 @@ client.on('ready', async() => {
     DateChannel.join();
     if (config.debug === true) channel.send('ran DateChannel.join()');
 
-    const esimGatewayChannel = client.channels.fetch(esimGatewayID);
-    const frozenworldGatewayChannel = client.channels.fetch(frozenworldGatewayID);
-
     client.on('error', error => console.log(error));
     client.on('message', function(message) {
         let noPingMessage;
@@ -500,7 +497,7 @@ client.on('ready', async() => {
                 }, 30000 * 60);
             } else return;
         } else if (command === "") return;
-        else return message.channel.send(`sorry, "${prefix}${command}" doesnt exist\ncheck "${prefix}help"`);
+        // else return message.channel.send(`sorry, "${prefix}${command}" doesnt exist\ncheck "${prefix}help"`);
     });
     let a = 1;
     function updateDateLoop() {
