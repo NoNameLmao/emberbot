@@ -227,7 +227,7 @@ client.on('ready', async() => {
             noPingMessage = message.content.replace(/@/g, "@\u200b");
             if (message.webhookID) return;
             else try {
-                message.content.replace(/@(?=everyone|here)/g, "@\u200b")
+                message.content.replace(/@/g, "@\u200b")
                 let msg = new webhook.MessageBuilder().setName(`${message.author.username} (${message.guild.name})`).setText(noPingMessage).setAvatar(message.author.avatarURL()) 
                 frozenworldHook.send(msg);
                 sklicerHook.send(msg);
@@ -240,7 +240,7 @@ client.on('ready', async() => {
             noPingMessage = message.content.replace(/@/g, "@\u200b");
             if (message.webhookID) return;
             else try {
-                message.content.replace(/@(?=everyone|here)/g, "@\u200b")
+                message.content.replace(/@/g, "@\u200b")
                 let msg = new webhook.MessageBuilder().setName(`${message.author.username} (${message.guild.name})`).setText(noPingMessage).setAvatar(message.author.avatarURL()) 
                 frozenworldHook.send(msg);
                 europesimHook.send(msg);
