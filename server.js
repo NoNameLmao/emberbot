@@ -212,7 +212,7 @@ client.on('ready', async() => {
     client.on('error', error => console.log(error));
     client.on('message', function(message) {
         if (message.guild.id === "746145375169282160" && message.channel.id === "870017944380403772") {
-            message.content.replace(/@(everyone|here)/g, v => "@\u200b" + v.substr(1));
+            message.content.replace(/@(?=everyone|here)/g, "@\u200b")
             if (message.author.bot) return;
             else try {
                 let msg = new webhook.MessageBuilder().setName(message.author.username).setText(message.content.toString()).setAvatar(message.author.avatarURL())
