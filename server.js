@@ -210,8 +210,8 @@ client.on('ready', async() => {
     client.on('message', function(message) {
         if (message.guild.id === "746145375169282160" && message.channel.id === "870017944380403772") {
             if (message.content.includes('@everyone') && message.content.includes('@here')) {
-                message.content.replace('@everyone', '');
-                message.content.replace('@here', '');
+                message.content.replace('@everyone', ' ');
+                message.content.replace('@here', ' ');
                 message.react('870290954916102185');
                 message.react('❌');
                 message.channel.send('no');
