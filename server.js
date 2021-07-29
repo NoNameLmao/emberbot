@@ -216,7 +216,7 @@ client.on('ready', async() => {
                 let msg = new webhook.MessageBuilder()
                 .setName(message.author.tag)
                 .setText(message.content.toString())
-                .setAvatar(message.author.avatarURL)
+                .setAvatar(message.author.avatarURL())
                 esimHook.send(msg);
             } catch (err) {
                 console.log(err);
@@ -228,7 +228,7 @@ client.on('ready', async() => {
                 let msg = new webhook.MessageBuilder()
                 .setName(message.author.tag)
                 .setText(message.content.toString())
-                .setAvatar(message.author.avatarURL)
+                .setAvatar(message.author.avatarURL())
                 frznwrldHook.send(msg);
             } catch (err) {
                 console.log(err);
