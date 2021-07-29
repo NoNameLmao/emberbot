@@ -15,6 +15,7 @@
     "minecraft-data": "^2.86.0",
     "mineflayer-navigate": "^0.0.10",
     "pick-one-by-weight": "^1.0.2",
+    "webhook-discord": "^3.7.8",
     "xmlhttprequest": "^1.8.0"
   },
   "keywords": [],

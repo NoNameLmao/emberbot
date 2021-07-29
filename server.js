@@ -21,6 +21,9 @@ const path = require('path');
 const MarkovChain = require('./markovchain');
 const http = require('http');
 const quotes = new MarkovChain(fs.readFileSync('./quotes.txt', 'utf8'));
+const webhook = require('webhook-discord');
+const esimHook = new webhook.Webhook(process.env.EUROPESIM_GATEWAY_WEBHOOK_URL);
+const frznwrldHook = new webhook.Webhook(process.env.FROZENWORLD_GATEWAY_WEBHOOK_URL);
 const pingNNL = '<@341123308844220447>';
 const botID = '848217938288967710';
 const chance = require('chance').Chance();
@@ -207,44 +210,30 @@ client.on('ready', async() => {
 
     client.on('error', error => console.log(error));
     client.on('message', function(message) {
-        function sendWebhookMessage(server) {
+        if (message.guild.id === "746145375169282160" && message.channel.id === "870017944380403772") {
             try {
-                let request = new XMLHttpRequest();
-                if (server === 'frozenworld') {
-                    request.open("POST", process.env.EUROPESIM_GATEWAY_WEBHOOK_URL);
-                    console.log(`opened request to europesim`);
-                    request.setRequestHeader("Content-type", "application/json");
-                    console.log(`set request header to json for europesim`);
-                    let webhook = {
-                        "username": `${message.author.tag}`,
-                        "avatar_url": `${message.author.avatarURL()}`,
-                        "content": `${message.content.toString()}`
-                    };
-                    console.log(`created webhook for europesim`);
-                    request.send(JSON.stringify(webhook));
-                    console.log(`sent webhook to europesim`);
-                } else if (server === 'europesim') {
-                    request.open("POST", process.env.FROZENWORLD_GATEWAY_WEBHOOK_URL);
-                    console.log(`opened request to ${server}`);
-                    request.setRequestHeader("Content-type", "application/json");
-                    console.log(`set request header to json for frozenworld`);
-                    let webhook = {
-                        "username": `${message.author.tag}`,
-                        "avatar_url": `${message.author.avatarURL()}`,
-                        "content": `${message.content.toString()}`
-                    };
-                    console.log(`created webhook for frozenworld`);
-                    request.send(JSON.stringify(webhook));
-                    console.log(`sent webhook for frozenworld`);
-                } else return;
+                let msg = new webhook.MessageBuilder()
+                .setName(message.author.tag)
+                .setText(message.content.toString())
+                .setAvatar(message.author.avatarURL)
+                esimHook.send(msg);
+            } catch (err) {
+                console.log(err);
+                message.channel.send(`epic fail:\n${err}`);
+            }    
+        } else if (message.guild.id === "846807940727570433" && message.channel.id === "870017916161097798") {
+            try {
+                let msg = new webhook.MessageBuilder()
+                .setName(message.author.tag)
+                .setText(message.content.toString())
+                .setAvatar(message.author.avatarURL)
+                frznwrldHook.send(msg);
             } catch (err) {
                 console.log(err);
                 message.channel.send(`epic fail:\n${err}`);
             }
         }
-        if (message.guild.id === "746145375169282160" && message.channel.id === "870017944380403772") sendWebhookMessage('europesim')
-        else if (message.guild.id === "846807940727570433" && message.channel.id === "870017916161097798") sendWebhookMessage('frozenworld');
-
+        
         let infoEmbed = {
             "plainText": "some info on the bot",
           "title": "when /europesim is sus",
