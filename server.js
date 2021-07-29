@@ -21,8 +21,6 @@ const fsp = require('fs').promises;
 const path = require('path');
 const http = require('http');
 const webhook = require('webhook-discord');
-const europesimHook = new webhook.Webhook(process.env.EUROPESIM_GATEWAY_WEBHOOK_URL);
-const frozenworldHook = new webhook.Webhook(process.env.FROZENWORLD_GATEWAY_WEBHOOK_URL);
 const pingNNL = '<@341123308844220447>';
 const botID = '848217938288967710';
 const chance = require('chance').Chance();
@@ -208,12 +206,16 @@ client.on('ready', async() => {
 
     client.on('error', error => console.log(error));
     client.on('message', function(message) {
+        // Gateway Central:tm:
+        const europesimHook = new webhook.Webhook(process.env.EUROPESIM_GATEWAY_WEBHOOK_URL);
+        const frozenworldHook = new webhook.Webhook(process.env.FROZENWORLD_GATEWAY_WEBHOOK_URL);
+        const sklicerHook = new webhook.Webhook(process.env.SKLICER_GATEWAY_WEBHOOK_URL); // siceon's server
         let noPingMessage;
         if (message.guild.id === "746145375169282160" && message.channel.id === "870017944380403772") {
             noPingMessage = message.content.replace(/@(?=everyone|here)/g, "@\u200b");
             if (message.webhookID) return;
             else try {
-                let msg = new webhook.MessageBuilder().setName(message.author.username).setText(noPingMessage).setAvatar(message.author.avatarURL())
+                let msg = new webhook.MessageBuilder().setName(`${message.author.username} (${message.guild.name})`).setText(noPingMessage).setAvatar(message.author.avatarURL())
                 europesimHook.send(msg);
             } catch (err) {
                 console.log(err);
@@ -225,8 +227,20 @@ client.on('ready', async() => {
             if (message.webhookID) return;
             else try {
                 message.content.replace(/@(?=everyone|here)/g, "@\u200b")
-                let msg = new webhook.MessageBuilder().setName(message.author.username).setText(noPingMessage).setAvatar(message.author.avatarURL()) 
+                let msg = new webhook.MessageBuilder().setName(`${message.author.username} (${message.guild.name})`).setText(noPingMessage).setAvatar(message.author.avatarURL()) 
                 frozenworldHook.send(msg);
+            } catch (err) {
+                console.log(err);
+                message.react('❌');
+                message.channel.send(`${pingNNL} epic fail:\n${err}`);
+            }
+        } else if (message.guild.id === "818142970397065236" && message.channel.id === "870358054376448060") {
+            noPingMessage = message.content.replace(/@(?=everyone|here)/g, "@\u200b");
+            if (message.webhookID) return;
+            else try {
+                message.content.replace(/@(?=everyone|here)/g, "@\u200b")
+                let msg = new webhook.MessageBuilder().setName(`${message.author.username} (${message.guild.name})`).setText(noPingMessage).setAvatar(message.author.avatarURL()) 
+                sklicerHook.send(msg);
             } catch (err) {
                 console.log(err);
                 message.react('❌');
