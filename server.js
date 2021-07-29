@@ -211,7 +211,7 @@ client.on('ready', async() => {
         const frozenworldHook = new webhook.Webhook(process.env.FROZENWORLD_GATEWAY_WEBHOOK_URL);
         const sklicerHook = new webhook.Webhook(process.env.SKLICER_GATEWAY_WEBHOOK_URL); // siceon's server
         let noPingMessage;
-        if (message.guild.id === "746145375169282160" && message.channel.id === "870017944380403772") {
+        if (message.channel.id === "870017944380403772") {
             noPingMessage = message.content.replace(/@/g, "@\u200b");
             if (message.webhookID) return;
             else try {
@@ -223,7 +223,7 @@ client.on('ready', async() => {
                 message.react('❌');
                 message.channel.send(`${pingNNL} epic fail:\n${err}`);
             }
-        } else if (message.guild.id === "846807940727570433" && message.channel.id === "870017916161097798") {
+        } else if (message.channel.id === "870017916161097798") {
             noPingMessage = message.content.replace(/@/g, "@\u200b");
             if (message.webhookID) return;
             else try {
@@ -236,7 +236,7 @@ client.on('ready', async() => {
                 message.react('❌');
                 message.channel.send(`${pingNNL} epic fail:\n${err}`);
             }
-        } else if (message.guild.id === "818142970397065236" && message.channel.id === "870358054376448060") {
+        } else if (message.channel.id === "870358054376448060") {
             noPingMessage = message.content.replace(/@/g, "@\u200b");
             if (message.webhookID) return;
             else try {
