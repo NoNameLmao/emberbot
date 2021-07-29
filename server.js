@@ -210,6 +210,11 @@ client.on('ready', async() => {
         const europesimHook = new webhook.Webhook(process.env.EUROPESIM_GATEWAY_WEBHOOK_URL);
         const frozenworldHook = new webhook.Webhook(process.env.FROZENWORLD_GATEWAY_WEBHOOK_URL);
         const sklicerHook = new webhook.Webhook(process.env.SKLICER_GATEWAY_WEBHOOK_URL); // siceon's server
+        // TODO recode af
+        /**
+         *  1. unite webhook sending into one giant block of code instead of thousands of small try catch code blocks
+         *  2. also make sure they dont send webhooks to themselves
+         */
         let noPingMessage;
         if (message.channel.id === "870017944380403772") {
             noPingMessage = message.content.replace(/@/g, "@\u200b");
@@ -251,6 +256,7 @@ client.on('ready', async() => {
             }
         }
 
+        // info embed
         let infoEmbed = {
             "plainText": "some info on the bot",
           "title": "when /europesim is sus",
@@ -281,10 +287,7 @@ client.on('ready', async() => {
             }
           ]
         };
-        /**
-         * Embed thats sent on .help command
-         * @returns {any} List of commands
-         */
+        // help embed
         let helpEmbed = {
             "title": "All list of commands",
             "description": `prefix: ${prefix}`,
@@ -355,13 +358,6 @@ client.on('ready', async() => {
                 }
             ]
         };
-        if (message.content.includes(`hi online`)) {
-            message.channel.send(`wrong. i am ${client.user.tag}. also hi ${message.author.tag}`);
-        }
-        if (message.content.includes(`https://cdn.discordapp.com/attachments/245001780138606593/866145759917637662/image0-2-3.gif`)) {
-            let yes = client.emojis.cache.get('866325679830073394');
-            message.channel.send(yes);
-        }
 
         message.content.replace(/<[@#:].*?>/g, "");
         if (message.content.includes('69')) {
