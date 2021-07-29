@@ -345,7 +345,7 @@ client.on('ready', async() => {
         };
         if (message.content.includes(`https://cdn.discordapp.com/attachments/245001780138606593/866145759917637662/image0-2-3.gif`)) {
             let yes = client.emojis.cache.get('866325679830073394');
-            message.channel.send(`${yes}`);
+            message.channel.send(yes);
         };
 
         message.content.replace(/<[@#:].*?>/g, "");
