@@ -211,7 +211,8 @@ client.on('ready', async() => {
     client.on('error', error => console.log(error));
     client.on('message', function(message) {
         if (message.guild.id === "746145375169282160" && message.channel.id === "870017944380403772") {
-            try {
+            if (message.author.bot) return;
+            else try {
                 let msg = new webhook.MessageBuilder()
                 .setName(message.author.tag)
                 .setText(message.content.toString())
@@ -222,7 +223,8 @@ client.on('ready', async() => {
                 message.channel.send(`epic fail:\n${err}`);
             }    
         } else if (message.guild.id === "846807940727570433" && message.channel.id === "870017916161097798") {
-            try {
+            if (message.author.bot) return;
+            else try {
                 let msg = new webhook.MessageBuilder()
                 .setName(message.author.tag)
                 .setText(message.content.toString())
