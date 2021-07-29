@@ -209,9 +209,7 @@ client.on('ready', async() => {
     client.on('error', error => console.log(error));
     client.on('message', function(message) {
         if (message.guild.id === "746145375169282160" && message.channel.id === "870017944380403772") {
-            if (message.content.toString().includes('@everyone') || message.content.toString().includes('@here')) {
-                return message.channel.send('this message has very bad ping');
-            } else if (message.author.bot) return;
+            if (message.author.bot) return;
             else try {
                 let msg = new webhook.MessageBuilder().setName(message.author.username).setText(message.content.toString()).setAvatar(message.author.avatarURL())
                 europesimHook.send(msg);
@@ -224,7 +222,7 @@ client.on('ready', async() => {
         } else if (message.guild.id === "846807940727570433" && message.channel.id === "870017916161097798") {
             if (message.author.bot) return;
             else try {
-                let msg = new webhook.MessageBuilder().setName(message.author.username).setText(message.content.toString()).setAvatar(message.author.avatarURL())
+                let msg = new webhook.MessageBuilder().setName(message.author.username).setText(message.content.toString()).setAvatar(message.author.avatarURL()) 
                 frozenworldHook.send(msg);
                 message.react('✅');
             } catch (err) {
