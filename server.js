@@ -212,7 +212,6 @@ client.on('ready', async() => {
             message.content.replace('@everyone', '(there once was an "everyone" ping here)');
             message.content.replace('@here', '(there once was a "here" ping here)');
             message.react('870290954916102185');
-            message.channel.send('no');
             if (message.author.bot) return;
             else try {
                 let msg = new webhook.MessageBuilder().setName(message.author.username).setText(message.content.toString()).setAvatar(message.author.avatarURL())
