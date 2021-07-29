@@ -28,6 +28,9 @@ const botID = '848217938288967710';
 const chance = require('chance').Chance();
 const esimGatewayID = '870017944380403772';
 const frozenworldGatewayID = '870017916161097798';
+String.prototype.replaceAll = function(match, replace) {
+    return this.replace(new RegExp(match, 'g'), () => replace);
+};
 let now = new Date();
 let nowUTC = now.getUTCHours();
 let europesimStartYear = 1800;
@@ -209,6 +212,7 @@ client.on('ready', async() => {
     client.on('error', error => console.log(error));
     client.on('message', function(message) {
         if (message.guild.id === "746145375169282160" && message.channel.id === "870017944380403772") {
+            message.content.replaceAll("@everyone", "@\u200beveryone").replaceAll("@here", "@\u200bhere");
             if (message.author.bot) return;
             else try {
                 let msg = new webhook.MessageBuilder().setName(message.author.username).setText(message.content.toString()).setAvatar(message.author.avatarURL())
@@ -220,6 +224,7 @@ client.on('ready', async() => {
                 message.channel.send(`${pingNNL} epic fail:\n${err}`);
             }
         } else if (message.guild.id === "846807940727570433" && message.channel.id === "870017916161097798") {
+            message.content.replaceAll("@everyone", "@\u200beveryone").replaceAll("@here", "@\u200bhere");
             if (message.author.bot) return;
             else try {
                 let msg = new webhook.MessageBuilder().setName(message.author.username).setText(message.content.toString()).setAvatar(message.author.avatarURL()) 
