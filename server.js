@@ -24,6 +24,8 @@ const quotes = new MarkovChain(fs.readFileSync('./quotes.txt', 'utf8'));
 const pingNNL = '<@341123308844220447>';
 const botID = '848217938288967710';
 const chance = require('chance').Chance();
+const esimGatewayID = '870017944380403772';
+const frozenworldGatewayID = '870017916161097798';
 let now = new Date();
 let nowUTC = now.getUTCHours();
 let europesimStartYear = 1800;
@@ -199,6 +201,9 @@ client.on('ready', async() => {
     let DateChannel = guild.channels.cache.get(DateChannelID);
     DateChannel.join();
     if (config.debug === true) channel.send('ran DateChannel.join()');
+
+    const esimGatewayChannel = client.channels.fetch(esimGatewayID);
+    const frozenworldGatewayChannel = client.channels.fetch(frozenworldGatewayID);
 
     client.on('error', error => console.log(error));
     client.on('message', function(message) {
@@ -456,6 +461,29 @@ client.on('ready', async() => {
         } else if (command === "dn") {
             logCommand();
             return message.channel.send('deez nuts');
+        } else if (command === "fallbackGateway") {
+            let fallbackGatewayState;
+            if (!args[0]) {
+                return message.channel.send(`currently fallbackGatewayState is ${fallbackGatewayState}`)
+            } else if (args[0] === 'off') {
+                message.channel.send(`turned off fallbackGateway`);
+                fallbackGatewayState = 'off'
+            } else if (args[1] === 'on') {
+                message.channel.send(`turned on fallbackGateway`);
+                fallbackGatewayState = 'on'
+            } else return message.channel.send(`dont type anything after to see current state, type on/off to enable/disable it`);
+            function fallbackGateway(server) {
+                if (server === "frozenworld") {
+                    return esimGatewayChannel.send(`<${message.author.tag}>: ${message.content.toString()}`);
+                } else if (server === "europesim") {
+                    return frozenworldGatewayChannel.send(`<${message.author.tag}>: ${message.content.toString()}`);
+                } else return;
+            }
+            if (message.guild.id === '746145375169282160' && message.channel.id === frozenworldGatewayID) {
+                fallbackGateway("frozenworld");
+            } else if (message.guild.id === '846807940727570433' && message.channel.id === esimGatewayID) {
+                fallbackGateway("europesim");
+            }
         } else if (command === "debug") {
             logCommand();
             if (args[0] === 'true') {
