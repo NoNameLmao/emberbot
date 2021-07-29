@@ -213,11 +213,17 @@ client.on('ready', async() => {
                 let msg;
                 if (message.attachments.size > 0 && !message.content) {
                     msg = new webhook.MessageBuilder().setName(message.author.tag).setText(message.attachments.forEach(attachment => attachment.proxyURL)).setAvatar(message.author.avatarURL());
+                    message.react('✅'); 
+                    return europesimHook.send(msg);
                 } else if (message.attachments.size > 0 && message.content) {
                     msg = new webhook.MessageBuilder().setName(message.author.tag).setText(`${message.content.toString()} \n${message.attachments.forEach(attachment => attachment.proxyURL)}`).setAvatar(message.author.avatarURL());
-                } else msg = new webhook.MessageBuilder().setName(message.author.tag).setText(message.content.toString()).setAvatar(message.author.avatarURL()) 
-                europesimHook.send(msg);
-                message.react('✅');
+                    message.react('✅'); 
+                    return europesimHook.send(msg);
+                } else {
+                    msg = new webhook.MessageBuilder().setName(message.author.tag).setText(message.content.toString()).setAvatar(message.author.avatarURL())
+                    message.react('✅'); 
+                    return europesimHook.send(msg);
+                }
             } catch (err) {
                 console.log(err);
                 message.react('❌');
@@ -229,11 +235,17 @@ client.on('ready', async() => {
                 let msg;
                 if (message.attachments.size > 0 && !message.content) {
                     msg = new webhook.MessageBuilder().setName(message.author.tag).setText(message.attachments.forEach(attachment => attachment.proxyURL)).setAvatar(message.author.avatarURL());
+                    message.react('✅'); 
+                    return europesimHook.send(msg);
                 } else if (message.attachments.size > 0 && message.content) {
                     msg = new webhook.MessageBuilder().setName(message.author.tag).setText(`${message.content.toString()} \n${message.attachments.forEach(attachment => attachment.proxyURL)}`).setAvatar(message.author.avatarURL());
-                } else msg = new webhook.MessageBuilder().setName(message.author.tag).setText(message.content.toString()).setAvatar(message.author.avatarURL()) 
-                frozenworldHook.send(msg);
-                message.react('✅');
+                    message.react('✅'); 
+                    return europesimHook.send(msg);
+                } else {
+                    msg = new webhook.MessageBuilder().setName(message.author.tag).setText(message.content.toString()).setAvatar(message.author.avatarURL())
+                    message.react('✅'); 
+                    return europesimHook.send(msg);
+                }
             } catch (err) {
                 console.log(err);
                 message.react('❌');
