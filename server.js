@@ -183,8 +183,11 @@ client.on('ready', async() => {
            channel.send(`some error idk, go fix <@341123308844220447> \n\`\`\`${err.stack}\`\`\``); 
         }, 5000);
         console.error(now + ' uncaughtException:', err.stack);
-    });    
+    });
     channel = await client.channels.fetch(botchannelID);
+    process.on('beforeExit', () => {
+        channel.send(`im exiting bye`);
+    });
     channel.send(`hi i either (re)started or got back from heroku's dumb idling thing`);
     if (!channel) {
         console.log(`Cannot find the bot channel! ping spam NoNameLmao(emberglaze lmao) to fix it`);
@@ -373,21 +376,15 @@ client.on('ready', async() => {
                 return console.log('detected the funny number, laf');
             }
         }
-
         if (message.content.startsWith('..')) {
             return console.log(`"command" with .. start ignored`);
         }
-        
         if (liechtenstein.includes(message.content)) message.channel.send('liechtenstein*');
 
         const args = message.content.slice(prefix.length).trim().split(/ +/g);
         const command = args.shift().toLowerCase();
         if (!message.content.includes(prefix || command)) console.log(`Message from ${message.author.tag} in ${message.guild.name} server, ${message.channel.name} channel at ${message.createdAt}: ${message.content}`);
         if (!message.content.startsWith(prefix)) return;
-        /**
-         * Logs a discord command.
-         * @returns {any} console.log() about the command.
-         */
         function logCommand() {
             console.log(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
             if (config.debug === 'true') message.channel.send(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
