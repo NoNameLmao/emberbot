@@ -211,11 +211,12 @@ client.on('ready', async() => {
 
     client.on('error', error => console.log(error));
     client.on('message', function(message) {
+        let noPingMessage;
         if (message.guild.id === "746145375169282160" && message.channel.id === "870017944380403772") {
+            noPingMessage = message.content.replace(/@(?=everyone|here)/g, "@\u200b");
             if (message.author.bot) return;
             else try {
-                message.content.replace(/@(?=everyone|here)/g, "@\u200b")
-                let msg = new webhook.MessageBuilder().setName(message.author.username).setText(message.content.toString()).setAvatar(message.author.avatarURL())
+                let msg = new webhook.MessageBuilder().setName(message.author.username).setText(noPingMessage).setAvatar(message.author.avatarURL())
                 europesimHook.send(msg);
                 message.react('✅');
             } catch (err) {
@@ -224,11 +225,11 @@ client.on('ready', async() => {
                 message.channel.send(`${pingNNL} epic fail:\n${err}`);
             }
         } else if (message.guild.id === "846807940727570433" && message.channel.id === "870017916161097798") {
-            message.content.replaceAll("@everyone", "@\u200beveryone").replaceAll("@here", "@\u200bhere");
+            noPingMessage = message.content.replace(/@(?=everyone|here)/g, "@\u200b");
             if (message.author.bot) return;
             else try {
                 message.content.replace(/@(?=everyone|here)/g, "@\u200b")
-                let msg = new webhook.MessageBuilder().setName(message.author.username).setText(message.content.toString()).setAvatar(message.author.avatarURL()) 
+                let msg = new webhook.MessageBuilder().setName(message.author.username).setText(noPingMessage).setAvatar(message.author.avatarURL()) 
                 frozenworldHook.send(msg);
                 message.react('✅');
             } catch (err) {
