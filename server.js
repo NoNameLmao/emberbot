@@ -211,7 +211,6 @@ client.on('ready', async() => {
         if (message.guild.id === "746145375169282160" && message.channel.id === "870017944380403772") {
             message.content.replace('@everyone', '(there once was an "everyone" ping here)');
             message.content.replace('@here', '(there once was a "here" ping here)');
-            message.react('870290954916102185');
             if (message.author.bot) return;
             else try {
                 let msg = new webhook.MessageBuilder().setName(message.author.username).setText(message.content.toString()).setAvatar(message.author.avatarURL())
