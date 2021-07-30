@@ -219,11 +219,28 @@ client.on('ready', async() => {
          *  2. also make sure they dont send webhooks to themselves
          */
         let noPingMessage;
-        if (message.channel.id === "870017944380403772") {
+        let msg;
+        function detectAttachment() {
+            let url;
+            if (message.attachments.size > 0 && message.content.length === 0) { // only image
+                message.attachments.forEach(attachment => {
+                    url = attachment.url;
+                    msg = new webhook.MessageBuilder().setName(`${message.author.username} (${message.guild.name})`).setText(url);
+                });
+            } else if (message.attachments.size > 0 && message.content.length > 0) { // text message with image
+                message.attachments.forEach(attachment => {
+                    url = attachment.url;
+                    msg = new webhook.MessageBuilder().setName(`${message.author.username} (${message.guild.name})`).setText(`${noPingMessage}\n${url}`);
+                });
+            } else if (message.attachments.size === 0) { // no image, dont care about text this time
+                msg = new webhook.MessageBuilder().setName(`${message.author.username} (${message.guild.name})`).setText(noPingMessage);
+            }
+        }
+        if (message.channel.id === "870017944380403772") { // frozenworld gateway-central
             noPingMessage = message.content.replace(/@/g, "@\u200b");
             if (message.webhookID) return;
             else try {
-                let msg = new webhook.MessageBuilder().setName(`${message.author.username} (${message.guild.name})`).setText(noPingMessage).setAvatar(message.author.avatarURL())
+                detectAttachment();
                 europesimHook.send(msg);
                 sklicerHook.send(msg);
             } catch (err) {
@@ -231,12 +248,12 @@ client.on('ready', async() => {
                 message.react('❌');
                 message.channel.send(`${pingNNL} epic fail:\n${err}`);
             }
-        } else if (message.channel.id === "870017916161097798") {
+        } else if (message.channel.id === "870017916161097798") { // europesim gateway-central
             noPingMessage = message.content.replace(/@/g, "@\u200b");
             if (message.webhookID) return;
             else try {
                 message.content.replace(/@/g, "@\u200b")
-                let msg = new webhook.MessageBuilder().setName(`${message.author.username} (${message.guild.name})`).setText(noPingMessage).setAvatar(message.author.avatarURL()) 
+                detectAttachment();
                 frozenworldHook.send(msg);
                 sklicerHook.send(msg);
             } catch (err) {
@@ -244,12 +261,12 @@ client.on('ready', async() => {
                 message.react('❌');
                 message.channel.send(`${pingNNL} epic fail:\n${err}`);
             }
-        } else if (message.channel.id === "870358054376448060") {
+        } else if (message.channel.id === "870358054376448060") { // sklicer gateway-central
             noPingMessage = message.content.replace(/@/g, "@\u200b");
             if (message.webhookID) return;
             else try {
                 message.content.replace(/@/g, "@\u200b")
-                let msg = new webhook.MessageBuilder().setName(`${message.author.username} (${message.guild.name})`).setText(noPingMessage).setAvatar(message.author.avatarURL()) 
+                detectAttachment();
                 frozenworldHook.send(msg);
                 europesimHook.send(msg);
             } catch (err) {
