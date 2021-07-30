@@ -213,13 +213,10 @@ client.on('ready', async() => {
         const europesimHook = new webhook.Webhook(process.env.EUROPESIM_GATEWAY_WEBHOOK_URL);
         const frozenworldHook = new webhook.Webhook(process.env.FROZENWORLD_GATEWAY_WEBHOOK_URL);
         const sklicerHook = new webhook.Webhook(process.env.SKLICER_GATEWAY_WEBHOOK_URL); // siceon's server
-        // TODO recode af
-        /**
-         *  1. unite webhook sending into one giant block of code instead of thousands of small try catch code blocks
-         *  2. also make sure they dont send webhooks to themselves
-         */
+        const zerxesHook = new webhook.Webhook(process.env.ZERXESCONSTELLATION_GATEWAY_WEBHOOK_URL); // zerxe's server with a long af name
         let noPingMessage;
         let msg;
+        let server;
         function detectAttachment() {
             let url;
             if (message.attachments.size > 0 && message.content.length === 0) { // only image
@@ -237,38 +234,59 @@ client.on('ready', async() => {
             }
         }
         if (message.channel.id === "870017944380403772") { // frozenworld gateway-central
+            server = message.guild.name();
             noPingMessage = message.content.replace(/@/g, "@\u200b");
             if (message.webhookID) return;
             else try {
                 detectAttachment();
                 europesimHook.send(msg);
                 sklicerHook.send(msg);
+                zerxesHook.send(msg);
             } catch (err) {
                 console.log(err);
                 message.react('❌');
                 message.channel.send(`${pingNNL} epic fail:\n${err}`);
             }
         } else if (message.channel.id === "870017916161097798") { // europesim gateway-central
+            server = message.guild.name();
             noPingMessage = message.content.replace(/@/g, "@\u200b");
             if (message.webhookID) return;
             else try {
-                message.content.replace(/@/g, "@\u200b")
+                message.content.replace(/@/g, "@\u200b");
                 detectAttachment();
                 frozenworldHook.send(msg);
                 sklicerHook.send(msg);
+                zerxesHook.send(msg);
             } catch (err) {
                 console.log(err);
                 message.react('❌');
                 message.channel.send(`${pingNNL} epic fail:\n${err}`);
             }
         } else if (message.channel.id === "870358054376448060") { // sklicer gateway-central
+            server = message.guild.name();
             noPingMessage = message.content.replace(/@/g, "@\u200b");
             if (message.webhookID) return;
             else try {
-                message.content.replace(/@/g, "@\u200b")
+                message.content.replace(/@/g, "@\u200b");
                 detectAttachment();
                 frozenworldHook.send(msg);
                 europesimHook.send(msg);
+                zerxesHook.send(msg);
+            } catch (err) {
+                console.log(err);
+                message.react('❌');
+                message.channel.send(`${pingNNL} epic fail:\n${err}`);
+            }
+        } else if (message.channel.id === "870370854196887592") { // sklicer gateway-central
+            server = message.guild.name();
+            noPingMessage = message.content.replace(/@/g, "@\u200b");
+            if (message.webhookID) return;
+            else try {
+                message.content.replace(/@/g, "@\u200b");
+                detectAttachment();
+                frozenworldHook.send(msg);
+                europesimHook.send(msg);
+                sklicerHook.send(msg);
             } catch (err) {
                 console.log(err);
                 message.react('❌');
