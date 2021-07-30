@@ -234,7 +234,6 @@ client.on('ready', async() => {
             }
         }
         if (message.channel.id === "870017944380403772") { // frozenworld gateway-central
-            server = message.guild.name();
             noPingMessage = message.content.replace(/@/g, "@\u200b");
             if (message.webhookID) return;
             else try {
@@ -248,7 +247,6 @@ client.on('ready', async() => {
                 message.channel.send(`${pingNNL} epic fail:\n${err}`);
             }
         } else if (message.channel.id === "870017916161097798") { // europesim gateway-central
-            server = message.guild.name();
             noPingMessage = message.content.replace(/@/g, "@\u200b");
             if (message.webhookID) return;
             else try {
@@ -263,7 +261,6 @@ client.on('ready', async() => {
                 message.channel.send(`${pingNNL} epic fail:\n${err}`);
             }
         } else if (message.channel.id === "870358054376448060") { // sklicer gateway-central
-            server = message.guild.name();
             noPingMessage = message.content.replace(/@/g, "@\u200b");
             if (message.webhookID) return;
             else try {
@@ -278,7 +275,6 @@ client.on('ready', async() => {
                 message.channel.send(`${pingNNL} epic fail:\n${err}`);
             }
         } else if (message.channel.id === "870370854196887592") { // sklicer gateway-central
-            server = message.guild.name();
             noPingMessage = message.content.replace(/@/g, "@\u200b");
             if (message.webhookID) return;
             else try {
