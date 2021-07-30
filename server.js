@@ -270,7 +270,7 @@ client.on('ready', async() => {
                 message.react('❌');
                 message.channel.send(`${pingNNL} epic fail:\n${err}`);
             }
-        } else if (message.channel.id === "870370854196887592") { // sklicer gateway-central
+        } else if (message.channel.id === "870370854196887592") { // zerxe gateway-central
             noPingMessage = message.content.replace(/@/g, "@\u200b");
             if (message.webhookID) return;
             else try {
