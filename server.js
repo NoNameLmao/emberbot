@@ -116,6 +116,7 @@ const liechtenstein = [
     'lichistint',
     'lichtenstein',
     'liehctenstein',
+    'liechtensteing',
     'liechtenstien',
     'lechteinstei',
     'lechtenstei',
@@ -212,7 +213,6 @@ client.on('ready', async() => {
         const zerxesHook = new webhook.Webhook(process.env.ZERXESCONSTELLATION_GATEWAY_WEBHOOK_URL); // zerxe's server with a long af name
         let noPingMessage;
         let msg;
-        let server;
         function detectAttachment() {
             let url;
             if (message.attachments.size > 0 && message.content.length === 0) { // only image
@@ -390,9 +390,7 @@ client.on('ready', async() => {
         };
 
         message.content.replace(/<[@#:].*?>/g, "");
-        if (message.content.startsWith('..')) {
-            return console.log(`"command" with .. start ignored`);
-        }
+        if (message.content.startsWith('..')) return console.log(`"command" with .. start ignored`);
         if (liechtenstein.includes(message.content)) message.channel.send('liechtenstein*');
 
         const args = message.content.slice(prefix.length).trim().split(/ +/g);
