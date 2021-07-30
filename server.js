@@ -225,15 +225,15 @@ client.on('ready', async() => {
             if (message.attachments.size > 0 && message.content.length === 0) { // only image
                 message.attachments.forEach(attachment => {
                     url = attachment.url;
-                    msg = new webhook.MessageBuilder().setName(`${message.author.username} (${message.guild.name})`).setText(url);
+                    msg = new webhook.MessageBuilder().setName(`${message.author.username} (${message.guild.name})`).setText(url).setAvatar(message.author.avatarURL());
                 });
             } else if (message.attachments.size > 0 && message.content.length > 0) { // text message with image
                 message.attachments.forEach(attachment => {
                     url = attachment.url;
-                    msg = new webhook.MessageBuilder().setName(`${message.author.username} (${message.guild.name})`).setText(`${noPingMessage}\n${url}`);
+                    msg = new webhook.MessageBuilder().setName(`${message.author.username} (${message.guild.name})`).setText(`${noPingMessage}\n${url}`).setAvatar(message.author.avatarURL());
                 });
             } else if (message.attachments.size === 0) { // no image, dont care about text this time
-                msg = new webhook.MessageBuilder().setName(`${message.author.username} (${message.guild.name})`).setText(noPingMessage);
+                msg = new webhook.MessageBuilder().setName(`${message.author.username} (${message.guild.name})`).setText(noPingMessage).setAvatar(message.author.avatarURL());
             }
         }
         if (message.channel.id === "870017944380403772") { // frozenworld gateway-central
