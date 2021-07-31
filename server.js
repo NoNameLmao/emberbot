@@ -212,21 +212,21 @@ client.on('ready', async() => {
         const sklicerHook = new webhook.Webhook(process.env.SKLICER_GATEWAY_WEBHOOK_URL); // siceon's server
         const zerxesHook = new webhook.Webhook(process.env.ZERXESCONSTELLATION_GATEWAY_WEBHOOK_URL); // zerxe's server with a long af name
         let noPingMessage;
-        let msg;
+        let webhookMsg;
         function detectAttachment() {
             let url;
             if (message.attachments.size > 0 && message.content.length === 0) { // only image
                 message.attachments.forEach(attachment => {
                     url = attachment.url;
-                    msg = new webhook.MessageBuilder().setName(`${message.author.username} (${message.guild.name})`).setText(url).setAvatar(message.author.avatarURL());
+                    webhookMsg = new webhook.MessageBuilder().setName(`${message.author.username} (${message.guild.name})`).setText(url).setAvatar(message.author.avatarURL());
                 });
             } else if (message.attachments.size > 0 && message.content.length > 0) { // text message with image
                 message.attachments.forEach(attachment => {
                     url = attachment.url;
-                    msg = new webhook.MessageBuilder().setName(`${message.author.username} (${message.guild.name})`).setText(`${noPingMessage}\n${url}`).setAvatar(message.author.avatarURL());
+                    webhookMsg = new webhook.MessageBuilder().setName(`${message.author.username} (${message.guild.name})`).setText(`${noPingMessage}\n${url}`).setAvatar(message.author.avatarURL());
                 });
             } else if (message.attachments.size === 0) { // no image, dont care about text this time
-                msg = new webhook.MessageBuilder().setName(`${message.author.username} (${message.guild.name})`).setText(noPingMessage).setAvatar(message.author.avatarURL());
+                webhookMsg = new webhook.MessageBuilder().setName(`${message.author.username} (${message.guild.name})`).setText(noPingMessage).setAvatar(message.author.avatarURL());
             }
         }
         if (message.channel.id === "870017944380403772") { // frozenworld gateway-central
@@ -234,9 +234,9 @@ client.on('ready', async() => {
             if (message.webhookID) return;
             else try {
                 detectAttachment();
-                europesimHook.send(msg);
-                sklicerHook.send(msg);
-                zerxesHook.send(msg);
+                europesimHook.send(webhookMsg);
+                sklicerHook.send(webhookMsg);
+                zerxesHook.send(webhookMsg);
             } catch (err) {
                 console.log(err);
                 message.react('❌');
@@ -248,9 +248,9 @@ client.on('ready', async() => {
             else try {
                 message.content.replace(/@/g, "@\u200b");
                 detectAttachment();
-                frozenworldHook.send(msg);
-                sklicerHook.send(msg);
-                zerxesHook.send(msg);
+                frozenworldHook.send(webhookMsg);
+                sklicerHook.send(webhookMsg);
+                zerxesHook.send(webhookMsg);
             } catch (err) {
                 console.log(err);
                 message.react('❌');
@@ -262,9 +262,9 @@ client.on('ready', async() => {
             else try {
                 message.content.replace(/@/g, "@\u200b");
                 detectAttachment();
-                frozenworldHook.send(msg);
-                europesimHook.send(msg);
-                zerxesHook.send(msg);
+                frozenworldHook.send(webhookMsg);
+                europesimHook.send(webhookMsg);
+                zerxesHook.send(webhookMsg);
             } catch (err) {
                 console.log(err);
                 message.react('❌');
@@ -276,9 +276,9 @@ client.on('ready', async() => {
             else try {
                 message.content.replace(/@/g, "@\u200b");
                 detectAttachment();
-                frozenworldHook.send(msg);
-                europesimHook.send(msg);
-                sklicerHook.send(msg);
+                frozenworldHook.send(webhookMsg);
+                europesimHook.send(webhookMsg);
+                sklicerHook.send(webhookMsg);
             } catch (err) {
                 console.log(err);
                 message.react('❌');
