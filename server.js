@@ -9,6 +9,8 @@ const client = new Discord.Client({
     },
     disableMentions: 'everyone',
 });
+const smartestchatbot = require('smartestchatbot');
+const scb = new smartestchatbot.Client();
 const config = require('./config.json');
 const disbut = require('discord-buttons')(client);
 const guildID = `846807940727570433`;
@@ -389,6 +391,16 @@ client.on('ready', async() => {
                 }
             ]
         };
+        if (message.channel.name == "bot-commands") {
+            if (message.author.bot) return;
+            else {
+                message.channel.startTyping();
+                scb.chat({ message: message.content, name: client.user.username, user: message.author.id, language: "auto" }).then(msg => {
+                    message.channel.send(msg);
+                });
+                message.channel.stopTyping();
+            }
+        }
 
         message.content.replace(/<[@#:].*?>/g, "");
         if (message.content.startsWith('..')) return log(`"command" with .. start ignored`);
