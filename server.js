@@ -46,7 +46,7 @@ function updateMonth() {
     europesimCurrentMonth = months[Math.floor(nowUTC / 2)];
 }
 function log(stuff) {
-    return log(`[server.js] ${stuff}`);
+    return console.log(`[server.js] ${stuff}`);
 }
 
 const httpHost = '0.0.0.0';
