@@ -11,11 +11,10 @@ const client = new Discord.Client({
 });
 const config = require('./config.json');
 const disbut = require('discord-buttons')(client);
-const guildID = (`846807940727570433`);
-const botchannelID = (`846811100338323497`);
-const DateChannelID = (`848247855789375508`);
+const guildID = `846807940727570433`;
+const botchannelID = `846811100338323497`;
+const DateChannelID = `848247855789375508`;
 const prefix = config.prefix;
-const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const fs = require('fs');
 const fsp = require('fs').promises;
 const path = require('path');
@@ -44,6 +43,9 @@ function updateYear() {
 function updateMonth() {
     europesimCurrentMonth = months[Math.floor(nowUTC / 2)];
 }
+function log(stuff) {
+    return log(`[server.js] ${stuff}`);
+}
 
 const httpHost = '0.0.0.0';
 const httpPort = process.env.PORT;
@@ -57,7 +59,7 @@ const httpServer = http.createServer(requestListener);
 fsp.readFile(__dirname + "/index.html").then(contents => {
     indexFile = contents;
     httpServer.listen(httpPort, httpHost, () => {
-        console.log(`Server is running on http://${httpHost}:${httpPort}`);
+        log(`Server is running on http://${httpHost}:${httpPort}`);
     });
 }).catch(err => {
     console.error(`Could not read index.html file: ${err}`);
@@ -151,7 +153,7 @@ function sleep(ms) {
 
 let channel;
 client.on('ready', async() => {
-    console.log(`Logged in successfully as ${client.user.tag}!`);
+    log(`Logged in successfully as ${client.user.tag}!`);
     const filePath = path.resolve(__dirname, './config.json');
     process.on('uncaughtException', function (err) {
         console.error(now + ' uncaughtException:', err.stack);
@@ -187,12 +189,12 @@ client.on('ready', async() => {
     });
     channel.send(`hi i either (re)started or got back from heroku's dumb idling thing`);
     if (!channel) {
-        console.log(`Cannot find the bot channel! ping spam NoNameLmao(emberglaze lmao) to fix it`);
+        log(`Cannot find the bot channel! ping spam NoNameLmao(emberglaze lmao) to fix it`);
         process.exit(0);
     }
     let guild = await client.guilds.fetch(guildID);
     if (!guild) {
-        console.log(`lmaoooooooo wrong guild id? or server non-existant :lmaoof: dm nnl lmao xddddd`);
+        log(`lmaoooooooo wrong guild id? or server non-existant :lmaoof: dm nnl lmao xddddd`);
         process.exit(0);
     }
     let memberCount = guild.memberCount;
@@ -204,7 +206,7 @@ client.on('ready', async() => {
     DateChannel.join();
     if (config.debug === true) channel.send('ran DateChannel.join()');
 
-    client.on('error', error => console.log(error));
+    client.on('error', error => log(error));
     client.on('message', function(message) {
         // Gateway Central:tm:
         const europesimHook = new webhook.Webhook(process.env.EUROPESIM_GATEWAY_WEBHOOK_URL);
@@ -238,7 +240,7 @@ client.on('ready', async() => {
                 sklicerHook.send(webhookMsg);
                 zerxesHook.send(webhookMsg);
             } catch (err) {
-                console.log(err);
+                log(err);
                 message.react('❌');
                 message.channel.send(`${pingNNL} epic fail:\n${err}`);
             }
@@ -252,7 +254,7 @@ client.on('ready', async() => {
                 sklicerHook.send(webhookMsg);
                 zerxesHook.send(webhookMsg);
             } catch (err) {
-                console.log(err);
+                log(err);
                 message.react('❌');
                 message.channel.send(`${pingNNL} epic fail:\n${err}`);
             }
@@ -266,7 +268,7 @@ client.on('ready', async() => {
                 europesimHook.send(webhookMsg);
                 zerxesHook.send(webhookMsg);
             } catch (err) {
-                console.log(err);
+                log(err);
                 message.react('❌');
                 message.channel.send(`${pingNNL} epic fail:\n${err}`);
             }
@@ -280,7 +282,7 @@ client.on('ready', async() => {
                 europesimHook.send(webhookMsg);
                 sklicerHook.send(webhookMsg);
             } catch (err) {
-                console.log(err);
+                log(err);
                 message.react('❌');
                 message.channel.send(`${pingNNL} epic fail:\n${err}`);
             }
@@ -288,9 +290,8 @@ client.on('ready', async() => {
 
         // info embed
         let infoEmbed = {
-            "plainText": "some info on the bot",
-          "title": "when /europesim is sus",
-          "description": "owopus!!!!!!!!",
+          "title": "Useless information about europesim",
+          "description": "totally useless why did you use this command",
           "author": {
             "name": "Bot information",
             "icon_url": "https://cdn.discordapp.com/icons/846807940727570433/4bbf13c1ce8bfb351fc7eafdc898e7d1.png"
@@ -311,7 +312,7 @@ client.on('ready', async() => {
               "inline": true
             },
             {
-              "name": "Server member count",
+              "name": "Europesim's server member count",
               "value": `${userCount} users + ${botCount} bots = ${memberCount} members overall. Online users: ${onlineUsers}`,
               "inline": false
             }
@@ -390,15 +391,15 @@ client.on('ready', async() => {
         };
 
         message.content.replace(/<[@#:].*?>/g, "");
-        if (message.content.startsWith('..')) return console.log(`"command" with .. start ignored`);
+        if (message.content.startsWith('..')) return log(`"command" with .. start ignored`);
         if (liechtenstein.includes(message.content)) message.channel.send('liechtenstein*');
 
         const args = message.content.slice(prefix.length).trim().split(/ +/g);
         const command = args.shift().toLowerCase();
-        if (!message.content.includes(prefix || command)) console.log(`Message from ${message.author.tag} in ${message.guild.name} server, ${message.channel.name} channel at ${message.createdAt}: ${message.content}`);
+        if (!message.content.includes(prefix || command)) log(`Message from ${message.author.tag} in ${message.guild.name} server, ${message.channel.name} channel at ${message.createdAt}: ${message.content}`);
         if (!message.content.startsWith(prefix)) return;
         function logCommand() {
-            console.log(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
+            log(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
             if (config.debug === 'true') message.channel.send(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
         }
         if (command === `hi`) {
@@ -412,19 +413,19 @@ client.on('ready', async() => {
                     let output = result;
                     if (typeof output !== 'string') output = require('util').inspect(result);
                     message.channel.send(output, {code: 'js'});
-                    console.log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${output, {code: 'js'}}`);
+                    log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${output, {code: 'js'}}`);
                 } catch (error) {
                     message.channel.send(`\`Code ran with an error:\` \`\`\`xl\n${error}\n\`\`\``);
-                    console.log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${code} \nThere was an error running this code: \n${error}`);
+                    log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${code} \nThere was an error running this code: \n${error}`);
                 }
             } else return message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
         } else if (command === "exit") {
             try {
                 if (message.author.id === `341123308844220447` || message.member.roles.find(r => r.name === 'Admin')) {
-                    console.log(`recieved exit command from ${message.author.tag} @ ${now.toString()}. goodbye`);
+                    log(`recieved exit command from ${message.author.tag} @ ${now.toString()}. goodbye`);
                     message.channel.send(`:sob:`).then(() => process.exit(1));
                 } else {
-                    console.log(`recieved exit command from ${message.author.tag} @ ${now.toString()} lol permission denied have a technoblade quote instead nerd`);
+                    log(`recieved exit command from ${message.author.tag} @ ${now.toString()} lol permission denied have a technoblade quote instead nerd`);
                     quoteInt = getRandomInt(37);
                     message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);    
                 } return;    
