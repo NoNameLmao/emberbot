@@ -408,8 +408,7 @@ client.on('ready', async() => {
 
         const args = message.content.slice(prefix.length).trim().split(/ +/g);
         const command = args.shift().toLowerCase();
-        if (!message.content.includes(prefix || command)) log(`Message from ${message.author.tag} in ${message.guild.name} server, ${message.channel.name} channel at ${message.createdAt}: ${message.content}`);
-        if (!message.content.startsWith(prefix)) return;
+        if (!message.content.startsWith(prefix)) log(`Message from ${message.author.tag} in ${message.guild.name} server, ${message.channel.name} channel at ${message.createdAt}: ${message.content}`);
         function logCommand() {
             log(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
             if (config.debug === 'true') message.channel.send(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
