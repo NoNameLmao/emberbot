@@ -11,6 +11,7 @@
     "chance": "^1.1.7",
     "chance.js": "^0.0.1",
     "discord-buttons": "^3.2.1",
+    "discord-reply": "^0.1.2",
     "discord.js": "^12.5.3",
     "express": "^4.17.1",
     "flying-squid": "^1.4.0",

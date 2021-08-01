@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+require('discord-reply');
 const client = new Discord.Client({
     presence: {
         status: 'online',
@@ -396,7 +397,7 @@ client.on('ready', async() => {
             else {
                 message.channel.startTyping();
                 scb.chat({ message: message.content, name: client.user.username, user: message.author.id, language: "auto" }).then(msg => {
-                    message.channel.send(msg);
+                    message.lineReply(msg);
                 });
                 message.channel.stopTyping();
             }
