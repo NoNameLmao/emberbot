@@ -392,7 +392,7 @@ client.on('ready', async() => {
                 }
             ]
         };
-        if (message.channel.name == "bot-commands") {
+        if (message.channel.name == "es-chatbot") {
             if (message.author.bot) return;
             else {
                 message.channel.startTyping();
