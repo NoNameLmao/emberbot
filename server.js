@@ -49,6 +49,14 @@ function updateMonth() {
 function log(stuff) {
     return console.log(`[server.js] ${stuff}`);
 }
+/**
+ * Will limit the length of a string to given (length - 3) and will add ... afterwards
+ * @param {number} length length of a string
+ * @returns {string} string with it's (length - 3) + ...
+ */
+String.prototype.limit = function(length) {
+    return this.length > length ? (this.substring(0, length - 3) + '...') : this;
+}
 
 const httpHost = '0.0.0.0';
 const httpPort = process.env.PORT;
@@ -220,18 +228,19 @@ client.on('ready', async() => {
         let webhookMsg;
         function detectAttachment() {
             let url;
+            let webhookMsgName = `${message.author.username} (${message.guild.name})`
             if (message.attachments.size > 0 && message.content.length === 0) { // only image
                 message.attachments.forEach(attachment => {
                     url = attachment.url;
-                    webhookMsg = new webhook.MessageBuilder().setName(`${message.author.username} (${message.guild.name})`).setText(url).setAvatar(message.author.avatarURL());
+                    webhookMsg = new webhook.MessageBuilder().setName(webhookMsgName.limit(32)).setText(url).setAvatar(message.author.avatarURL());
                 });
             } else if (message.attachments.size > 0 && message.content.length > 0) { // text message with image
                 message.attachments.forEach(attachment => {
                     url = attachment.url;
-                    webhookMsg = new webhook.MessageBuilder().setName(`${message.author.username} (${message.guild.name})`).setText(`${noPingMessage}\n${url}`).setAvatar(message.author.avatarURL());
+                    webhookMsg = new webhook.MessageBuilder().setName(webhookMsgName.limit(32)).setText(`${noPingMessage}\n${url}`).setAvatar(message.author.avatarURL());
                 });
             } else if (message.attachments.size === 0) { // no image, dont care about text this time
-                webhookMsg = new webhook.MessageBuilder().setName(`${message.author.username} (${message.guild.name})`).setText(noPingMessage).setAvatar(message.author.avatarURL());
+                webhookMsg = new webhook.MessageBuilder().setName(webhookMsgName.limit(32)).setText(noPingMessage).setAvatar(message.author.avatarURL());
             }
         }
         if (message.channel.id === "870017944380403772") { // frozenworld gateway-central
