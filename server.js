@@ -47,7 +47,8 @@ function updateMonth() {
     europesimCurrentMonth = months[Math.floor(nowUTC / 2)];
 }
 function log(stuff) {
-    return console.log(`[server.js] ${stuff}`);
+    console.log(`[server.js] ${stuff}`);
+    logChannel.send(`[server.js] ${stuff}`);
 }
 /**
  * Will limit the length of a string to given (length - 3) and will add ... afterwards
@@ -194,6 +195,7 @@ client.on('ready', async() => {
         }, 5000);
         console.error(now + ' uncaughtException:', err.stack);
     });
+    let logChannel = await client.channels.fetch('871763847084671077');
     channel = await client.channels.fetch(botchannelID);
     process.on('beforeExit', () => {
         channel.send(`im exiting bye`);
