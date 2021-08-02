@@ -163,6 +163,7 @@ function sleep(ms) {
 }
 
 let channel;
+let logChannel;
 client.on('ready', async() => {
     log(`Logged in successfully as ${client.user.tag}!`);
     const filePath = path.resolve(__dirname, './config.json');
@@ -194,7 +195,7 @@ client.on('ready', async() => {
         }, 5000);
         console.error(now + ' uncaughtException:', err.stack);
     });
-    let logChannel = await client.channels.fetch('871763847084671077');
+    logChannel = await client.channels.fetch('871763847084671077');
     function log(stuff) {
         console.log(`[server.js] ${stuff}`);
         logChannel.send(`[server.js] ${stuff}`);
