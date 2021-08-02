@@ -25,12 +25,10 @@ const http = require('http');
 const webhook = require('webhook-discord');
 const pingNNL = '<@341123308844220447>';
 const botID = '848217938288967710';
-const chance = require('chance').Chance();
-const esimGatewayID = '870017944380403772';
-const frozenworldGatewayID = '870017916161097798';
 String.prototype.replaceAll = function(match, replace) {
     return this.replace(new RegExp(match, 'g'), () => replace);
 };
+
 let now = new Date();
 let nowUTC = now.getUTCHours();
 let europesimStartYear = 1800;
@@ -381,11 +379,6 @@ client.on('ready', async() => {
                 {
                     "name": "warmode (on/off)",
                     "value": `Alerts ${pingNNL} about an ongoing war so he will leave the bot in peace and stop doing anything with it`,
-                    "inline": true
-                },
-                {
-                    "name": "chance (thing)",
-                    "value": "Generator of random strings, numbers, etc. To get full list of currently available 'things' do '.chance'",
                     "inline": true
                 },
                 {
