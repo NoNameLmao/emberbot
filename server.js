@@ -195,11 +195,6 @@ client.on('ready', async() => {
         }, 5000);
         console.error(now + ' uncaughtException:', err.stack);
     });
-    logChannel = await client.channels.fetch('871763847084671077');
-    function log(stuff) {
-        console.log(`[server.js] ${stuff}`);
-        logChannel.send(`[server.js] ${stuff}`);
-    }
     channel = await client.channels.fetch(botchannelID);
     channel.send(`hi i either (re)started or got back from heroku's dumb idling thing`);
     if (!channel) {
