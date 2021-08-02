@@ -201,9 +201,6 @@ client.on('ready', async() => {
         logChannel.send(`[server.js] ${stuff}`);
     }
     channel = await client.channels.fetch(botchannelID);
-    process.on('beforeExit', () => {
-        channel.send(`im exiting bye`);
-    });
     channel.send(`hi i either (re)started or got back from heroku's dumb idling thing`);
     if (!channel) {
         log(`Cannot find the bot channel! ping spam NoNameLmao(emberglaze lmao) to fix it`);
