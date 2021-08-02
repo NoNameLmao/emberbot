@@ -46,6 +46,9 @@ function updateYear() {
 function updateMonth() {
     europesimCurrentMonth = months[Math.floor(nowUTC / 2)];
 }
+function log(stuff) {
+    console.log(`[server.js] ${stuff}`);
+}
 /**
  * Will limit the length of a string to given (length - 3) and will add ... afterwards
  * @param {number} length length of a string
@@ -161,12 +164,7 @@ function sleep(ms) {
 
 let channel;
 client.on('ready', async() => {
-    function log(stuff) {
-        console.log(`[server.js] ${stuff}`);
-        logChannel.send(`[server.js] ${stuff}`);
-    }    
     log(`Logged in successfully as ${client.user.tag}!`);
-    
     const filePath = path.resolve(__dirname, './config.json');
     process.on('uncaughtException', function (err) {
         console.error(now + ' uncaughtException:', err.stack);
@@ -197,6 +195,10 @@ client.on('ready', async() => {
         console.error(now + ' uncaughtException:', err.stack);
     });
     let logChannel = await client.channels.fetch('871763847084671077');
+    function log(stuff) {
+        console.log(`[server.js] ${stuff}`);
+        logChannel.send(`[server.js] ${stuff}`);
+    }
     channel = await client.channels.fetch(botchannelID);
     process.on('beforeExit', () => {
         channel.send(`im exiting bye`);
