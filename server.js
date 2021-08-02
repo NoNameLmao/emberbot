@@ -284,6 +284,7 @@ client.on('ready', async() => {
                 frozenworldHook.send(webhookMsg);
                 europesimHook.send(webhookMsg);
                 sklicerHook.send(webhookMsg);
+                log(`sent webhook message to frozenworld, europesim and sklicer webhooks`);
             } catch (err) {
                 log(err);
                 message.react('❌');
