@@ -46,10 +46,6 @@ function updateYear() {
 function updateMonth() {
     europesimCurrentMonth = months[Math.floor(nowUTC / 2)];
 }
-function log(stuff) {
-    console.log(`[server.js] ${stuff}`);
-    logChannel.send(`[server.js] ${stuff}`);
-}
 /**
  * Will limit the length of a string to given (length - 3) and will add ... afterwards
  * @param {number} length length of a string
@@ -165,7 +161,12 @@ function sleep(ms) {
 
 let channel;
 client.on('ready', async() => {
+    function log(stuff) {
+        console.log(`[server.js] ${stuff}`);
+        logChannel.send(`[server.js] ${stuff}`);
+    }    
     log(`Logged in successfully as ${client.user.tag}!`);
+    
     const filePath = path.resolve(__dirname, './config.json');
     process.on('uncaughtException', function (err) {
         console.error(now + ' uncaughtException:', err.stack);
