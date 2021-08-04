@@ -20,9 +20,6 @@ const DateChannelID = `848247855789375508`;
 const prefix = config.prefix;
 const fs = require('fs');
 const fsp = require('fs').promises;
-const Markov = require('js-markov');
-const markov = new Markov();
-markov.addStates(fs.readFileSync('./quotes.txt').toString().split("\n"));
 const path = require('path');
 const http = require('http');
 const webhook = require('webhook-discord');
@@ -159,6 +156,12 @@ function jsonWrite(filePath, data) {
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+const Markov = require('js-markov');
+const markov = new Markov();
+const quotes = fs.readFileSync('./quotes.txt').toString().split("\n");
+markov.addStates(quotes);
+log(`detected and found quotes: "${quotes}"`);
 
 let channel;
 client.on('ready', async () => {
