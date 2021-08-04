@@ -25,9 +25,6 @@ const http = require('http');
 const webhook = require('webhook-discord');
 const pingNNL = '<@341123308844220447>';
 const botID = '848217938288967710';
-String.prototype.replaceAll = function(match, replace) {
-    return this.replace(new RegExp(match, 'g'), () => replace);
-};
 
 let now = new Date();
 let nowUTC = now.getUTCHours();
@@ -161,8 +158,7 @@ function sleep(ms) {
 }
 
 let channel;
-let logChannel;
-client.on('ready', async() => {
+client.on('ready', async () => {
     log(`Logged in successfully as ${client.user.tag}!`);
     const filePath = path.resolve(__dirname, './config.json');
     process.on('uncaughtException', function (err) {
