@@ -20,6 +20,9 @@ const DateChannelID = `848247855789375508`;
 const prefix = config.prefix;
 const fs = require('fs');
 const fsp = require('fs').promises;
+const Markov = require('js-markov');
+markov.addStates(fs.readFileSync('./quote.txt').toString().split("\n"));
+const markov = new Markov();
 const path = require('path');
 const http = require('http');
 const webhook = require('webhook-discord');
@@ -389,7 +392,7 @@ client.on('ready', async () => {
                 }
             ]
         };
-        if (message.channel.name == "es-chatbot") {
+        if (message.channel.name === "es-chatbot") {
             if (message.author.bot) return;
             else {
                 message.channel.startTyping();
@@ -397,6 +400,12 @@ client.on('ready', async () => {
                     message.lineReply(msg);
                 });
                 message.channel.stopTyping();
+            }
+        }
+
+        if (config.markov === true) {
+            if (message.channel.name === "bot-commands") {
+                message.lineReply(markov.generate());
             }
         }
 
