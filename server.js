@@ -162,6 +162,8 @@ const markov = new Markov();
 const quotes = fs.readFileSync('./quotes.txt').toString().split("\n");
 markov.addStates(quotes);
 log(`detected and found quotes: "${quotes}"`);
+markov.train()
+log(`training markov`);
 
 let channel;
 client.on('ready', async () => {
