@@ -22,7 +22,7 @@ const fs = require('fs');
 const fsp = require('fs').promises;
 const Markov = require('js-markov');
 const markov = new Markov();
-markov.addStates(fs.readFileSync('./quote.txt').toString().split("\n"));
+markov.addStates(fs.readFileSync('./quotes.txt').toString().split("\n"));
 const path = require('path');
 const http = require('http');
 const webhook = require('webhook-discord');
