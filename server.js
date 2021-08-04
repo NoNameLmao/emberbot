@@ -408,8 +408,9 @@ client.on('ready', async () => {
 
         if (config.markov === true) {
             if (message.channel.name === "bot-commands") {
-                message.lineReply(markov.generate());
-            }
+                let msg = markov.generate();
+                message.lineReply(msg);
+            } else return;
         }
 
         message.content.replace(/<[@#:].*?>/g, "");
