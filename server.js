@@ -157,14 +157,6 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-const Markov = require('js-markov');
-const markov = new Markov();
-const quotes = fs.readFileSync('./quotes.txt').toString().split("\n");
-markov.addStates(quotes);
-log(`detected and found quotes: "${quotes}"`);
-markov.train()
-log(`training markov`);
-
 let channel;
 client.on('ready', async () => {
     log(`Logged in successfully as ${client.user.tag}!`);
@@ -406,13 +398,6 @@ client.on('ready', async () => {
                 });
                 message.channel.stopTyping();
             }
-        }
-
-        if (config.markov === true) {
-            if (message.channel.name === "bot-commands") {
-                let msg = markov.generate();
-                message.lineReply(msg);
-            } else return;
         }
 
         message.content.replace(/<[@#:].*?>/g, "");
