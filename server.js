@@ -209,7 +209,7 @@ client.on('ready', async () => {
         let webhookMsg;
         function detectAttachment() {
             let url;
-            let webhookMsgName = `${message.author.username} (${message.guild.name})`
+            let webhookMsgName = `${message.author.username} @ ${message.guild.name}`;
             if (message.attachments.size > 0 && message.content.length === 0) { // only image
                 message.attachments.forEach(attachment => {
                     url = attachment.url;
