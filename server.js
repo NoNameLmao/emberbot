@@ -178,10 +178,6 @@ client.on('ready', async () => {
         process.exit(0);
     }
     let guild = await client.guilds.fetch(guildID);
-    if (!guild) {
-        log(`lmaoooooooo wrong guild id? or server non-existant :lmaoof: dm nnl lmao xddddd`);
-        process.exit(0);
-    }
     let memberCount = guild.memberCount;
     let userCount = guild.members.cache.filter(member => !member.user.bot).size;
     let botCount = memberCount - userCount;
