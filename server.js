@@ -187,11 +187,11 @@ client.on('ready', async () => {
         nowUTC,
         europesimCurrentYear,
         europesimCurrentMonth,
+        pingNNL,
         userCount,
         memberCount,
         botCount,
-        onlineUsers,
-        pingNNL
+        onlineUsers
     }
 
     let DateChannel = guild.channels.cache.get(DateChannelID);

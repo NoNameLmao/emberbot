@@ -2,6 +2,7 @@ let {
     nowUTC,
     europesimCurrentYear,
     europesimCurrentMonth,
+    pingNNL,
     userCount,
     memberCount,
     botCount,
