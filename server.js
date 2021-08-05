@@ -389,32 +389,13 @@ client.on('ready', async () => {
                         jsonWrite(filePath, config);
                         return message.channel.send('Success!');
                     }
-                } else if (args[0] === "") {
+                } else if (!args[0]) {
                     if (config.debug === true) {
                         message.channel.send('Debug mode is currently on.');
                     } else if (config.debug === false) {
                         message.channel.send('Debug mode is currently off.');
                     }
                 }
-            } else if (command === "warmode") {
-                let mode = args.join(" ");
-                let warmode = 'off';
-                if (mode === 'on') {
-                    message.channel.send(`${pingNNL} dude there is a war going on rn dont turn me off i beg u ppl need rng bro!!!!!!`);
-                    warmode = 'on';
-                    return;
-                } else if (mode === 'off') {
-                    message.channel.send(`${pingNNL} war over now you can do whatever with the code in peace`);
-                    warmode = 'off';
-                    return;
-                } else {
-                    message.channel.send(`what the fuck bro`);
-                };
-                if (warmode === 'on') {
-                    setInterval(() => {
-                        return channel.send(`just a quick reminder that ${prefix}warmode is still on. if war is finished PLEASE TURN IT OFF\n thanks`);
-                    }, 30000 * 60);
-                } else return;
             } else if (command === "") return;
         } else if (!message.content.startsWith(prefix)) log(`Message from ${message.author.tag} in ${message.guild.name} server, ${message.channel.name} channel at ${message.createdAt}: ${message.content}`);
     });

@@ -89,11 +89,6 @@ const helpEmbed = {
             "inline": true
         },
         {
-            "name": "warmode (on/off)",
-            "value": `Alerts ${pingNNL} about an ongoing war so he will leave the bot in peace and stop doing anything with it`,
-            "inline": true
-        },
-        {
             "name": "code (code thing)",
             "value": `Serves as a reminder to ${pingNNL} for some parts of code he frequently forgets about lol he is so bad he forgets his own code`,
             "inline": true
