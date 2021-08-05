@@ -295,6 +295,11 @@ client.on('ready', async () => {
         message.content.replace(/<[@#:].*?>/g, "");
         if (message.content.startsWith('..')) return log(`"command" with .. start ignored`);
         if (liechtenstein.includes(message.content)) message.channel.send('liechtenstein*');
+        if (message.content === "i forgot" || message.content === "i forgor") {
+            message.channel.send('https://cdn.discordapp.com/attachments/581751066794655754/866082171286454272/image0.jpg');
+        } else if (message.content === "i remember" || message.content === "i rember") {
+            message.channel.send('https://cdn.discordapp.com/attachments/603303568317087798/872848434762231818/image0.png');
+        }
 
         const args = message.content.slice(prefix.length).trim().split(/ +/g);
         const command = args.shift().toLowerCase();
