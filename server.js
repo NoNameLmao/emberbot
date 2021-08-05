@@ -183,16 +183,6 @@ client.on('ready', async () => {
     let userCount = guild.members.cache.filter(member => !member.user.bot).size;
     let botCount = memberCount - userCount;
     let onlineUsers = guild.members.cache.filter(member => member.presence.status !== 'offline' && !member.user.bot).size;
-    module.exports = {
-        nowUTC,
-        europesimCurrentYear,
-        europesimCurrentMonth,
-        pingNNL,
-        userCount,
-        memberCount,
-        botCount,
-        onlineUsers
-    }
 
     let DateChannel = guild.channels.cache.get(DateChannelID);
     DateChannel.join();
@@ -200,6 +190,16 @@ client.on('ready', async () => {
 
     client.on('error', error => log(error));
     client.on('message', function(message) {
+        module.exports = {
+            nowUTC,
+            europesimCurrentYear,
+            europesimCurrentMonth,
+            pingNNL,
+            userCount,
+            memberCount,
+            botCount,
+            onlineUsers
+        }
         // Gateway Central:tm:
         const europesimHook = new webhook.Webhook(process.env.EUROPESIM_GATEWAY_WEBHOOK_URL);
         const frozenworldHook = new webhook.Webhook(process.env.FROZENWORLD_GATEWAY_WEBHOOK_URL);
