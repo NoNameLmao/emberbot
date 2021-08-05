@@ -22,6 +22,7 @@ const fs = require('fs');
 const fsp = require('fs').promises;
 const path = require('path');
 const http = require('http');
+const beforeExit = require('before-exit');
 const { infoEmbed, helpEmbed, esimEmbed } = require('./embeds.js');
 const webhook = require('webhook-discord');
 const pingNNL = '<@341123308844220447>';
@@ -174,6 +175,9 @@ client.on('ready', async () => {
     });
     channel = await client.channels.fetch(botchannelID);
     channel.send(`hi i either (re)started or got back from heroku's dumb idling thing`);
+    beforeExit.do(() => {
+        channel.send('wait no no no no no please NOOOOOOOOO');
+    });
     if (!channel) {
         log(`Cannot find the bot channel! ping spam NoNameLmao(emberglaze lmao) to fix it`);
         process.exit(0);
