@@ -1,3 +1,14 @@
+let {
+    nowUTC,
+    europesimCurrentYear,
+    europesimCurrentMonth,
+    userCount,
+    botCount,
+    onlineUsers,
+    err
+} = require('./server.js');
+let config = require('./config.json');
+
 const infoEmbed = {
     "title": "Useless information about europesim",
     "description": "totally useless why did you use this command",
@@ -49,7 +60,7 @@ const errEmbed = {
 };
 const helpEmbed = {
     "title": "All list of commands",
-    "description": `prefix: ${prefix}`,
+    "description": `prefix: ${config.prefix}`,
     "color": 53380,
     "footer": {
         "text": "Some text edited idk"
@@ -77,7 +88,7 @@ const helpEmbed = {
         },
         {
           "name": "quote",
-          "value": `${TechnobladeQuote[quoteInt]} (random technoblade quote)`,
+          "value": `Random technoblade quote`,
           "inline": true
         },
         {

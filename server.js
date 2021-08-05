@@ -32,6 +32,11 @@ let nowUTC = now.getUTCHours();
 let europesimStartYear = 1800;
 let europesimCurrentYear;
 let europesimCurrentMonth;
+module.exports = {
+    nowUTC,
+    europesimCurrentYear,
+    europesimCurrentMonth
+}
 
 function updateYear() {
     europesimStartDate = Date.parse('May 25 2021 00:00:00 GMT');
@@ -164,7 +169,16 @@ client.on('ready', async () => {
     const filePath = path.resolve(__dirname, './config.json');
     process.on('uncaughtException', function (err) {
         console.error(now + ' uncaughtException:', err.stack);
-        channel.send({embed:errEmbed});
+        module.exports = {
+            nowUTC,
+            europesimCurrentYear,
+            europesimCurrentMonth,
+            userCount,
+            botCount,
+            onlineUsers,
+            err
+        }
+        channel.send({ embed:errEmbed });
         setTimeout(() => {
            channel.send(`some error idk, go fix <@341123308844220447> \n\`\`\`${err.stack}\`\`\``); 
         }, 5000);
@@ -185,6 +199,14 @@ client.on('ready', async () => {
     let userCount = guild.members.cache.filter(member => !member.user.bot).size;
     let botCount = memberCount - userCount;
     let onlineUsers = guild.members.cache.filter(member => member.presence.status !== 'offline' && !member.user.bot).size;
+    module.exports = {
+        nowUTC,
+        europesimCurrentYear,
+        europesimCurrentMonth,
+        userCount,
+        botCount,
+        onlineUsers
+    }
 
     let DateChannel = guild.channels.cache.get(DateChannelID);
     DateChannel.join();
@@ -389,14 +411,14 @@ client.on('ready', async () => {
                     message.channel.send('okie dokie');
                     jsonWrite(filePath, config);
                     return message.channel.send('Success!');
-                };
+                }
             } else if (args[0] === "") {
                 if (config.debug === true) {
                     message.channel.send('Debug mode is currently on.');
                 } else if (config.debug === false) {
                     message.channel.send('Debug mode is currently off.');
-                };
-            };
+                }
+            }
         } else if (command === "warmode") {
             let mode = args.join(" ");
             let warmode = 'off';
