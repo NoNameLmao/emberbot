@@ -298,134 +298,125 @@ client.on('ready', async () => {
 
         const args = message.content.slice(prefix.length).trim().split(/ +/g);
         const command = args.shift().toLowerCase();
-        if (!message.content.startsWith(prefix)) log(`Message from ${message.author.tag} in ${message.guild.name} server, ${message.channel.name} channel at ${message.createdAt}: ${message.content}`);
         function logCommand() {
             log(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
             if (config.debug === 'true') message.channel.send(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
         }
-        if (command === 'esim') {
+        if (message.content.startsWith(prefix)) {
             logCommand();
-            if (!args[0]) {
-                return message.channel.send({ embed: esimEmbed });
-            } else if (args[0] === 'info') {
-                return message.channel.send({embed:infoEmbed}).catch(console.error);    
-            } 
-        } else if (command === `hi`) {
-            logCommand();
-            message.channel.send(`hi im online what do u want (main branch)`);
-        } else if (command === `eval`) {
-            if (message.member.roles.cache.some(r => r.name === "Admin") || message.author.id === '341123308844220447') {
-                let code = args.join(' ');
+            if (command === 'esim') {
+                if (!args[0]) {
+                    return message.channel.send({ embed: esimEmbed });
+                } else if (args[0] === 'info') {
+                    return message.channel.send({embed:infoEmbed}).catch(console.error);    
+                } 
+            } else if (command === `hi`) {
+                message.channel.send(`hi im online what do u want (main branch)`);
+            } else if (command === `eval`) {
+                if (message.member.roles.cache.some(r => r.name === "Admin") || message.author.id === '341123308844220447') {
+                    let code = args.join(' ');
+                    try {
+                        let result = eval(code);
+                        let output = result;
+                        if (typeof output !== 'string') output = require('util').inspect(result);
+                        message.channel.send(output, {code: 'js'});
+                        log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${output, {code: 'js'}}`);
+                    } catch (error) {
+                        message.channel.send(`\`Code ran with an error:\` \`\`\`xl\n${error}\n\`\`\``);
+                        log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${code} \nThere was an error running this code: \n${error}`);
+                    }
+                } else return message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
+            } else if (command === "exit") {
                 try {
-                    let result = eval(code);
-                    let output = result;
-                    if (typeof output !== 'string') output = require('util').inspect(result);
-                    message.channel.send(output, {code: 'js'});
-                    log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${output, {code: 'js'}}`);
-                } catch (error) {
-                    message.channel.send(`\`Code ran with an error:\` \`\`\`xl\n${error}\n\`\`\``);
-                    log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${code} \nThere was an error running this code: \n${error}`);
+                    if (message.author.id === `341123308844220447` || message.member.roles.find(r => r.name === 'Admin')) {
+                        log(`recieved exit command from ${message.author.tag} @ ${now.toString()}. goodbye`);
+                        message.channel.send(`:sob:`).then(() => process.exit(1));
+                    } else {
+                        log(`recieved exit command from ${message.author.tag} @ ${now.toString()} lol permission denied have a technoblade quote instead nerd`);
+                        quoteInt = getRandomInt(37);
+                        message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);    
+                    } return;    
+                } catch(error) {
+                    message.channel.send(`I got an error executing the command!`);
+                    message.channel.send(error);
+                    return;
                 }
-            } else return message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
-        } else if (command === "exit") {
-            try {
-                if (message.author.id === `341123308844220447` || message.member.roles.find(r => r.name === 'Admin')) {
-                    log(`recieved exit command from ${message.author.tag} @ ${now.toString()}. goodbye`);
-                    message.channel.send(`:sob:`).then(() => process.exit(1));
+            } else if (command === "sudo") {
+                if (message.author.id === `341123308844220447`) {
+                    const sudo = args.join(" ");
+                    message.channel.send(sudo);
+                } else return channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
+            } else if (command === "quote") {
+                quoteInt = getRandomInt(37);
+                return message.channel.send(`quote number ${quoteInt}: \n"${TechnobladeQuote[quoteInt]}"`);
+            } else if (command === "suggest") {
+                const suggest = args.join(" ");
+                client.users.fetch('341123308844220447').then((nnl) => {
+                    nnl.send(`Bot suggestion by ${message.author.tag}: \`${suggest}\`\nSent at ${message.createdAt} in <#${message.channel.id}>`);
+                });
+                return message.channel.send(`Your suggestion has been sent! thanks`);
+            } else if (command === "rng") {
+                if (isNaN(args[1]) === true) return message.channel.send(`random integer generator: \`${getRandomInt(args[0])}\`\nthis generator is inclusive at 0 but not at ${args[0] - 1} PLEASE keep that in mind\ntldr gives only 0 to ${args[0] - 1}`);
+                else if (isNaN(args[1]) === false) {
+                    const min = args[0];
+                    const max = args[1];
+                    return message.channel.send(`random arbitrary generator: \`${getRandomArbitrary(min, max)}\`\nthis generator is inclusive at both ${min} and ${max}\nbasically gives values between ${min} and ${max} including them`);
+                }
+            } else if (command === "code") {
+                if (args[0] === "args") {
+                    return message.channel.send(`u forgot about it again? bruh\n\`.(command) (args[0]) (args[1])...\` etc\nget good lol`);
+                } else return message.channel.send(`oh wtf what now? args again?`);
+            } else if (command === "help") {
+                return message.channel.send({embed:helpEmbed});
+            } else if (command === "dn") {
+                return message.channel.send('deez nuts');
+            } else if (command === "debug") {
+                if (args[0] === 'true') {
+                    if (config.debug === false) {
+                        message.channel.send('okie dokie');
+                        config.debug = true;
+                        jsonWrite(filePath, config);
+                        return message.channel.send('Success!');
+                    } else if (config.debug === true) {
+                        return message.channel.send('It is already on lol');
+                    }
+                } else if (args[0] === 'false') {
+                    if (config.debug === false) {
+                        return message.channel.send('It is already off lol dont panic');
+                    } else if (config.debug === true) {
+                        config.debug = false;
+                        message.channel.send('okie dokie');
+                        jsonWrite(filePath, config);
+                        return message.channel.send('Success!');
+                    }
+                } else if (args[0] === "") {
+                    if (config.debug === true) {
+                        message.channel.send('Debug mode is currently on.');
+                    } else if (config.debug === false) {
+                        message.channel.send('Debug mode is currently off.');
+                    }
+                }
+            } else if (command === "warmode") {
+                let mode = args.join(" ");
+                let warmode = 'off';
+                if (mode === 'on') {
+                    message.channel.send(`${pingNNL} dude there is a war going on rn dont turn me off i beg u ppl need rng bro!!!!!!`);
+                    warmode = 'on';
+                    return;
+                } else if (mode === 'off') {
+                    message.channel.send(`${pingNNL} war over now you can do whatever with the code in peace`);
+                    warmode = 'off';
+                    return;
                 } else {
-                    log(`recieved exit command from ${message.author.tag} @ ${now.toString()} lol permission denied have a technoblade quote instead nerd`);
-                    quoteInt = getRandomInt(37);
-                    message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);    
-                } return;    
-            } catch(error) {
-                message.channel.send(`I got an error executing the command!`);
-                message.channel.send(error);
-                return;
-            }
-        } else if (command === "sudo") {
-            logCommand();
-            if (message.author.id === `341123308844220447`) {
-                const sudo = args.join(" ");
-                message.channel.send(sudo);
-            } else return channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
-        } else if (command === "quote") {
-            logCommand();
-            quoteInt = getRandomInt(37);
-            return message.channel.send(`quote number ${quoteInt}: \n"${TechnobladeQuote[quoteInt]}"`);
-        } else if (command === "suggest") {
-            logCommand();
-            const suggest = args.join(" ");
-            client.users.fetch('341123308844220447').then((nnl) => {
-                nnl.send(`Bot suggestion by ${message.author.tag}: \`${suggest}\`\nSent at ${message.createdAt} in <#${message.channel.id}>`);
-            });
-            return message.channel.send(`Your suggestion has been sent! thanks`);
-        } else if (command === "rng") {
-            logCommand();
-            if (isNaN(args[1]) === true) return message.channel.send(`random integer generator: \`${getRandomInt(args[0])}\`\nthis generator is inclusive at 0 but not at ${args[0] - 1} PLEASE keep that in mind\ntldr gives only 0 to ${args[0] - 1}`);
-            else if (isNaN(args[1]) === false) {
-                const min = args[0];
-                const max = args[1];
-                return message.channel.send(`random arbitrary generator: \`${getRandomArbitrary(min, max)}\`\nthis generator is inclusive at both ${min} and ${max}\nbasically gives values between ${min} and ${max} including them`);
-            }
-        } else if (command === "code") {
-            logCommand();
-            if (args[0] === "args") {
-                return message.channel.send(`u forgot about it again? bruh\n\`.(command) (args[0]) (args[1])...\` etc\nget good lol`);
-            } else return message.channel.send(`oh wtf what now? args again?`);
-        } else if (command === "help") {
-            logCommand();
-            return message.channel.send({embed:helpEmbed});
-        } else if (command === "dn") {
-            logCommand();
-            return message.channel.send('deez nuts');
-        } else if (command === "debug") {
-            logCommand();
-            if (args[0] === 'true') {
-                if (config.debug === false) {
-                    message.channel.send('okie dokie');
-                    config.debug = true;
-                    jsonWrite(filePath, config);
-                    return message.channel.send('Success!');
-                } else if (config.debug === true) {
-                    return message.channel.send('It is already on lol');
-                }
-            } else if (args[0] === 'false') {
-                if (config.debug === false) {
-                    return message.channel.send('It is already off lol dont panic');
-                } else if (config.debug === true) {
-                    config.debug = false;
-                    message.channel.send('okie dokie');
-                    jsonWrite(filePath, config);
-                    return message.channel.send('Success!');
-                }
-            } else if (args[0] === "") {
-                if (config.debug === true) {
-                    message.channel.send('Debug mode is currently on.');
-                } else if (config.debug === false) {
-                    message.channel.send('Debug mode is currently off.');
-                }
-            }
-        } else if (command === "warmode") {
-            let mode = args.join(" ");
-            let warmode = 'off';
-            if (mode === 'on') {
-                logCommand();
-                message.channel.send(`${pingNNL} dude there is a war going on rn dont turn me off i beg u ppl need rng bro!!!!!!`);
-                return warmode = 'on';
-            } else if (mode === 'off') {
-                logCommand();
-                message.channel.send(`${pingNNL} war over now you can do whatever with the code in peace`);
-                return warmode = 'off';
-            } else {
-                message.channel.send(`what the fuck bro`);
-            };
-            if (warmode === 'on') {
-                setInterval(() => {
-                    return channel.send(`just a quick reminder that ${prefix}warmode is still on. if war is finished PLEASE TURN IT OFF\n thanks`);
-                }, 30000 * 60);
-            } else return;
-        } else if (command === "") return;
-        // else return message.channel.send(`sorry, "${prefix}${command}" doesnt exist\ncheck "${prefix}help"`);
+                    message.channel.send(`what the fuck bro`);
+                };
+                if (warmode === 'on') {
+                    setInterval(() => {
+                        return channel.send(`just a quick reminder that ${prefix}warmode is still on. if war is finished PLEASE TURN IT OFF\n thanks`);
+                    }, 30000 * 60);
+                } else return;
+            } else if (command === "") return;
+        } else if (!message.content.startsWith(prefix)) log(`Message from ${message.author.tag} in ${message.guild.name} server, ${message.channel.name} channel at ${message.createdAt}: ${message.content}`);
     });
     let a = 1;
     function updateDateLoop() {
