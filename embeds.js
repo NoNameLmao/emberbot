@@ -121,7 +121,6 @@ const esimEmbed = {
 }
 module.exports = {
     infoEmbed,
-    errEmbed,
     helpEmbed,
     esimEmbed
 }
