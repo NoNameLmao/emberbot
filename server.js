@@ -35,7 +35,8 @@ let europesimCurrentMonth;
 module.exports = {
     nowUTC,
     europesimCurrentYear,
-    europesimCurrentMonth
+    europesimCurrentMonth,
+    pingNNL
 }
 
 function updateYear() {
@@ -189,7 +190,8 @@ client.on('ready', async () => {
         userCount,
         memberCount,
         botCount,
-        onlineUsers
+        onlineUsers,
+        pingNNL
     }
 
     let DateChannel = guild.channels.cache.get(DateChannelID);
