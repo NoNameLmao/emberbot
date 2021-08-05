@@ -22,6 +22,7 @@ const fs = require('fs');
 const fsp = require('fs').promises;
 const path = require('path');
 const http = require('http');
+const { infoEmbed, errEmbed, helpEmbed, esimEmbed } = require('./embeds.js');
 const webhook = require('webhook-discord');
 const pingNNL = '<@341123308844220447>';
 const botID = '848217938288967710';
@@ -163,26 +164,6 @@ client.on('ready', async () => {
     const filePath = path.resolve(__dirname, './config.json');
     process.on('uncaughtException', function (err) {
         console.error(now + ' uncaughtException:', err.stack);
-        const errEmbed = {
-            "plainText": "<@341123308844220447> lol ur so bad fix me",
-            "title": "uncaught exception or smth ",
-            "description": "stop looking at this embed CALL NNL QUICK",
-            "author": {
-                "name": `all part of my master plan`,
-                "icon_url": "https://cdn.discordapp.com/emojis/530436914260606987.png?v=1"
-            },
-            "color": 15158332,
-            "footer": {
-                "text": "not even close baby i never go offline"
-            },
-            "fields": [
-                {
-                  "name": `${err.message}`,
-                  "value": `${err.stack}`,
-                  "inline": false
-                }
-            ]
-        };
         channel.send({embed:errEmbed});
         setTimeout(() => {
            channel.send(`some error idk, go fix <@341123308844220447> \n\`\`\`${err.stack}\`\`\``); 
@@ -292,103 +273,6 @@ client.on('ready', async () => {
                 message.channel.send(`${pingNNL} epic fail:\n${err}`);
             }
         }
-
-        // info embed
-        let infoEmbed = {
-          "title": "Useless information about europesim",
-          "description": "totally useless why did you use this command",
-          "author": {
-            "name": "Bot information",
-            "icon_url": "https://cdn.discordapp.com/icons/846807940727570433/4bbf13c1ce8bfb351fc7eafdc898e7d1.png"
-          },
-          "color": 53380,
-          "footer": {
-            "text": "https://ourworldofpixels.com/europesim"
-          },
-          "fields": [
-            {
-              "name": "Current UTC hour",
-              "value": `${nowUTC}`,
-              "inline": true
-            },
-            {
-              "name": "Europesim year, month",
-              "value": `${europesimCurrentYear}, ${europesimCurrentMonth}`,
-              "inline": true
-            },
-            {
-              "name": "Europesim's server member count",
-              "value": `${userCount} users + ${botCount} bots = ${memberCount} members overall. Online users: ${onlineUsers}`,
-              "inline": false
-            }
-          ]
-        };
-        // help embed
-        let helpEmbed = {
-            "title": "All list of commands",
-            "description": `prefix: ${prefix}`,
-            "color": 53380,
-            "footer": {
-                "text": "Some text edited idk"
-            },
-            "fields": [
-                {
-                  "name": "hi",
-                  "value": "Usually used to check if bot is responding/online or not",
-                  "inline": true
-                },
-                {
-                  "name": "eval (code)",
-                  "value": "Execute some JavaScript code",
-                  "inline": true
-                },
-                {
-                  "name": "exit",
-                  "value": "Shortcut to process.exit(1);",
-                  "inline": true
-                },
-                {
-                  "name": "sudo (message)",
-                  "value": "Send messages as me (idk why i added it, might remove)",
-                  "inline": true
-                },
-                {
-                  "name": "quote",
-                  "value": `${TechnobladeQuote[quoteInt]} (random technoblade quote)`,
-                  "inline": true
-                },
-                {
-                    "name": "suggest (suggestion)",
-                    "value": "Send bot suggestions to NoNameLmao, may or may not be added :shrug:",
-                    "inline": true
-                },
-                {
-                    "name": "info",
-                    "value": "Displays current UTC hour, ES year and month, server member count",
-                    "inline": true
-                },
-                {
-                    "name": "rng <minValue> (maxValue)",
-                    "value": "Random number generator (minValue is optional)",
-                    "inline": true
-                },
-                {
-                    "name": "warmode (on/off)",
-                    "value": `Alerts ${pingNNL} about an ongoing war so he will leave the bot in peace and stop doing anything with it`,
-                    "inline": true
-                },
-                {
-                    "name": "code (code thing)",
-                    "value": `Serves as a reminder to ${pingNNL} for some parts of code he frequently forgets about lol he is so bad he forgets his own code`,
-                    "inline": true
-                },
-                {
-                    "name": "help",
-                    "value": "It does exactly what you think it does.",
-                    "inline": false
-                }
-            ]
-        };
         if (message.channel.name === "es-chatbot") {
             if (message.author.bot) return;
             else {
@@ -412,12 +296,13 @@ client.on('ready', async () => {
             if (config.debug === 'true') message.channel.send(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
         }
         if (command === 'esim') {
-            if (args[0] === 'info') {
-                logCommand();
+            logCommand();
+            if (!args[0]) {
+                return message.channel.send({ embed: esimEmbed });
+            } else if (args[0] === 'info') {
                 return message.channel.send({embed:infoEmbed}).catch(console.error);    
             } 
-        }
-        if (command === `hi`) {
+        } else if (command === `hi`) {
             logCommand();
             message.channel.send(`hi im online what do u want (main branch)`);
         } else if (command === `eval`) {
