@@ -45,12 +45,12 @@ function log(stuff) {
     console.log(`[server.js] ${stuff}`);
 }
 /**
- * Will limit the length of a string to given (length - 3) and will add ... afterwards
+ * Will limit the length of a string to given (length - 1) and will add … afterwards because it counts as one character.
  * @param {number} length length of a string
- * @returns {string} string with it's (length - 3) + ...
+ * @returns {string} string with it's (length - 1) + …
  */
 String.prototype.limit = function(length) {
-    return this.length > length ? (this.substring(0, length - 3) + '...') : this;
+    return this.length > length ? (this.substring(0, length - 1) + '…') : this;
 }
 
 const httpHost = '0.0.0.0';
@@ -411,6 +411,12 @@ client.on('ready', async () => {
             log(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
             if (config.debug === 'true') message.channel.send(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
         }
+        if (command === 'esim') {
+            if (args[0] === 'info') {
+                logCommand();
+                return message.channel.send({embed:infoEmbed}).catch(console.error);    
+            } 
+        }
         if (command === `hi`) {
             logCommand();
             message.channel.send(`hi im online what do u want (main branch)`);
@@ -460,9 +466,6 @@ client.on('ready', async () => {
                 nnl.send(`Bot suggestion by ${message.author.tag}: \`${suggest}\`\nSent at ${message.createdAt} in <#${message.channel.id}>`);
             });
             return message.channel.send(`Your suggestion has been sent! thanks`);
-        } else if (command === "info") {
-            logCommand();
-            return message.channel.send({embed:infoEmbed}).catch(console.error);
         } else if (command === "rng") {
             logCommand();
             if (isNaN(args[1]) === true) return message.channel.send(`random integer generator: \`${getRandomInt(args[0])}\`\nthis generator is inclusive at 0 but not at ${args[0] - 1} PLEASE keep that in mind\ntldr gives only 0 to ${args[0] - 1}`);
