@@ -3,6 +3,7 @@ let {
     europesimCurrentYear,
     europesimCurrentMonth,
     userCount,
+    memberCount,
     botCount,
     onlineUsers,
     err

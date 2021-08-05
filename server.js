@@ -174,6 +174,7 @@ client.on('ready', async () => {
             europesimCurrentYear,
             europesimCurrentMonth,
             userCount,
+            memberCount,
             botCount,
             onlineUsers,
             err
@@ -204,6 +205,7 @@ client.on('ready', async () => {
         europesimCurrentYear,
         europesimCurrentMonth,
         userCount,
+        memberCount,
         botCount,
         onlineUsers
     }
