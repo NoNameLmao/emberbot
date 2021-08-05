@@ -168,22 +168,8 @@ client.on('ready', async () => {
     log(`Logged in successfully as ${client.user.tag}!`);
     const filePath = path.resolve(__dirname, './config.json');
     process.on('uncaughtException', function (err) {
-        console.error(now + ' uncaughtException:', err.stack);
-        module.exports = {
-            nowUTC,
-            europesimCurrentYear,
-            europesimCurrentMonth,
-            userCount,
-            memberCount,
-            botCount,
-            onlineUsers,
-            err
-        }
-        channel.send({ embed:errEmbed });
-        setTimeout(() => {
-           channel.send(`some error idk, go fix <@341123308844220447> \n\`\`\`${err.stack}\`\`\``); 
-        }, 5000);
-        console.error(now + ' uncaughtException:', err.stack);
+        console.error(`${now} uncaughtException: ${err.stack}`);
+        channel.send(`some error idk, go fix <@341123308844220447> \n\`\`\`${err.stack}\`\`\``); 
     });
     channel = await client.channels.fetch(botchannelID);
     channel.send(`hi i either (re)started or got back from heroku's dumb idling thing`);

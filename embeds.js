@@ -5,8 +5,7 @@ let {
     userCount,
     memberCount,
     botCount,
-    onlineUsers,
-    err
+    onlineUsers
 } = require('./server.js');
 let config = require('./config.json');
 
@@ -36,26 +35,6 @@ const infoEmbed = {
             "name": "Europesim's server member count",
             "value": `${userCount} users + ${botCount} bots = ${memberCount} members overall. Online users: ${onlineUsers}`,
             "inline": false
-        }
-    ]
-};
-const errEmbed = {
-    "plainText": "<@341123308844220447> lol ur so bad fix me",
-    "title": "uncaught exception or smth",
-    "description": "stop looking at this embed CALL NNL QUICK",
-    "author": {
-        "name": `all part of my master plan`,
-        "icon_url": "https://cdn.discordapp.com/emojis/530436914260606987.png?v=1"
-    },
-    "color": 15158332,
-    "footer": {
-        "text": "not even close baby i never go offline"
-    },
-    "fields": [
-        {
-          "name": `${err.message}`,
-          "value": `${err.stack}`,
-          "inline": false
         }
     ]
 };
