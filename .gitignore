@@ -1,1 +1,3 @@
-last_bot_size.txt
+.history/
+.vscode/
+node_modules/
