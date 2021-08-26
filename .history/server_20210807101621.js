@@ -37,7 +37,7 @@ module.exports = {
     europesimCurrentYear,
     europesimCurrentMonth,
     pingNNL
-};
+}
 
 function updateYear() {
     europesimStartDate = Date.parse('May 25 2021 00:00:00 GMT');
@@ -58,7 +58,7 @@ function log(stuff) {
  */
 String.prototype.limit = function(length) {
     return this.length > length ? (this.substring(0, length - 1) + '…') : this;
-};
+}
 
 const httpHost = '0.0.0.0';
 const httpPort = process.env.PORT;
@@ -199,7 +199,7 @@ client.on('ready', async () => {
             memberCount,
             botCount,
             onlineUsers
-        };
+        }
         if (message.channel.name === "es-chatbot") {
             if (message.author.bot) return;
             else {
@@ -239,7 +239,7 @@ client.on('ready', async () => {
                         let output = result;
                         if (typeof output !== 'string') output = require('util').inspect(result);
                         message.channel.send(output, {code: 'js'});
-                        log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${output}`);
+                        log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${output, {code: 'js'}}`);
                     } catch (error) {
                         message.channel.send(`\`Code ran with an error:\` \`\`\`xl\n${error}\n\`\`\``);
                         log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${code} \nThere was an error running this code: \n${error}`);
