@@ -1,3 +1,5 @@
+require('dotenv').config();
+const colors = require('colors');
 const Discord = require('discord.js');
 require('discord-reply');
 const client = new Discord.Client({
@@ -72,10 +74,10 @@ const httpServer = http.createServer(requestListener);
 fsp.readFile(__dirname + "/index.html").then(contents => {
     indexFile = contents;
     httpServer.listen(httpPort, httpHost, () => {
-        log(`Server is running on http://${httpHost}:${httpPort}`);
+        log(`[HttpServer] Server is running on http://${httpHost}:${httpPort}`.green);
     });
 }).catch(err => {
-    console.error(`Could not read index.html file: ${err}`);
+    console.error(`[HttpServer] Could not read index.html file: ${err}`.red);
     process.exit(1);
 });
 
@@ -169,7 +171,7 @@ client.on('ready', async () => {
     log(`Logged in successfully as ${client.user.tag}!`);
     const filePath = path.resolve(__dirname, './config.json');
     process.on('uncaughtException', function (err) {
-        console.error(`${now} uncaughtException: ${err.stack}`);
+        console.error(`[${now}] [Error] ${err.stack}`);
         channel.send(`some error idk, go fix <@341123308844220447> \n\`\`\`${err.stack}\`\`\``); 
     });
     channel = await client.channels.fetch(botchannelID);
