@@ -3,7 +3,7 @@ const colors = require('colors');
 const Discord = require('discord.js');
 const { MessageEmbed } = require("discord.js");
 const client = new Discord.Client({
-    intents: [32767, Discord.Intents.FLAGS.GUILD_PRESENCES],
+    intents: [new Discord.Intents(32767), Discord.Intents.FLAGS.GUILD_PRESENCES],
     presence: {
         status: 'online',
         activity: {
