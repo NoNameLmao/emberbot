@@ -188,7 +188,7 @@ client.on('ready', async () => {
     let memberCount = guild.memberCount;
     let userCount = guild.members.cache.filter(member => !member.user.bot).size;
     let botCount = memberCount - userCount;
-    let onlineUsers = guild.members.cache.filter(member => member.presence.status !== 'offline' && !member.user.bot).size;
+    let onlineUsers = guild.members.cache.filter(member => (await member.fetch()).presence.status !== 'offline' && !member.user.bot).size;
 
     let DateChannel = guild.channels.cache.get(DateChannelID);
     DateChannel.join();
