@@ -2,8 +2,8 @@ require('dotenv').config();
 const colors = require('colors');
 const Discord = require('discord.js');
 const { MessageEmbed } = require("discord.js");
-require('discord-reply');
 const client = new Discord.Client({
+    intents: 32767,
     presence: {
         status: 'online',
         activity: {
@@ -229,58 +229,48 @@ client.on('ready', async () => {
             logCommand();
             if (command === 'esim') {
                 if (!args[0]) {
-                    const esimEmbed = {
-                        "title": "Command category: Europesim",
-                        "description": `Usage: .esim (command)\n<> = Optional argument(s)`,
-                        "color": 53380,
-                        "footer": {
-                            "text": "https://ourworldofpixels.com/europesim"
+                    const esimEmbed = new MessageEmbed()
+                    .setTitle('Command category: Europesim')
+                    .setDescription(`Usage: ${prefix}esim (command)\n<> = Optional argument(s)`)
+                    .setColor(53380)
+                    .setFooter('https://ourworldofpixels.com/europesim')
+                    .addFields(
+                        {
+                            name: 'info',
+                            value: 'Shows information, duh',
+                            inline: true
                         },
-                        "fields": [
-                            {
-                                "name": "info",
-                                "value": "Shows information duh",
-                                "inline": true
-                            },
-                            {
-                                "name": "roll <country>",
-                                "value": "Literally rng but europesim (1-20)",
-                                "inline": true
-                            }
-                        ]
-                    };
-                    return message.channel.send({ embed: esimEmbed });
+                        {
+                            name: 'roll <country>',
+                            value: 'Literally rng but for europesim (1-20)',
+                            inline: true
+                        }
+                    );
+                    return message.channel.send({ embeds: [esimEmbed] });
                 } else if (args[0] === 'info') {
-                    const infoEmbed = {
-                        "title": "Useless information about europesim",
-                        "description": "totally useless why did you use this command",
-                        "author": {
-                            "name": "Bot information",
-                            "icon_url": "https://cdn.discordapp.com/icons/846807940727570433/4bbf13c1ce8bfb351fc7eafdc898e7d1.png"
+                    const infoEmbed = new MessageEmbed()
+                    .setTitle('Useless information about europesim')
+                    .setDescription('totally useless why did you use this command')
+                    .setAuthor('Bot information', 'https://cdn.discordapp.com/icons/846807940727570433/4bbf13c1ce8bfb351fc7eafdc898e7d1.png')
+                    .setColor(53380)
+                    .setFooter("https://ourworldofpixels.com/europesim")
+                    .addFields(
+                        {
+                            name: 'Current UTC hour',
+                            value: `${nowUTC}`,
+                            inline: true
                         },
-                        "color": 53380,
-                        "footer": {
-                            "text": "https://ourworldofpixels.com/europesim"
+                        {
+                            name: 'Europesim year, month',
+                            value: `${europesimCurrentYear}, ${europesimCurrentMonth}`,
+                            inline: true
                         },
-                        "fields": [
-                            {
-                                "name": "Current UTC hour",
-                                "value": `${nowUTC}`,
-                                "inline": true
-                            },
-                            {
-                                "name": "Europesim year, month",
-                                "value": `${europesimCurrentYear}, ${europesimCurrentMonth}`,
-                                "inline": true
-                            },
-                            {
-                                "name": "Europesim's server member count",
-                                "value": `${userCount} users + ${botCount} bots = ${memberCount} members overall. Online users: ${onlineUsers}`,
-                                "inline": false
-                            }
-                        ]
-                    };                    
-                    return message.channel.send({ embed:infoEmbed }).catch(console.error);    
+                        {
+                            name: `Europesim's server member count`,
+                            value: `${userCount} users + ${botCount} bots = ${memberCount} overall. Online users: ${onlineUsers}`
+                        }
+                    );               
+                    return message.channel.send({ embeds: [infoEmbed] });    
                 } else if (args[0] === 'roll') {
                     let roll = getRandomArbitrary(1, 20); // roll
                     if (roll === 0) {
@@ -301,22 +291,19 @@ client.on('ready', async () => {
                 }
             } else if (command === "mc") {
                 if (!args[0]) {
-                    const mcEmbed = {
-                        "title": "Command category: Minecraft",
-                        "description": "Usage: .mc (command)",
-                        "color": 53380,
-                        "footer": {
-                            "text": `${TechnobladeQuote[quoteInt]}\n- Technoblade`
-                        },
-                        "fields": [
-                            {
-                                "name": "serverinfo OR server OR sinfo (Minecraft Server IP)",
-                                "value": "Ping a minecraft server and return information about the server",
-                                "inline": true
-                            }
-                        ]
-                    };
-                    return message.channel.send({ embed:mcEmbed });
+                    const mcEmbed = new MessageEmbed()
+                    .setTitle('Command category: Minecraft')
+                    .setDescription(`Usage: ${prefix}mc (command)`)
+                    .setColor(53380)
+                    .setFooter(`${TechnobladeQuote[quoteInt]}\n- Technoblade`)
+                    .addFields(
+                        {
+                            name: 'serverinfo OR server OR sinfo (Minecraft Server IP)',
+                            value: 'Ping a minecraft server and return information about the server',
+                            inline: true
+                        }
+                    );
+                    return message.channel.send({ embeds: [mcEmbed] });
                 } else if (args[0] === "serverinfo" || args[0] === "server" || args[0] === "sinfo") {
                     try {
                         message.channel.send(`Pinging minecraft server...`);
