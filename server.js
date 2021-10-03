@@ -6,10 +6,10 @@ const client = new Discord.Client({
     intents: 32767,
     presence: {
         status: 'online',
-        activity: {
+        activity: [{
             name: `.help`,
             type: 'PLAYING',
-        },
+        }],
     },
     disableMentions: 'everyone',
 });
