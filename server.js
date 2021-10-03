@@ -11,7 +11,7 @@ const client = new Discord.Client({
             type: 'PLAYING',
         }],
     },
-    disableMentions: 'everyone',
+    allowedMentions: {parse: ['roles', 'users']}
 });
 const smartestchatbot = require('smartestchatbot');
 const scb = new smartestchatbot.Client();
