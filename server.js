@@ -315,7 +315,7 @@ client.on('ready', async () => {
                                 "inline": true
                             }
                         ]
-                    }
+                    };
                     return message.channel.send({ embed:mcEmbed });
                 } else if (args[0] === "serverinfo" || args[0] === "server" || args[0] === "sinfo") {
                     try {
