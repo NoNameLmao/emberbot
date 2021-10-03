@@ -16,7 +16,6 @@ const client = new Discord.Client({
 const smartestchatbot = require('smartestchatbot');
 const scb = new smartestchatbot.Client();
 const config = require('./config.json');
-const disbut = require('discord-buttons')(client);
 const guildID = `846807940727570433`;
 const botchannelID = `846811100338323497`;
 const DateChannelID = `848247855789375508`;
