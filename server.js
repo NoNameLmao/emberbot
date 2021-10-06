@@ -11,7 +11,7 @@ const client = new Discord.Client({
             type: 'PLAYING',
         }],
     },
-    allowedMentions: {parse: ['roles', 'users']}
+    allowedMentions: { parse: ['roles', 'users'] }
 });
 const smartestchatbot = require('smartestchatbot');
 const scb = new smartestchatbot.Client();
@@ -175,8 +175,9 @@ client.on('ready', async () => {
     log(`Logged in successfully as ${client.user.tag}!`);
     const filePath = path.resolve(__dirname, './config.json');
     process.on('uncaughtException', function (err) {
-        console.error(`[${now}] [Error] ${err.stack}`);
-        channel.send(`some error idk, go fix <@341123308844220447> \n\`\`\`${err.stack}\`\`\``); 
+        console.error(`[${now}] [${err.name}] ${err.stack}`);
+        channel.send(`Some serious af error happened <@341123308844220447>\n\`\`\`js\n${err.stack}\`\`\`\ncya losers`);
+        process.exit(0);
     });
     channel = await client.channels.fetch(botchannelID);
     channel.send(`hi im online no more heroku pog`);
