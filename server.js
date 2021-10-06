@@ -260,29 +260,34 @@ client.on('ready', async () => {
                     );
                     return message.channel.send({ embeds: [esimEmbed] });
                 } else if (args[0] === 'info') {
-                    const infoEmbed = new MessageEmbed()
-                    .setTitle('Useless information about europesim')
-                    .setDescription('totally useless why did you use this command')
-                    .setAuthor('Bot information', 'https://cdn.discordapp.com/icons/846807940727570433/4bbf13c1ce8bfb351fc7eafdc898e7d1.png')
-                    .setColor(53380)
-                    .setFooter("https://ourworldofpixels.com/europesim")
-                    .addFields(
-                        {
-                            name: 'Current UTC hour',
-                            value: `${nowUTC}`,
-                            inline: true
-                        },
-                        {
-                            name: 'Europesim year, month',
-                            value: `${europesimCurrentYear}, ${europesimCurrentMonth}`,
-                            inline: true
-                        },
-                        {
-                            name: `Europesim's server member count`,
-                            value: `${userCount} users + ${botCount} bots = ${memberCount} overall. Online users: ${onlineUsers}`
-                        }
-                    );               
-                    return message.channel.send({ embeds: [infoEmbed] });    
+                    try {
+                        const infoEmbed = new MessageEmbed()
+                        .setTitle('Useless information about europesim')
+                        .setDescription('totally useless why did you use this command')
+                        .setAuthor('Bot information', 'https://cdn.discordapp.com/icons/846807940727570433/4bbf13c1ce8bfb351fc7eafdc898e7d1.png')
+                        .setColor(53380)
+                        .setFooter("https://ourworldofpixels.com/europesim")
+                        .addFields(
+                            {
+                                name: 'Current UTC hour',
+                                value: `${nowUTC}`,
+                                inline: true
+                            },
+                            {
+                                name: 'Europesim year, month',
+                                value: `${europesimCurrentYear}, ${europesimCurrentMonth}`,
+                                inline: true
+                            },
+                            {
+                                name: `Europesim's server member count`,
+                                value: `${userCount} users + ${botCount} bots = ${memberCount} overall. Online users: ${onlineUsers}`
+                            }
+                        );               
+                        return message.channel.send({ embeds: [infoEmbed] });
+                    } catch (error) {
+                        message.channel.send(`:x: eror\n\`\`\`js\n${error}\`\`\``);
+                        message.react(`❌`);
+                    }
                 } else if (args[0] === 'roll') {
                     let roll = getRandomArbitrary(1, 20); // roll
                     if (roll === 0) {
