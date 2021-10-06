@@ -185,10 +185,14 @@ client.on('ready', async () => {
         process.exit(0);
     }
     let guild = await client.guilds.fetch(guildID);
-    let memberCount = guild.memberCount;
-    let userCount = guild.members.cache.filter(member => !member.user.bot).size;
-    let botCount = memberCount - userCount;
-    let onlineUsers = guild.members.cache.filter(member => (await member.fetch())?.presence.status !== 'offline' && !member.user.bot).size;
+    try {
+        let memberCount = guild.memberCount;
+        let userCount = guild.members.cache.filter(member => !member.user.bot).size;
+        let botCount = memberCount - userCount;
+        let onlineUsers = guild.members.cache.filter(member => (await member.fetch())?.presence.status !== 'offline' && !member.user.bot).size;    
+    } catch (error) {
+        channel.send(`fail with member count stuff ${error}`);
+    }
 
     let DateChannel = guild.channels.cache.get(DateChannelID);
     DateChannel.join();
@@ -198,20 +202,24 @@ client.on('ready', async () => {
     client.on('message', function(message) {
         // message.content = message.content.replace(/<[@#:].*?>/g, "");
         if (message.channel.name === "es-chatbot") {
-            if (message.author.bot) return;
-            else {
-                if (!message.content) return message.react('❌');
-                message.channel.startTyping();
-                scb.chat({ message: message.content, name: client.user.username, user: message.author.id, language: "auto" }).then(msg => {
-                    message.lineReply(
-                        msg.toLowerCase()
-                        .replace('.', '')
-                        .replace(`'`, '')
-                        .replace('you can interrupt me at any time by clicking the “x” on the top-right', 'if you want me to stop then stop talking here, its that simple')
-                        .replace('ok, ill stop when you click the “x” on the top-right', 'i will stop once you stop typing here dude')
-                    );
-                });
-                message.channel.stopTyping();
+            try {
+                if (message.author.bot) return;
+                else {
+                    if (!message.content) return message.react('❌');
+                    message.channel.startTyping();
+                    scb.chat({ message: message.content, name: client.user.username, user: message.author.id, language: "auto" }).then(msg => {
+                        message.lineReply(
+                            msg.toLowerCase()
+                            .replace('.', '')
+                            .replace(`'`, '')
+                            .replace('you can interrupt me at any time by clicking the “x” on the top-right', 'if you want me to stop then stop talking here, its that simple')
+                            .replace('ok, ill stop when you click the “x” on the top-right', 'i will stop once you stop typing here dude')
+                        );
+                    });
+                    message.channel.stopTyping();
+                }
+            } catch (error) {
+                message.channel.send(`fail: ${error}`);
             }
         }
 
