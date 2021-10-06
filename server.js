@@ -1,6 +1,7 @@
 require('dotenv').config();
 const colors = require('colors');
 const Discord = require('discord.js');
+const DiscordVoice = require('@discordjs/voice');
 const { MessageEmbed } = require("discord.js");
 const client = new Discord.Client({
     intents: 32767,
@@ -196,8 +197,12 @@ client.on('ready', async () => {
     }
     try {
         DateChannel = guild.channels.cache.get(DateChannelID);
-        DateChannel.join();
-        if (config.debug === true) channel.send('ran DateChannel.join()');    
+        const connection = DiscordVoice.joinVoiceChannel({
+            channelId: DateChannelID,
+            guildId: guildID.id,
+            adapterCreator: channel.guild.voiceAdapterCreator
+        });
+        if (config.debug === true) channel.send('ran DiscordVoice.joinVoiceChannel({...})');    
     } catch (error) {
         channel.send(`:x: error with date voice channel stuff\n\`\`\`js\n${error}\`\`\``);
     }
