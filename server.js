@@ -192,14 +192,14 @@ client.on('ready', async () => {
         let botCount = memberCount - userCount;
         let onlineUsers = guild.members.cache.filter(member => member.presence.status !== 'offline' && !member.user.bot).size;
     } catch (error) {
-        channel.send(`fail with member count stuff ${error}`);
+        channel.send(`:x: error with member count stuff\n\`\`\`js\n${error}\`\`\``);
     }
     try {
         DateChannel = guild.channels.cache.get(DateChannelID);
         DateChannel.join();
         if (config.debug === true) channel.send('ran DateChannel.join()');    
     } catch (error) {
-        channel.send(`datevc error wtf ${error}`);
+        channel.send(`:x: error with date voice channel stuff\n\`\`\`js\n${error}\`\`\``);
     }
 
     client.on('error', error => log(error));
