@@ -211,13 +211,14 @@ client.on('ready', async () => {
                     if (!message.content) return message.react('❌');
                     message.channel.sendTyping();
                     scb.chat({ message: message.content, name: client.user.username, user: message.author.id, language: "auto" }).then(msg => {
-                        message.lineReply(
-                            msg.toLowerCase()
+                        message.reply({
+                            content: msg.toLowerCase()
                             .replace('.', '')
                             .replace(`'`, '')
                             .replace('you can interrupt me at any time by clicking the “x” on the top-right', 'if you want me to stop then stop talking here, its that simple')
-                            .replace('ok, ill stop when you click the “x” on the top-right', 'i will stop once you stop typing here dude')
-                        );
+                            .replace('ok, ill stop when you click the “x” on the top-right', 'i will stop once you stop typing here dude'),
+                            allowedMentions: { repliedUser: true }
+                        });
                     });
                 }
             } catch (error) {
