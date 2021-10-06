@@ -199,7 +199,7 @@ client.on('ready', async () => {
         DateChannel = guild.channels.cache.get(DateChannelID);
         const connection = DiscordVoice.joinVoiceChannel({
             channelId: DateChannelID,
-            guildId: guildID.id,
+            guildId: guildID,
             adapterCreator: channel.guild.voiceAdapterCreator
         });
         if (config.debug === true) channel.send('ran DiscordVoice.joinVoiceChannel({...})');    
