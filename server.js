@@ -566,17 +566,22 @@ client.on('ready', async () => {
         }
     });
     let a = 1;
-    function updateDateLoop() {
-        setTimeout(() => {
-            updateMonth();
-            updateYear();
-            DateChannel.setName(`${europesimCurrentYear}, ${europesimCurrentMonth}`);
-            if (a > 0) {
-                updateDateLoop();
-            }
-        }, 10000);
+    
+    try { 
+        function updateDateLoop() {
+            setTimeout(() => {
+                updateMonth();
+                updateYear();
+                DateChannel.setName(`${europesimCurrentYear}, ${europesimCurrentMonth}`);
+                if (a > 0) {
+                    updateDateLoop();
+                }
+            }, 10000);
+        }
+        updateDateLoop();
+    } catch (error) {
+        channel.send(`date update error \n${error}`);
     }
-    try { updateDateLoop(); } catch (error) { channel.send('date update error'); }
 });
 
 let europesimStartDate = Date.parse('August 30 2021 00:00:00 GMT');
