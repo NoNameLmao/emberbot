@@ -170,8 +170,7 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-let channel;
-let DateChannel;
+let channel, DateChannel, userCount;
 client.on('ready', async () => {
     log(`Logged in successfully as ${client.user.tag}!`);
     const filePath = path.resolve(__dirname, './config.json');
