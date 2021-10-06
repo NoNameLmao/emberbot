@@ -171,6 +171,7 @@ function sleep(ms) {
 }
 
 let channel;
+let DateChannel;
 client.on('ready', async () => {
     log(`Logged in successfully as ${client.user.tag}!`);
     const filePath = path.resolve(__dirname, './config.json');
@@ -195,7 +196,7 @@ client.on('ready', async () => {
         channel.send(`fail with member count stuff ${error}`);
     }
     try {
-        let DateChannel = guild.channels.cache.get(DateChannelID);
+        DateChannel = guild.channels.cache.get(DateChannelID);
         DateChannel.join();
         if (config.debug === true) channel.send('ran DateChannel.join()');    
     } catch (error) {
