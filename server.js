@@ -174,9 +174,9 @@ let channel;
 client.on('ready', async () => {
     log(`Logged in successfully as ${client.user.tag}!`);
     const filePath = path.resolve(__dirname, './config.json');
-    process.on('uncaughtException', function (err) {
+    process.on('uncaughtException', async (err) => {
         console.error(`[${now}] [${err.name}] ${err.stack}`);
-        channel.send(`Some serious af error happened <@341123308844220447>\n\`\`\`js\n${err.stack}\`\`\`\ncya losers`);
+        await channel.send(`Some serious af error happened <@341123308844220447>\n\`\`\`js\n${err.stack}\`\`\`\ncya losers`);
         process.exit(0);
     });
     channel = await client.channels.fetch(botchannelID);
@@ -576,7 +576,7 @@ client.on('ready', async () => {
             }
         }, 10000);
     }
-    updateDateLoop();
+    try { updateDateLoop(); } catch (error) { channel.send('date update error'); }
 });
 
 let europesimStartDate = Date.parse('August 30 2021 00:00:00 GMT');
