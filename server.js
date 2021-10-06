@@ -193,10 +193,13 @@ client.on('ready', async () => {
     } catch (error) {
         channel.send(`fail with member count stuff ${error}`);
     }
-
-    let DateChannel = guild.channels.cache.get(DateChannelID);
-    DateChannel.join();
-    if (config.debug === true) channel.send('ran DateChannel.join()');
+    try {
+        let DateChannel = guild.channels.cache.get(DateChannelID);
+        DateChannel.join();
+        if (config.debug === true) channel.send('ran DateChannel.join()');    
+    } catch (error) {
+        channel.send(`datevc error wtf ${error}`);
+    }
 
     client.on('error', error => log(error));
     client.on('message', function(message) {
