@@ -529,11 +529,6 @@
   "resolved" "https://registry.npmjs.org/discord-api-types/-/discord-api-types-0.22.0.tgz"
   "version" "0.22.0"
 
-"discord-buttons@^3.2.1":
-  "integrity" "sha512-UN5xOLG0TwTX6Qr/hjdSyP63HxOYxs5saxfdJ/vijSqjfa/yVPgxO2InKF0l8rpsDOVMsLWGDFLI3+Ax97/LOg=="
-  "resolved" "https://registry.npmjs.org/discord-buttons/-/discord-buttons-3.2.1.tgz"
-  "version" "3.2.1"
-
 "discord.js@^13.1.0":
   "integrity" "sha512-gxO4CXKdHpqA+WKG+f5RNnd3srTDj5uFJHgOathksDE90YNq/Qijkd2WlMgTTMS6AJoEnHxI7G9eDQHCuZ+xDA=="
   "resolved" "https://registry.npmjs.org/discord.js/-/discord.js-13.1.0.tgz"
