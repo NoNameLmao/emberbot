@@ -529,7 +529,7 @@ client.on('ready', async () => {
                         }
                     ]
                 };
-                return message.channel.send({ embed:helpEmbed });
+                return message.channel.send({ embeds: [helpEmbed] });
             } else if (command === "dn") {
                 return message.channel.send('deez nuts');
             } else if (command === "debug") {
