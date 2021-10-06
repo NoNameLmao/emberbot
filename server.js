@@ -209,7 +209,7 @@ client.on('ready', async () => {
                 if (message.author.bot) return;
                 else {
                     if (!message.content) return message.react('❌');
-                    message.channel.startTyping();
+                    message.channel.sendTyping();
                     scb.chat({ message: message.content, name: client.user.username, user: message.author.id, language: "auto" }).then(msg => {
                         message.lineReply(
                             msg.toLowerCase()
@@ -219,7 +219,6 @@ client.on('ready', async () => {
                             .replace('ok, ill stop when you click the “x” on the top-right', 'i will stop once you stop typing here dude')
                         );
                     });
-                    message.channel.stopTyping();
                 }
             } catch (error) {
                 message.channel.send(`fail: ${error}`);
