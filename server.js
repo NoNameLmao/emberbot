@@ -188,7 +188,7 @@ client.on('ready', async () => {
         userCount = guild.members.cache.filter(
             member => !member.user.bot,
         ).size;
-        let botCount = memberCount - userCount;
+        let botCount = memberCount - userCount || 'idk';
         let onlineUsers = guild.members.cache.filter(
             member => member.presence?.status !== 'offline' && !member.user.bot,
         ).size;
