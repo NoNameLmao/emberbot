@@ -199,6 +199,10 @@ client.on('ready', async () => {
     } catch (error) {
         channel.send(`:x: error with member count stuff\n\`\`\`js\n${error}\`\`\``);
     }
+    function debugSend(message) {
+        if (config.debug === true) channel.send(message);
+        else return;
+    }
     try {
         DateChannel = guild.channels.cache.get(DateChannelID);
         const connection = DiscordVoice.joinVoiceChannel({
@@ -206,8 +210,9 @@ client.on('ready', async () => {
             guildId: guildID,
             adapterCreator: channel.guild.voiceAdapterCreator
         });
-        if (config.debug === true) channel.send('ran DiscordVoice.joinVoiceChannel({...})');
+        debugSend('ran DiscordVoice.joinVoiceChannel({...})');
         const player = DiscordVoice.createAudioPlayer();
+        debugSend('ran DiscordVoice.createAudioPlayer()');
         async function playSound({
             folder,
             sound
@@ -221,7 +226,7 @@ client.on('ready', async () => {
                 player.play(resource);
                 connection.subscribe(player);
                 player.once('error', error => {
-                    if (config.debug === true) channel.send(`:x: player error\n${error}`);
+                    debugSend(`:x: player error\n${error}`);
                     console.log(`Player error!\n${error}`);
                     reject(error);
                 });
