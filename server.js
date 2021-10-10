@@ -213,6 +213,9 @@ client.on('ready', async () => {
         debugSend('ran DiscordVoice.joinVoiceChannel({...})');
         const player = DiscordVoice.createAudioPlayer();
         debugSend('ran DiscordVoice.createAudioPlayer()');
+        connection.on(DiscordVoice.VoiceConnectionStatus.Ready, () => {
+            debugSend('ready to play in voice channel');
+        });
         async function playSound({
             folder,
             sound
