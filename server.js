@@ -189,9 +189,13 @@ client.on('ready', async () => {
     let guild = await client.guilds.fetch(guildID);
     try {
         let memberCount = guild.memberCount;
-        let userCount = guild.members.cache.filter(member => !member.user.bot).size;
+        let userCount = guild.members.cache.filter(
+            member => !member.user.bot
+        ).size;
         let botCount = memberCount - userCount;
-        let onlineUsers = guild.members.cache.filter(member => member.presence.status !== 'offline' && !member.user.bot).size;
+        let onlineUsers = guild.members.cache.filter(
+            member => member.presence.status !== 'offline' && !member.user.bot
+        ).size;
     } catch (error) {
         channel.send(`:x: error with member count stuff\n\`\`\`js\n${error}\`\`\``);
     }
@@ -202,7 +206,43 @@ client.on('ready', async () => {
             guildId: guildID,
             adapterCreator: channel.guild.voiceAdapterCreator
         });
-        if (config.debug === true) channel.send('ran DiscordVoice.joinVoiceChannel({...})');    
+        if (config.debug === true) channel.send('ran DiscordVoice.joinVoiceChannel({...})');
+        const player = DiscordVoice.createAudioPlayer();
+        async function playSound({
+            folder,
+            sound
+        }) {
+            return new Promise((resolve, reject) => {
+                let resource = DiscordVoice.createAudioResource(
+                    path.resolve(
+                        `stuff/sounds/${folder}/${sound}.mp3`
+                    )
+                );
+                player.play(resource);
+                connection.subscribe(player);
+                player.once('error', error => {
+                    if (config.debug === true) channel.send(`:x: player error\n${error}`);
+                    console.log(`Player error!\n${error}`);
+                    reject(error);
+                });
+                player.once('stateChange', (oldState, newState) => {
+                    if (oldState === DiscordVoice.AudioPlayerStatus.Playing && newState === DiscordVoice.AudioPlayerStatus.Idle) {
+                        resolve('Done');
+                    }
+                });
+            });
+        }
+
+        if (DateChannel.members.size > 1) {
+            setTimeout(async () => {
+                await playSound({
+                    folder: `technoblade`,
+                    sound: `uhhh`
+                });
+                player.stop();
+                connection.disconnect();
+            }, 2000);
+        }
     } catch (error) {
         channel.send(`:x: error with date voice channel stuff\n\`\`\`js\n${error}\`\`\``);
     }
