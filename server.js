@@ -196,7 +196,7 @@ client.on('ready', async () => {
             member => member.presence.status !== 'offline' && !member.user.bot,
         ).size;
     } catch (error) {
-        channel.send(`:x: error with member count stuff\n\`\`\`js\n${error}\`\`\``);
+        channel.send(`:x: error with member count stuff\n\`\`\`js\n${error.stack}\`\`\``);
     }
     function debugSend(message) {
         if (config.debug === true) channel.send(message);
