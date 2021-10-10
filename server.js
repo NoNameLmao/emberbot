@@ -181,10 +181,7 @@ client.on('ready', async () => {
     });
     channel = await client.channels.fetch(botchannelID);
     channel.send('hi im online no more heroku pog');
-    if (!channel) {
-        log('Cannot find the bot channel! ping spam NoNameLmao(emberglaze lmao) to fix it');
-        process.exit(0);
-    }
+
     let guild = await client.guilds.fetch(guildID);
     try {
         let memberCount = guild.memberCount;
