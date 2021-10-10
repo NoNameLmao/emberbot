@@ -227,7 +227,7 @@ client.on('ready', async () => {
                 });
                 player.once('stateChange', (oldState, newState) => {
                     if (oldState === DiscordVoice.AudioPlayerStatus.Playing && newState === DiscordVoice.AudioPlayerStatus.Idle) {
-                        resolve('Done');
+                        resolve(true);
                     }
                 });
             });
@@ -238,9 +238,10 @@ client.on('ready', async () => {
                 await playSound({
                     folder: `technoblade`,
                     sound: `uhhh`
+                }).then(() => {
+                    player.stop();
+                    connection.disconnect();
                 });
-                player.stop();
-                connection.disconnect();
             }, 2000);
         }
     } catch (error) {
@@ -427,7 +428,7 @@ client.on('ready', async () => {
             } else if (command === "suggest") {
                 const suggest = args.join(" ");
                 client.users.fetch('341123308844220447').then((nnl) => {
-                    nnl.send(`Bot suggestion by ${message.author.tag}: \`${suggest}\`\nSent at ${message.createdAt} in <#${message.channel.id}>`);
+                    nnl.send(`Bot suggestion by ${message.author.tag}:\n\`${suggest}\`\nSent at ${message.createdAt} in <#${message.channel.id}>`);
                 });
                 return message.channel.send(`Your suggestion has been sent! thanks`);
             } else if (command === 'pfp' || command === "avatar") {
