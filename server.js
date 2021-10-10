@@ -199,7 +199,7 @@ client.on('ready', async () => {
         channel.send(`:x: error with member count stuff\n\`\`\`js\n${error.stack}\`\`\``);
     }
     function debugSend(message) {
-        if (config.debug === true) channel.send(message);
+        if (config.debug === true) channel.send(`[DEBUG]: ${message}`);
         else return;
     }
     try {
