@@ -208,7 +208,7 @@ client.on('ready', async () => {
     }
 
     client.on('error', error => log(error));
-    client.on('message', function(message) {
+    client.on('message', message => {
         // message.content = message.content.replace(/<[@#:].*?>/g, "");
         if (message.channel.name === "es-chatbot") {
             try {
