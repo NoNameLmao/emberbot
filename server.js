@@ -190,7 +190,7 @@ client.on('ready', async () => {
         ).size;
         let botCount = memberCount - userCount;
         let onlineUsers = guild.members.cache.filter(
-            member => member.presence.status !== 'offline' && !member.user.bot,
+            member => member.presence?.status !== 'offline' && !member.user.bot,
         ).size;
     } catch (error) {
         channel.send(`:x: error with member count stuff\n\`\`\`js\n${error.stack}\`\`\``);
