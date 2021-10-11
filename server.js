@@ -236,7 +236,10 @@ client.on('ready', async () => {
                 });
             });
         }
-
+        client.on('voiceStateUpdate', (oldState, newState) => {
+            debugSend(`${oldState.member.displayName}, ${oldState} => ${newState}`);
+            log(`${oldState.member.displayName}, ${oldState} => ${newState}`);
+        });
         if (DateChannel.members.size > 1) {
             debugSend('DateChannel members size > 1');
             setTimeout(async () => {
