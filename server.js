@@ -620,17 +620,17 @@ client.on('ready', async () => {
     });
     const a = 1;
 
+    function updateDateLoop() {
+        setTimeout(() => {
+            updateMonth();
+            updateYear();
+            DateChannel.setName(`${europesimCurrentYear}, ${europesimCurrentMonth}`);
+            if (a > 0) {
+                updateDateLoop();
+            }
+        }, 10000);
+    }
     try {
-        function updateDateLoop() {
-            setTimeout(() => {
-                updateMonth();
-                updateYear();
-                DateChannel.setName(`${europesimCurrentYear}, ${europesimCurrentMonth}`);
-                if (a > 0) {
-                    updateDateLoop();
-                }
-            }, 10000);
-        }
         updateDateLoop();
     } catch (error) {
         channel.send(`date update error \n${error}`);
