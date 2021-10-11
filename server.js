@@ -508,7 +508,7 @@ client.on('ready', async () => {
                     );
                 } else return message.channel.send('what now? random array element or args 🤣🤣🤣');
             } else if (command === 'help') {
-                const helpEmbed = {
+                const helpEmbed = { // TODO migrate this to MessageEmbed()
                     'title': 'All list of commands',
                     'description': `prefix: ${config.prefix}\n<> = optional argument`,
                     'color': 53380,
