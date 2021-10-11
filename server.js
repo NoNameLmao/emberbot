@@ -390,6 +390,8 @@ client.on('ready', async () => {
                 }
             } else if (command === 'hi') {
                 message.channel.send('hi im online what do u want (main branch)');
+            } else if (command === 'setguildavatar' || command === 'setguildpfp') {
+                // todo
             } else if (command === 'eval') {
                 if (message.member.roles.cache.some(r => r.name === 'Admin') || message.author.id === '341123308844220447') {
                     const code = args.join(' ');
