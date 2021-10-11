@@ -180,7 +180,7 @@ client.on('ready', async () => {
         process.exit(0);
     });
     channel = await client.channels.fetch(botchannelID);
-    channel.send('hi im online no more heroku pog');
+    channel.send('hi im online');
 
     let guild = await client.guilds.fetch(guildID);
     try {
@@ -240,10 +240,12 @@ client.on('ready', async () => {
         if (DateChannel.members.size > 1) {
             debugSend('DateChannel members size > 1');
             setTimeout(async () => {
+                debugSend('playing sound?..');
                 await playSound({
                     folder: 'technoblade',
                     sound: 'uhhh',
                 }).then(() => {
+                    debugSend('done, stopping');
                     player.stop();
                     connection.disconnect();
                 });
