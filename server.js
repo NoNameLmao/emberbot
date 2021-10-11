@@ -196,7 +196,7 @@ client.on('ready', async () => {
         channel.send(`:x: error with member count stuff\n\`\`\`js\n${error.stack}\`\`\``);
     }
     function debugSend(message) {
-        if (config.debug === true) channel.send(`[DEBUG]: ${message}`);
+        if (config.debug === true) channel.send(`\`[DEBUG]: ${message}\``);
         else return;
     }
     try {
@@ -237,8 +237,8 @@ client.on('ready', async () => {
             });
         }
         client.on('voiceStateUpdate', (oldState, newState) => {
-            debugSend(`${oldState.member.displayName}, ${oldState} => ${newState}`);
-            log(`${oldState.member.displayName}, ${oldState} => ${newState}`);
+            debugSend(`${oldState.member.displayName}, ${oldState.id} => ${newState.id}`);
+            log(`${oldState.member.displayName}, ${oldState.id} => ${newState.id}`);
         });
         if (DateChannel.members.size > 1) {
             debugSend('DateChannel members size > 1');
