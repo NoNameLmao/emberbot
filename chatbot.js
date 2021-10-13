@@ -3,12 +3,11 @@ const brain = require('brain.js');
 const net = new brain.recurrent.LSTM();
 
 net.train([
-    {
-        input: ['hi', 'hello', 'hey'], output: ['hi', 'hello', 'hey'],
-    },
-    {
-        input: 'how are you', output: ['good', 'bad', 'fine', 'alright', 'im feeling like techoblade rn'],
-    },
+    'hi, hi',
+    'hi, hello',
+    'hello, hi',
+    'hello, hello',
+    'how are you, im good',
 ]);
 
 /**
