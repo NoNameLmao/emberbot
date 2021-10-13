@@ -1,3 +1,4 @@
+const start = Date.now();
 require('dotenv').config();
 const Discord = require('discord.js');
 const DiscordVoice = require('@discordjs/voice');
@@ -181,7 +182,7 @@ client.on('ready', async () => {
         process.exit(0);
     });
     channel = await client.channels.fetch(botchannelID);
-    channel.send('hi im online');
+    channel.send(`hi im online, i took like ${(Date.now() - start) / 1000}s to start`);
 
     let guild = await client.guilds.fetch(guildID);
     try {
