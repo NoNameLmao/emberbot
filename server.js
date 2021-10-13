@@ -173,6 +173,7 @@ function sleep(ms) {
 let channel, DateChannel, userCount;
 client.on('ready', async () => {
     log(`Logged in successfully as ${client.user.tag}!`);
+    const { netRun } = require('./chatbot');
     const filePath = path.resolve(__dirname, './config.json');
     process.on('uncaughtException', async (err) => {
         console.error(`[${now}] [${err.name}] ${err.stack}`);
@@ -264,7 +265,12 @@ client.on('ready', async () => {
         if (message.channel.name === 'es-chatbot') {
             try {
                 if (message.author.bot) return;
-                else {
+                if (config.chatbot === 'new') {
+                    message.reply({
+                        content: netRun(message.content),
+                        allowedMentions: { repliedUser: true },
+                    });
+                } else {
                     if (!message.content) return message.react('❌');
                     message.channel.sendTyping();
                     scb.chat({ message: message.content, name: client.user.username, user: message.author.id, owner: 'emberglaze', language: 'auto' }).then(msg => {
@@ -278,7 +284,7 @@ client.on('ready', async () => {
                     });
                 }
             } catch (error) {
-                message.channel.send(`fail: ${error}`);
+                message.channel.send(`:x: fail: ${error}`);
             }
         }
 
@@ -618,6 +624,26 @@ client.on('ready', async () => {
                     } else if (config.debug === false) {
                         message.channel.send('Debug mode is currently off.');
                     }
+                }
+            } else if (command === 'chatbot') {
+                if (args[0] === 'new') {
+                    if (config.chatbot === 'old') {
+                        message.channel.send('toggling chatbot into newer one');
+                        config.chatbot = 'new';
+                        jsonWrite(filePath, config);
+                        message.channel.send('done');
+                    } else return message.channel.send(':x: either invalid value in config or its already toggled to new');
+                } else if (args[0] === 'old') {
+                    if (config.chatbot === 'new') {
+                        message.channel.send('toggling chatbot into older one');
+                        config.chatbot = 'old';
+                        jsonWrite(filePath, config);
+                        message.channel.send('done');
+                    } else return message.channel.send(':x: either invalid value in config or its already toggled to old');
+                } else if (!args[0]) {
+                    if (config.chatbot === 'new') message.channel.send('Chatbot is currently toggled to new');
+                    else if (config.chatbot === 'old') message.channel.send('Chatbot is currently toggled to old');
+                    else message.channel.send(':x: invalid value in config, tell emberglaze to fix it');
                 }
             } else if (command === '') return;
         } else if (!message.content.startsWith(prefix)) {
