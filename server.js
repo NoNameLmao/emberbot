@@ -522,81 +522,76 @@ client.on('ready', async () => {
                     );
                 } else return message.channel.send('what now? random array element or args 🤣🤣🤣');
             } else if (command === 'help') {
-                const helpEmbed = { // TODO migrate this to MessageEmbed()
-                    'title': 'All list of commands',
-                    'description': `prefix: ${config.prefix}\n<> = optional argument`,
-                    'color': 53380,
-                    'footer': {
-                        'text': 'Some text edited idk',
+                const helpEmbed = new MessageEmbed()
+                .setTitle('All list of commands')
+                .setDescription(`prefix: ${config.prefix}\n<> = optional argument`)
+                .setColor(53380)
+                .setFooter('epic new chatbot (WIP)')
+                .addFields(
+                    {
+                        name: 'hi',
+                        value: 'Usually used to check if bot is responding/online or not',
+                        inline: true,
                     },
-                    'fields': [
-                        {
-                          'name': 'hi',
-                          'value': 'Usually used to check if bot is responding/online or not',
-                          'inline': true,
-                        },
-                        {
-                          'name': 'eval (code)',
-                          'value': 'Run JavaScript code',
-                          'inline': true,
-                        },
-                        {
-                          'name': 'exit',
-                          'value': 'Shortcut to process.exit(1);',
-                          'inline': true,
-                        },
-                        {
-                          'name': 'sudo (message)',
-                          'value': 'Send messages as me (idk why i added it, might remove)',
-                          'inline': true,
-                        },
-                        {
-                          'name': 'quote',
-                          'value': 'Random technoblade quote',
-                          'inline': true,
-                        },
-                        {
-                            'name': 'suggest (suggestion)',
-                            'value': 'Send bot suggestions to NoNameLmao, may or may not be added :shrug:',
-                            'inline': true,
-                        },
-                        {
-                            'name': 'avatar OR pfp <mention OR account id>',
-                            'value': 'Returns a profile picture of either message author (leave arguments empty), mentioned/pinged account or account by id',
-                            'inline': true,
-                        },
-                        {
-                            'name': 'esim',
-                            'value': 'Categorised commands that are related to europesim. Run this command for more info',
-                            'inline': true,
-                        },
-                        {
-                            'name': 'mc',
-                            'value': 'Categorised minecraft commands. Run this command for more info',
-                            'inline': true,
-                        },
-                        {
-                            'name': 'rng <minValue> (maxValue)',
-                            'value': 'Random number generator',
-                            'inline': true,
-                        },
-                        {
-                            'name': 'rcg',
-                            'value': 'Random country generator, don\'t kill me',
-                            'inline': true,
-                        },
-                        {
-                            'name': 'code <code stuff>',
-                            'value': `Serves as a reminder to ${pingNNL} for some parts of code he frequently forgets about lol he is so bad he forgets his own code`,
-                            'inline': false,
-                        },
-                        {
-                            'name': 'help',
-                            'value': 'It does exactly what you think it does.',
-                            'inline': false,
-                        },
-                    ],
-                };
+                    {
+                        name: 'eval (code)',
+                        value: 'Run JavaScript code',
+                        inline: true,
+                    },
+                    {
+                        name: 'exit',
+                        value: 'Shortcut to process.exit(1)',
+                        inline: true,
+                    },
+                    {
+                        name: 'sudo (message)',
+                        value: 'Send messages as me (idk why i added it, might remove)',
+                        inline: true,
+                    },
+                    {
+                        name: 'quote',
+                        value: 'Random technoblade quote',
+                        inline: true,
+                    },
+                    {
+                        name: 'suggest (idea: string)',
+                        value: 'Send bot suggestions to emberglaze, may or may not be added :shrug:',
+                        inline: true,
+                    },
+                    {
+                        name: 'avatar OR pfp <mention OR account id>',
+                        value: 'Returns a profile picture of either message author (leave arguments empty), mentioned/pinged account or account by id',
+                        inline: true,
+                    },
+                    {
+                        name: 'esim',
+                        value: 'Categorised commands that are related to europesim. Run this command for more info',
+                        inline: true,
+                    },
+                    {
+                        name: 'mc',
+                        value: 'Categorised minecraft commands. Run this command for more info',
+                        inline: true,
+                    },
+                    {
+                        name: 'rng <minValue> (maxValue)',
+                        value: 'Random number generator',
+                        inline: true,
+                    },
+                    {
+                        name: 'rcg',
+                        value: 'Random country generator, don\'t kill me',
+                        inline: true,
+                    },
+                    {
+                        name: 'code <code stuff>',
+                        value: `Serves as a reminder to ${pingNNL} for some parts of code he frequently forgets about lol he is so bad he forgets his own code`,
+                    },
+                    {
+                        name: 'help',
+                        value: 'It does exactly what you think it does',
+                    },
+                );
                 return message.channel.send({ embeds: [helpEmbed] });
             } else if (command === 'dn') {
                 return message.channel.send('deez nuts');
