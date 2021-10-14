@@ -559,11 +559,6 @@ client.on('ready', async () => {
                         inline: true,
                     },
                     {
-                        name: 'avatar OR pfp <mention OR account id>',
-                        value: 'Returns a profile picture of either message author (leave arguments empty), mentioned/pinged account or account by id',
-                        inline: true,
-                    },
-                    {
                         name: 'esim',
                         value: 'Categorised commands that are related to europesim. Run this command for more info',
                         inline: true,
@@ -582,6 +577,10 @@ client.on('ready', async () => {
                         name: 'rcg',
                         value: 'Random country generator, don\'t kill me',
                         inline: true,
+                    },
+                    {
+                        name: 'avatar OR pfp <mention OR account id>',
+                        value: 'Returns a profile picture of either message author (leave arguments empty), mentioned/pinged account or account by id',
                     },
                     {
                         name: 'code <code stuff>',
