@@ -4,7 +4,7 @@ const net = new brain.recurrent.LSTM();
 let { botChannel } = require('../server');
 
 if (fs.existsSync('./neuralnet.json')) {
-    net.fromJSON(JSON.parse(fs.readFileSync('neuralnet.json', 'utf8')));
+    net.fromJSON(JSON.parse(fs.readFileSync('./neuralnet.json', 'utf8')));
 } else {
     botChannel.send(':x: `Can\'t find the neuralnet file, did you run the train.js thing lol`');
 }
