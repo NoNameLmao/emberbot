@@ -171,18 +171,19 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-let channel, DateChannel, userCount;
+let botChannel, DateChannel, userCount;
 client.on('ready', async () => {
     log(`Logged in successfully as ${client.user.tag}!`);
-    const { netRun } = require('./chatbot');
     const filePath = path.resolve(__dirname, './config.json');
     process.on('uncaughtException', async (err) => {
         console.error(`[${now}] [${err.name}] ${err.stack}`);
-        await channel.send(`Some serious af error happened <@341123308844220447>\n\`\`\`js\n${err.stack}\`\`\`\ncya losers`);
+        await botChannel.send(`Some serious af error happened <@341123308844220447>\n\`\`\`js\n${err.stack}\`\`\`\ncya losers`);
         process.exit(0);
     });
-    channel = await client.channels.fetch(botchannelID);
-    channel.send(`hi im online, i took like ${(Date.now() - start) / 1000}s to start`);
+    botChannel = await client.channels.fetch(botchannelID);
+    module.exports = { botChannel };
+    const { netRun } = require('./chatbot/chatbot');
+    botChannel.send(`hi im online, i took like ${(Date.now() - start) / 1000}s to start`);
 
     let guild = await client.guilds.fetch(guildID);
     try {
@@ -195,10 +196,10 @@ client.on('ready', async () => {
             member => member.presence?.status !== 'offline' && !member.user.bot,
         ).size;
     } catch (error) {
-        channel.send(`:x: error with member count stuff\n\`\`\`js\n${error.stack}\`\`\``);
+        botChannel.send(`:x: error with member count stuff\n\`\`\`js\n${error.stack}\`\`\``);
     }
     function debugSend(message) {
-        if (config.debug === true) channel.send(`\`[DEBUG]: ${message}\``);
+        if (config.debug === true) botChannel.send(`\`[DEBUG]: ${message}\``);
         else return;
     }
     try {
@@ -206,7 +207,7 @@ client.on('ready', async () => {
         const connection = DiscordVoice.joinVoiceChannel({
             channelId: DateChannelID,
             guildId: guildID,
-            adapterCreator: channel.guild.voiceAdapterCreator,
+            adapterCreator: botChannel.guild.voiceAdapterCreator,
         });
         debugSend('ran DiscordVoice.joinVoiceChannel({...})');
         const player = DiscordVoice.createAudioPlayer();
@@ -257,7 +258,7 @@ client.on('ready', async () => {
             }, 2000);
         }
     } catch (error) {
-        channel.send(`:x: error with date voice channel stuff\n\`\`\`js\n${error}\`\`\``);
+        botChannel.send(`:x: error with date voice channel stuff\n\`\`\`js\n${error}\`\`\``);
     }
 
     client.on('error', error => log(error));
@@ -445,8 +446,8 @@ client.on('ready', async () => {
                 quoteInt = getRandomInt(37);
                 if (message.author.id === '341123308844220447') {
                     const sudo = args.join(' ');
-                    message.channel.send(sudo);
-                } else return channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
+                    return message.channel.send(sudo);
+                } else return message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
             } else if (command === 'quote') {
                 quoteInt = getRandomInt(37);
                 return message.channel.send(`quote number ${quoteInt}: \n"${TechnobladeQuote[quoteInt]}"`);

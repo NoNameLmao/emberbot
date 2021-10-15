@@ -1,0 +1,17 @@
+[
+    { "input": "hi", "output": "hello" },
+    { "input": "hello", "output": "hi" },
+    { "input": "test", "output": "just a test." },
+    { "input": "how are you", "output": "im good" },
+    { "input": "search joe", "output": "joe who sir" },
+    { "input": "the nuts", "output": "dont miss them" },
+    { "input": "ur mom", "output": "i dont have a mom" },
+    { "input": "this is better", "output": "sound good" },
+    { "input": "he big brain", "output": "i big brain yes"},
+    { "input": "my name is deez", "output": "deez what sir" },
+    { "input": "are you technoblade", "output": "not yet sadly" },
+    { "input": "correct", "output": "sounds like something worked" },
+    { "input": "pls talk", "output": "i dont talk, i only send messages" },
+    { "input": "do you hate", "output": "im not trained to hate anything/anyone" },
+    { "input": "are you better than the older one", "output": "not yet, if you want an more polished company than me then `.chatbot old`" }
+]
