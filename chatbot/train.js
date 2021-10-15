@@ -31,7 +31,7 @@ const train = (dt) => {
 	console.log('Training.');
 	const d = new Date();
 	net.train(dt, {
-		iterations: 2000,
+		iterations: 5000,
 		log: true,
 		errorThresh: 0.001,
 		logPeriod: 1,
