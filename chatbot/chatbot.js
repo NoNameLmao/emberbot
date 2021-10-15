@@ -3,7 +3,7 @@ const brain = require('brain.js');
 const net = new brain.recurrent.LSTM();
 let { botChannel } = require('../server');
 
-net.fromJSON(JSON.parse(fs.readFileSync('neuralnet.json', 'utf8')));
+net.fromJSON(JSON.parse(fs.readFileSync('./chatbot/neuralnet.json', 'utf8')));
 
 /**
  * Run a string through the net.
