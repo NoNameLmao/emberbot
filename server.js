@@ -405,16 +405,24 @@ client.on('ready', async () => {
             } else if (command === 'setguildavatar' || command === 'setguildpfp') {
                 // todo
             } else if (command === 'eval') {
+                let evalEmbed = new MessageEmbed()
+                .setTitle('eval result');
                 if (message.member.roles.cache.some(r => r.name === 'Admin') || message.author.id === '341123308844220447') {
                     const code = args.join(' ');
                     try {
                         const result = eval(code);
                         let output = result;
                         if (typeof output !== 'string') output = require('util').inspect(result);
-                        message.channel.send(output, { code: 'js' });
+                        evalEmbed = evalEmbed
+                        .setColor(53380)
+                        .addField('Output', `\`\`\`js\n${output}\`\`\``);
+                        message.channel.send({ embeds: [evalEmbed] });
                         log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${output}`);
                     } catch (error) {
-                        message.channel.send(`\`Code ran with an error:\` \`\`\`xl\n${error}\n\`\`\``);
+                        evalEmbed = evalEmbed
+                        .setColor('RED')
+                        .addField('Error', `\`\`\`js\n${error}\`\`\``);
+                        message.channel.send();
                         log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${code} \nThere was an error running this code: \n${error}`);
                     }
                 } else return message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
