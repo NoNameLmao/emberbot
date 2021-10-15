@@ -286,7 +286,7 @@ client.on('ready', async () => {
                     });
                 }
             } catch (error) {
-                message.channel.send(`:x: fail: ${error}`);
+                message.channel.send(`:x: epic fail \`\`\`js\n${error}\`\`\``);
             }
         }
 
