@@ -670,7 +670,7 @@ client.on('ready', async () => {
     try {
         updateDateLoop();
     } catch (error) {
-        channel.send(`date update error \n${error}`);
+        botChannel.send(`date update error \n${error}`);
     }
 });
 
