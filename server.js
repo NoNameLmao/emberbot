@@ -265,6 +265,7 @@ client.on('ready', async () => {
 
     client.on('error', error => log(error));
     client.on('messageCreate', message => {
+        updateGuildMembers();
         // message.content = message.content.replace(/<[@#:].*?>/g, "");
         if (message.channel.name === 'es-chatbot') {
             try {
@@ -425,7 +426,7 @@ client.on('ready', async () => {
                     } catch (error) {
                         evalEmbed = evalEmbed
                         .setColor('RED')
-                        .addField('Error', `\`\`\`js\n${error}\`\`\``);
+                        .addField('Error output', `\`\`\`js\n${error}\`\`\``);
                         message.channel.send({ embeds: [evalEmbed] });
                         log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${code} \nThere was an error running this code: \n${error}`);
                     }
