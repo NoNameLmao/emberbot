@@ -268,7 +268,6 @@ client.on('ready', async () => {
 
     client.on('error', error => log(error));
     client.on('messageCreate', message => {
-        updateGuildMembers();
         // message.content = message.content.replace(/<[@#:].*?>/g, "");
         if (message.channel.name === 'es-chatbot') {
             try {
