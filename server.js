@@ -184,9 +184,8 @@ client.on('ready', async () => {
     module.exports = { botChannel };
     const { netRun } = require('./chatbot/chatbot');
     botChannel.send(`hi im online, i took like ${(Date.now() - start) / 1000}s to start`);
-
     let guild = await client.guilds.fetch(guildID);
-    try {
+    function updateGuildMembers() {
         let memberCount = guild.memberCount;
         userCount = guild.members.cache.filter(
             member => !member.user.bot,
@@ -195,6 +194,9 @@ client.on('ready', async () => {
         let onlineUsers = guild.members.cache.filter(
             member => member.presence?.status !== 'offline' && !member.user.bot,
         ).size;
+    }
+    try {
+        updateGuildMembers();
     } catch (error) {
         botChannel.send(`:x: error with member count stuff\n\`\`\`js\n${error.stack}\`\`\``);
     }
@@ -323,6 +325,7 @@ client.on('ready', async () => {
                     return message.channel.send({ embeds: [esimEmbed] });
                 } else if (args[0] === 'info') {
                     try {
+                        updateGuildMembers();
                         const infoEmbed = new MessageEmbed()
                         .setTitle('Useless information about europesim')
                         .setDescription('totally useless why did you use this command')
