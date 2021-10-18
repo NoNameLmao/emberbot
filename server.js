@@ -426,7 +426,7 @@ client.on('ready', async () => {
                         evalEmbed = evalEmbed
                         .setColor('RED')
                         .addField('Error', `\`\`\`js\n${error}\`\`\``);
-                        message.channel.send();
+                        message.channel.send({ embeds: [evalEmbed] });
                         log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${code} \nThere was an error running this code: \n${error}`);
                     }
                 } else return message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
