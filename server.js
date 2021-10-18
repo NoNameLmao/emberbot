@@ -187,10 +187,13 @@ client.on('ready', async () => {
     let guild = await client.guilds.fetch(guildID);
     function updateGuildMembers() {
         let memberCount = guild.memberCount;
+        debugSend(`memberCount = guild.memberCount; ${memberCount} (${guild.memberCount})`);
         userCount = guild.members.cache.filter(
             member => !member.user.bot,
         ).size;
-        let botCount = memberCount - userCount || 'idk';
+        debugSend(`userCount = guild.members.cache.filter(member => !member.user.bot).size; ${userCount} (${guild.members.cache.filter(member => !member.user.bot).size})`);
+        let botCount = memberCount - userCount;
+        debugSend(`botCount = memberCount - userCount; ${botCount} = ${memberCount} - ${userCount}`);
         let onlineUsers = guild.members.cache.filter(
             member => member.presence?.status !== 'offline' && !member.user.bot,
         ).size;
