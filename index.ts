@@ -56,12 +56,6 @@ function removeMCColorCodes(string: string) {
     // other font shenanigans
     .replace('§k', '').replace('§l', '').replace('§m', '').replace('§n', '').replace('§o', '').replace('§r', '');
 }
-interface String { 
-    limit(length: number): string;
-}
-String.prototype.limit = function(length: number): string {
-    return this.length > length ? (this.substring(0, length - 1) + '…') : this;
-};
 
 const httpHost = '0.0.0.0';
 const httpPort = process.env.PORT;
