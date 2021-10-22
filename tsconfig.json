@@ -1,7 +1,6 @@
 {
     "compilerOptions": {
         "module": "CommonJS",
-        "target": "ES2018",
         "resolveJsonModule": true,
         "esModuleInterop": true,
         "noImplicitAny": true,
