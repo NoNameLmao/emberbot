@@ -31,8 +31,8 @@ const pingNNL = '<@341123308844220447>';
 let now = new Date();
 let nowUTC = now.getUTCHours();
 const europesimStartYear = 1900;
-let europesimCurrentYear;
-let europesimCurrentMonth;
+let europesimCurrentYear: number;
+let europesimCurrentMonth: string;
 
 function updateYear() {
     europesimStartDate = Date.parse('August 30 2021 00:00:00 GMT');
@@ -45,10 +45,10 @@ function updateMonth() {
     nowUTC = now.getUTCHours();
     europesimCurrentMonth = months[Math.floor(nowUTC / 2)];
 }
-function log(stuff) {
-    console.log(`[server.js] ${stuff}`);
+function log(message: string) {
+    console.log(`[server.js] ${message}`);
 }
-function removeMCColorCodes(string) {
+function removeMCColorCodes(string: string) {
     return string
     // color shenanigans
     .replace('§4', '').replace('§c', '').replace('§6', '').replace('§e', '').replace('§2', '').replace('§a', '').replace('§b', '').replace('§3', '').replace('§1', '')
@@ -56,38 +56,36 @@ function removeMCColorCodes(string) {
     // other font shenanigans
     .replace('§k', '').replace('§l', '').replace('§m', '').replace('§n', '').replace('§o', '').replace('§r', '');
 }
-/**
- * Will limit the length of a string to given (length - 1) and will add … afterwards because it counts as one character.
- * @param {number} length length of a string
- * @returns {string} string with it's (length - 1) + …
- */
-String.prototype.limit = function(length) {
+interface String { 
+    limit(length: number): string;
+}
+String.prototype.limit = function(length: number): string {
     return this.length > length ? (this.substring(0, length - 1) + '…') : this;
 };
 
 const httpHost = '0.0.0.0';
 const httpPort = process.env.PORT;
-let indexFile;
-const requestListener = (req, res) => {
+let indexFile: any;
+const requestListener = (req: any, res: any) => {
     res.setHeader('Content-Type', 'text/html"');
     res.writeHead(200);
     res.end(indexFile);
 };
 const httpServer = http.createServer(requestListener);
-fsp.readFile(__dirname + '/index.html').then(contents => {
+fsp.readFile(`${__dirname}/index.html`).then((contents: any) => {
     indexFile = contents;
     httpServer.listen(httpPort, httpHost, () => {
-        log(`[HttpServer] Server is running on http://${httpHost}:${httpPort}`.green);
+        log(`[HttpServer] Server is running on http://${httpHost}:${httpPort}`);
     });
-}).catch(err => {
-    console.error(`[HttpServer] Could not read index.html file: ${err}`.red);
+}).catch((error: any) => {
+    console.error(`[HttpServer] Could not read index.html file: ${error}`);
     process.exit(1);
 });
 
-function getRandomArbitrary(min, max) {
+function getRandomArbitrary(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
-function getRandomInt(max) {
+function getRandomInt(max: number) {
     return Math.floor(Math.random() * max);
 }
 
@@ -143,9 +141,9 @@ const liechtenstein = [
     'iechtenstein',
 ];
 
-function jsonRead(filePath) {
+function jsonRead(filePath: string) {
     return new Promise((resolve, reject) => {
-        fs.readFile(filePath, 'utf8', (err, content) => {
+        fs.readFile(filePath, 'utf8', (err: any, content: any) => {
             if (err) {
                 reject(err);
             } else {
@@ -158,20 +156,20 @@ function jsonRead(filePath) {
         });
     });
 }
-function jsonWrite(filePath, data) {
+function jsonWrite(filePath: string, data: any) {
     return new Promise((resolve, reject) => {
-        fs.writeFile(filePath, JSON.stringify(data), (err) => {
+        fs.writeFile(filePath, JSON.stringify(data), (err: any) => {
             if (err) {
                 reject(err);
             } resolve(true);
         });
     });
 }
-function sleep(ms) {
+function sleep(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-let botChannel, DateChannel, userCount;
+let botChannel: any, DateChannel: any, userCount: number, memberCount: number, botCount: number, onlineUsers: number;
 client.on('ready', async () => {
     log(`Logged in successfully as ${client.user.tag}!`);
     const filePath = path.resolve(__dirname, './config.json');
@@ -183,19 +181,19 @@ client.on('ready', async () => {
     botChannel = await client.channels.fetch(botchannelID);
     module.exports = { botChannel };
     const { netRun } = require('./chatbot/chatbot');
-    botChannel.send(`hi im online, i took like ${(Date.now() - start) / 1000}s to start`);
+    botChannel.send(`hi im online, i took ${(Date.now() - start) / 1000}s to start`);
     let guild = await client.guilds.fetch(guildID);
     function updateGuildMembers() {
-        let memberCount = guild.memberCount;
+        memberCount = guild.memberCount;
         debugSend(`memberCount = guild.memberCount; ${memberCount} (${guild.memberCount})`);
         userCount = guild.members.cache.filter(
-            member => !member.user.bot,
+            (member: any) => !member.user.bot,
         ).size;
-        debugSend(`userCount = guild.members.cache.filter(member => !member.user.bot).size; ${userCount} (${guild.members.cache.filter(member => !member.user.bot).size})`);
-        let botCount = memberCount - userCount;
+        debugSend(`userCount = guild.members.cache.filter(member => !member.user.bot).size; ${userCount} (${guild.members.cache.filter((member: any) => !member.user.bot).size})`);
+        botCount = memberCount - userCount;
         debugSend(`botCount = memberCount - userCount; ${botCount} = ${memberCount} - ${userCount}`);
-        let onlineUsers = guild.members.cache.filter(
-            member => member.presence?.status !== 'offline' && !member.user.bot,
+        onlineUsers = guild.members.cache.filter(
+            (member: any) => member.presence?.status !== 'offline' && !member.user.bot,
         ).size;
     }
     try {
@@ -203,7 +201,7 @@ client.on('ready', async () => {
     } catch (error) {
         botChannel.send(`:x: error with member count stuff\n\`\`\`js\n${error.stack}\`\`\``);
     }
-    function debugSend(message) {
+    function debugSend(message: string) {
         if (config.debug === true) botChannel.send(`\`[DEBUG]: ${message}\``);
         else return;
     }
@@ -220,10 +218,15 @@ client.on('ready', async () => {
         connection.on(DiscordVoice.VoiceConnectionStatus.Ready, () => {
             debugSend('ready to play in voice channel');
         });
-        async function playSound({
-            folder,
-            sound,
-        }) {
+        async function playSound(
+            {
+                folder,
+                sound
+            } : { 
+                folder: string,
+                sound: string 
+            }
+        ) {
             return new Promise((resolve, reject) => {
                 const resource = DiscordVoice.createAudioResource(
                     path.resolve(
@@ -232,19 +235,19 @@ client.on('ready', async () => {
                 );
                 player.play(resource);
                 connection.subscribe(player);
-                player.once('error', error => {
+                player.once('error', (error: any) => {
                     debugSend(`:x: player error\n${error}`);
                     console.log(`Player error!\n${error}`);
                     reject(error);
                 });
-                player.once('stateChange', (oldState, newState) => {
+                player.once('stateChange', (oldState: any, newState: any) => {
                     if (oldState === DiscordVoice.AudioPlayerStatus.Playing && newState === DiscordVoice.AudioPlayerStatus.Idle) {
                         resolve(true);
                     }
                 });
             });
         }
-        client.on('voiceStateUpdate', (oldState, newState) => {
+        client.on('voiceStateUpdate', (oldState: any, newState: any) => {
             debugSend(`${oldState.member.displayName}, ${oldState.id} => ${newState.id}`);
             log(`${oldState.member.displayName}, ${oldState.id} => ${newState.id}`);
         });
@@ -266,9 +269,8 @@ client.on('ready', async () => {
         botChannel.send(`:x: error with date voice channel stuff\n\`\`\`js\n${error}\`\`\``);
     }
 
-    client.on('error', error => log(error));
-    client.on('messageCreate', message => {
-        // message.content = message.content.replace(/<[@#:].*?>/g, "");
+    client.on('error', (error: any) => log(error));
+    client.on('messageCreate', (message: any) => {
         if (message.channel.name === 'es-chatbot') {
             try {
                 if (message.author.bot) return;
@@ -280,7 +282,7 @@ client.on('ready', async () => {
                 } else {
                     if (!message.content) return message.react('❌');
                     message.channel.sendTyping();
-                    scb.chat({ message: message.content, name: client.user.username, user: message.author.id, owner: 'emberglaze', language: 'auto' }).then(msg => {
+                    scb.chat({ message: message.content, name: client.user.username, user: message.author.id, owner: 'emberglaze', language: 'auto' }).then((msg: string) => {
                         message.reply({
                             content: msg.toLowerCase()
                             .replace('\'', '')
@@ -390,7 +392,7 @@ client.on('ready', async () => {
                 } else if (args[0] === 'serverinfo' || args[0] === 'server' || args[0] === 'sinfo') {
                     try {
                         message.channel.send('Pinging minecraft server...');
-                        mcdata.serverStatus(args[1]).then(serverinfo => {
+                        mcdata.serverStatus(args[1]).then((serverinfo: any) => {
                             const serverInfoEmbed = new MessageEmbed()
                             .setTitle('Server Information')
                             .setColor(53380)
@@ -414,7 +416,7 @@ client.on('ready', async () => {
             } else if (command === 'eval') {
                 let evalEmbed = new MessageEmbed()
                 .setTitle('eval result');
-                if (message.member.roles.cache.some(r => r.name === 'Admin') || message.author.id === '341123308844220447') {
+                if (message.member.roles.cache.some((role: any) => role.name === 'Admin') || message.author.id === '341123308844220447') {
                     const code = args.join(' ');
                     try {
                         const result = eval(code);
@@ -435,7 +437,7 @@ client.on('ready', async () => {
                 } else return message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
             } else if (command === 'exit') {
                 try {
-                    if (message.author.id === '341123308844220447' || message.member.roles.find(r => r.name === 'Admin')) {
+                    if (message.author.id === '341123308844220447' || message.member.roles.find((role: any) => role.name === 'Admin')) {
                         log(`recieved exit command from ${message.author.tag} @ ${now.toString()}. goodbye`);
                         message.channel.send(':sob:').then(() => process.exit(1));
                     } else {
@@ -459,7 +461,7 @@ client.on('ready', async () => {
                 return message.channel.send(`quote number ${quoteInt}: \n"${TechnobladeQuote[quoteInt]}"`);
             } else if (command === 'suggest') {
                 const suggest = args.join(' ');
-                client.users.fetch('341123308844220447').then((nnl) => {
+                client.users.fetch('341123308844220447').then((nnl: any) => {
                     nnl.send(`Bot suggestion by ${message.author.tag}:\n\`${suggest}\`\nSent at ${message.createdAt} in <#${message.channel.id}>`);
                 });
                 return message.channel.send('Your suggestion has been sent! thanks');
@@ -473,7 +475,7 @@ client.on('ready', async () => {
                             pfp = user.displayAvatarURL({ dynamic: true });
                             return message.channel.send(`oh man you could've just sent me an id why did you ping that poor person just for his pfp...\nanyway, ${pfp}`);
                         } else {
-                            user = client.users.fetch(args[0]).then(user => {
+                            user = client.users.fetch(args[0]).then((user: any) => {
                                 pfp = user.avatarURL({ dynamic: true });
                                 return message.channel.send(`got it!\n${pfp}`);
                             });

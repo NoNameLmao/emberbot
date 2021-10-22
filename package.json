@@ -1,10 +1,10 @@
 {
   "name": "europesim-bot",
-  "version": "1.0.0",
-  "description": "lol",
-  "main": "server.js",
+  "version": "2.0.0",
+  "description": "a bot for ourworldofpixels.com/europesim discord server",
+  "main": "index.ts",
   "scripts": {
-    "start": "node server.js"
+    "start": "ts-node index.ts"
   },
   "dependencies": {
     "@discordjs/voice": "^0.6.0",
@@ -26,6 +26,7 @@
     "pick-one-by-weight": "^1.0.2",
     "request": "^2.88.2",
     "smartestchatbot": "^2.0.0",
+    "typescript": "^4.4.4",
     "webhook-discord": "^3.7.8",
     "xmlhttprequest": "^1.8.0"
   },

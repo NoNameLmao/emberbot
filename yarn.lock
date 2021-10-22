@@ -2254,6 +2254,11 @@
     "media-typer" "0.3.0"
     "mime-types" "~2.1.24"
 
+"typescript@^4.4.4":
+  "integrity" "sha512-DqGhF5IKoBl8WNf8C1gu8q0xZSInh9j1kJJMqT3a94w1JzVaBU4EXOSMrz9yDqMT0xt3selp83fuFMQ0uzv6qA=="
+  "resolved" "https://registry.npmjs.org/typescript/-/typescript-4.4.4.tgz"
+  "version" "4.4.4"
+
 "uint4@^0.1.2":
   "integrity" "sha1-UMWuBLhdKBKPLfPMDsxNQavC9oE="
   "resolved" "https://registry.npmjs.org/uint4/-/uint4-0.1.2.tgz"
