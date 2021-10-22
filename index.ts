@@ -1,13 +1,13 @@
 const start = Date.now();
 require('dotenv').config();
-const Discord = require('discord.js');
-const DiscordVoice = require('@discordjs/voice');
-const { MessageEmbed } = require('discord.js');
+import Discord = require('discord.js');
+import DiscordVoice = require('@discordjs/voice');
+import { MessageEmbed } from 'discord.js';
 const client = new Discord.Client({
     intents: 32767,
     presence: {
         status: 'online',
-        activity: [{
+        activities: [{
             name: '.help',
             type: 'PLAYING',
         }],
@@ -16,15 +16,15 @@ const client = new Discord.Client({
 });
 const smartestchatbot = require('smartestchatbot');
 const scb = new smartestchatbot.Client();
-const config = require('./config.json');
+import config = require('./config.json');
 const guildID = '846807940727570433';
 const botchannelID = '846811100338323497';
 const DateChannelID = '848247855789375508';
 const prefix = config.prefix;
-const fs = require('fs');
+import fs = require('fs');
 const fsp = require('fs').promises;
-const path = require('path');
-const http = require('http');
+import path = require('path');
+import http = require('http');
 const mcdata = require('mcdata');
 const pingNNL = '<@341123308844220447>';
 
@@ -58,7 +58,7 @@ function removeMCColorCodes(string: string) {
 }
 
 const httpHost = '0.0.0.0';
-const httpPort = process.env.PORT;
+const httpPort = 42069;
 let indexFile: any;
 const requestListener = (req: any, res: any) => {
     res.setHeader('Content-Type', 'text/html"');
@@ -294,11 +294,11 @@ client.on('ready', async () => {
         if (message.content.startsWith('..')) return log('"command" with .. start ignored');
         if (liechtenstein.includes(message.content)) message.channel.send('liechtenstein*');
 
-        const args = message.content.slice(prefix.length).trim().split(/ +/g);
+        const args: any[] = message.content.slice(prefix.length).trim().split(/ +/g);
         const command = args.shift().toLowerCase();
         function logCommand() {
             log(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
-            if (config.debug === 'true') message.channel.send(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
+            if (config.debug === true) debugSend(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
         }
         if (message.content.startsWith(prefix)) {
             logCommand();
@@ -469,7 +469,7 @@ client.on('ready', async () => {
                             pfp = user.displayAvatarURL({ dynamic: true });
                             return message.channel.send(`oh man you could've just sent me an id why did you ping that poor person just for his pfp...\nanyway, ${pfp}`);
                         } else {
-                            user = client.users.fetch(args[0]).then((user: any) => {
+                            client.users.fetch(args[0]).then((user: Discord.User) => {
                                 pfp = user.avatarURL({ dynamic: true });
                                 return message.channel.send(`got it!\n${pfp}`);
                             });
@@ -654,7 +654,6 @@ client.on('ready', async () => {
             } else if (command === '') return;
         } else if (!message.content.startsWith(prefix)) {
             if (message.channel.type === 'dm') return log(`Direct message from ${message.author.tag} at ${message.createdAt}: ${message.content}`);
-            else return log(`Message from ${message.author.tag} in ${message.guild.name} server, ${message.channel.name} channel at ${message.createdAt}: ${message.content}`);
         }
     });
     const a = 1;
