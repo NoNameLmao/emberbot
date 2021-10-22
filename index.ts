@@ -165,7 +165,7 @@ function sleep(ms: number) {
 
 let botChannel: any, DateChannel: any, userCount: number, memberCount: number, botCount: number, onlineUsers: number;
 client.on('ready', async () => {
-    log(`Logged in successfully as ${client.user.tag}!`);
+    log(`Logged in successfully as ${client?.user.tag}!`);
     const filePath = path.resolve(__dirname, './config.json');
     process.on('uncaughtException', async (err) => {
         console.error(`[${now}] [${err.name}] ${err.stack}`);
@@ -193,7 +193,7 @@ client.on('ready', async () => {
     try {
         updateGuildMembers();
     } catch (error) {
-        botChannel.send(`:x: error with member count stuff\n\`\`\`js\n${error.stack}\`\`\``);
+        botChannel.send(`:x: error with member count stuff\n\`\`\`js\n${error?.stack}\`\`\``);
     }
     function debugSend(message: string) {
         if (config.debug === true) botChannel.send(`\`[DEBUG]: ${message}\``);
@@ -276,7 +276,7 @@ client.on('ready', async () => {
                 } else {
                     if (!message.content) return message.react('❌');
                     message.channel.sendTyping();
-                    scb.chat({ message: message.content, name: client.user.username, user: message.author.id, owner: 'emberglaze', language: 'auto' }).then((msg: string) => {
+                    scb.chat({ message: message.content, name: client?.user.username, user: message.author.id, owner: 'emberglaze', language: 'auto' }).then((msg: string) => {
                         message.reply({
                             content: msg.toLowerCase()
                             .replace('\'', '')
@@ -287,7 +287,7 @@ client.on('ready', async () => {
                     });
                 }
             } catch (error) {
-                message.channel.send(`:x: epic fail \`\`\`js\n${error.stack}\`\`\``);
+                message.channel.send(`:x: epic fail \`\`\`js\n${error?.stack}\`\`\``);
             }
         }
 
