@@ -1,1 +1,5 @@
-{"prefix":".","debug":false,"chatbot":"old"}
+{
+    "prefix": ".",
+    "debug": false,
+    "chatbot": "old"
+}

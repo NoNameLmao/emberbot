@@ -16,7 +16,7 @@ const client = new Discord.Client({
 });
 const smartestchatbot = require('smartestchatbot');
 const scb = new smartestchatbot.Client();
-import config = require('./config.json');
+import config from './config.json';
 const guildID = '846807940727570433';
 const botchannelID = '846811100338323497';
 const DateChannelID = '848247855789375508';
@@ -122,6 +122,9 @@ const TechnobladeQuote = [
     'cant run away from your problems when they have ender pearls',
 ];
 let quoteInt = getRandomInt(TechnobladeQuote.length + 1);
+function randomTechnoQuote(quoteNumber: number) {
+    return TechnobladeQuote[quoteNumber];
+}
 
 const liechtenstein = [
     'lichestien',
@@ -152,7 +155,7 @@ function jsonRead(filePath: string) {
 }
 function jsonWrite(filePath: string, data: any) {
     return new Promise((resolve, reject) => {
-        fs.writeFile(filePath, JSON.stringify(data), (err: any) => {
+        fs.writeFile(filePath, JSON.stringify(data, null, 4), (err: any) => {
             if (err) {
                 reject(err);
             } resolve(true);
@@ -264,7 +267,7 @@ client.on('ready', async () => {
     }
 
     client.on('error', (error: any) => log(error));
-    client.on('messageCreate', (message: any) => {
+    client.on('messageCreate', async (message: any) => {
         if (message.channel.name === 'es-chatbot') {
             try {
                 if (message.author.bot) return;
@@ -537,7 +540,7 @@ client.on('ready', async () => {
                 .setTitle('All list of commands')
                 .setDescription(`prefix: ${config.prefix}\n<> = optional argument`)
                 .setColor(53380)
-                .setFooter('epic new chatbot (WIP)')
+                .setFooter('epic new chatbot (WIP af)')
                 .addFields(
                     {
                         name: 'hi',
@@ -611,24 +614,24 @@ client.on('ready', async () => {
                         message.channel.send('okie dokie');
                         config.debug = true;
                         jsonWrite(filePath, config);
-                        return message.channel.send('Success!');
+                        message.channel.send('✅ done');
                     } else if (config.debug === true) {
-                        return message.channel.send('It is already on lol');
+                        message.channel.send('❌ its already on');
                     }
                 } else if (args[0] === 'false') {
                     if (config.debug === false) {
-                        return message.channel.send('It is already off lol dont panic');
+                        return message.channel.send('its already off ❌ lol dont panic');
                     } else if (config.debug === true) {
                         config.debug = false;
                         message.channel.send('okie dokie');
                         jsonWrite(filePath, config);
-                        return message.channel.send('Success!');
+                        return message.channel.send('✅ done');
                     }
                 } else if (!args[0]) {
                     if (config.debug === true) {
-                        message.channel.send('Debug mode is currently on.');
+                        message.channel.send('debug mode is currently on ✅');
                     } else if (config.debug === false) {
-                        message.channel.send('Debug mode is currently off.');
+                        message.channel.send('debug mode is currently off ❌');
                     }
                 }
             } else if (command === 'chatbot') {
@@ -651,9 +654,11 @@ client.on('ready', async () => {
                     else if (config.chatbot === 'old') message.channel.send('Chatbot is currently toggled to old');
                     else message.channel.send(':x: invalid value in config, tell emberglaze to fix it');
                 }
+            } else if (command === 'config') {
+                message.channel.send(`\`\`\`json\n${JSON.stringify(require('./config.json'), null, 4)}\`\`\``);
             } else if (command === '') return;
         } else if (!message.content.startsWith(prefix)) {
-            if (message.channel.type === 'dm') return log(`Direct message from ${message.author.tag} at ${message.createdAt}: ${message.content}`);
+            if (message.channel.type === 'dm') return log(`Direct message from ${message.author.tag} at ${message.createdAt}:\n${message.content}`);
         }
     });
     const a = 1;
