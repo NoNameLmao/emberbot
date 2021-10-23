@@ -22,7 +22,7 @@ const botchannelID = '846811100338323497';
 const DateChannelID = '848247855789375508';
 const prefix = config.prefix;
 import fs = require('fs');
-const fsp = require('fs').promises;
+import fsp = require('fs/promises');
 import path = require('path');
 import http = require('http');
 const mcdata = require('mcdata');
@@ -59,8 +59,8 @@ function removeMCColorCodes(string: string) {
 
 const httpHost = '0.0.0.0';
 const httpPort = 42069;
-let indexFile: any;
-const requestListener = (req: any, res: any) => {
+let indexFile: string;
+const requestListener: http.RequestListener = (req: http.IncomingMessage, res: http.ServerResponse) => {
     res.setHeader('Content-Type', 'text/html"');
     res.writeHead(200);
     res.end(indexFile);
@@ -140,7 +140,7 @@ const liechtenstein = [
 
 function jsonRead(filePath: string) {
     return new Promise((resolve, reject) => {
-        fs.readFile(filePath, 'utf8', (err: any, content: any) => {
+        fs.readFile(filePath, 'utf8', (err: NodeJS.ErrnoException, content: string) => {
             if (err) {
                 reject(err);
             } else {
@@ -184,18 +184,18 @@ client.on('ready', async () => {
         memberCount = guild.memberCount;
         debugSend(`memberCount = guild.memberCount; ${memberCount} (${guild.memberCount})`);
         userCount = guild.members.cache.filter(
-            (member: any) => !member.user.bot,
+            (member: Discord.GuildMember) => !member.user.bot,
         ).size;
-        debugSend(`userCount = guild.members.cache.filter(member => !member.user.bot).size; ${userCount} (${guild.members.cache.filter((member: any) => !member.user.bot).size})`);
+        debugSend(`userCount = guild.members.cache.filter(member => !member.user.bot).size; ${userCount} (${guild.members.cache.filter((member: Discord.GuildMember) => !member.user.bot).size})`);
         botCount = memberCount - userCount;
         debugSend(`botCount = memberCount - userCount; ${botCount} = ${memberCount} - ${userCount}`);
         onlineUsers = guild.members.cache.filter(
-            (member: any) => member.presence?.status !== 'offline' && !member.user.bot,
+            (member: Discord.GuildMember) => member.presence?.status !== 'offline' && !member.user.bot,
         ).size;
     }
     try {
         updateGuildMembers();
-    } catch (error: any) {
+    } catch (error) {
         botChannel.send(`:x: error with member count stuff\n\`\`\`js\n${error?.stack}\`\`\``);
     }
     function debugSend(message: string) {
@@ -210,58 +210,6 @@ client.on('ready', async () => {
             adapterCreator: botChannel.guild.voiceAdapterCreator,
         });
         debugSend('ran DiscordVoice.joinVoiceChannel({...})');
-        const player = DiscordVoice.createAudioPlayer();
-        debugSend('ran DiscordVoice.createAudioPlayer()');
-        connection.on(DiscordVoice.VoiceConnectionStatus.Ready, () => {
-            debugSend('ready to play in voice channel');
-        });
-        async function playSound(
-            {
-                folder,
-                sound
-            } : { 
-                folder: string,
-                sound: string 
-            }
-        ) {
-            return new Promise((resolve, reject) => {
-                const resource = DiscordVoice.createAudioResource(
-                    path.resolve(
-                        `stuff/sounds/${folder}/${sound}.mp3`,
-                    ),
-                );
-                player.play(resource);
-                connection.subscribe(player);
-                player.once('error', (error: any) => {
-                    debugSend(`:x: player error\n${error}`);
-                    console.log(`Player error!\n${error}`);
-                    reject(error);
-                });
-                player.once('stateChange', (oldState: any, newState: any) => {
-                    if (oldState === DiscordVoice.AudioPlayerStatus.Playing && newState === DiscordVoice.AudioPlayerStatus.Idle) {
-                        resolve(true);
-                    }
-                });
-            });
-        }
-        client.on('voiceStateUpdate', (oldState: any, newState: any) => {
-            debugSend(`${oldState.member.displayName}, ${oldState.id} => ${newState.id}`);
-            log(`${oldState.member.displayName}, ${oldState.id} => ${newState.id}`);
-        });
-        if (DateChannel.members.size > 1) {
-            debugSend('DateChannel members size > 1');
-            setTimeout(async () => {
-                debugSend('playing sound?..');
-                await playSound({
-                    folder: 'technoblade',
-                    sound: 'uhhh',
-                }).then(() => {
-                    debugSend('done, stopping');
-                    player.stop();
-                    connection.disconnect();
-                });
-            }, 2000);
-        }
     } catch (error) {
         botChannel.send(`:x: error with date voice channel stuff\n\`\`\`js\n${error}\`\`\``);
     }
@@ -289,7 +237,7 @@ client.on('ready', async () => {
                         });
                     });
                 }
-            } catch (error: any) {
+            } catch (error) {
                 message.channel.send(`:x: epic fail \`\`\`js\n${error?.stack}\`\`\``);
             }
         }
@@ -413,7 +361,7 @@ client.on('ready', async () => {
             } else if (command === 'eval') {
                 let evalEmbed = new MessageEmbed()
                 .setTitle('eval result');
-                if (message.member.roles.cache.some((role: any) => role.name === 'Admin') || message.author.id === '341123308844220447') {
+                if (message.member.roles.cache.some((role: Discord.Role) => role.name === 'Admin') || message.author.id === '341123308844220447') {
                     const code = args.join(' ');
                     try {
                         const result = eval(code);
@@ -434,7 +382,7 @@ client.on('ready', async () => {
                 } else return message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
             } else if (command === 'exit') {
                 try {
-                    if (message.author.id === '341123308844220447' || message.member.roles.find((role: any) => role.name === 'Admin')) {
+                    if (message.author.id === '341123308844220447' || message.member.roles.find((role: Discord.Role) => role.name === 'Admin')) {
                         log(`recieved exit command from ${message.author.tag} @ ${now.toString()}. goodbye`);
                         message.channel.send(':sob:').then(() => process.exit(1));
                     } else {
@@ -458,14 +406,14 @@ client.on('ready', async () => {
                 return message.channel.send(`quote number ${quoteInt}: \n"${TechnobladeQuote[quoteInt]}"`);
             } else if (command === 'suggest') {
                 const suggest = args.join(' ');
-                client.users.fetch('341123308844220447').then((nnl: any) => {
+                client.users.fetch('341123308844220447').then((nnl: Discord.User) => {
                     nnl.send(`Bot suggestion by ${message.author.tag}:\n\`${suggest}\`\nSent at ${message.createdAt} in <#${message.channel.id}>`);
                 });
                 return message.channel.send('Your suggestion has been sent! thanks');
             } else if (command === 'pfp' || command === 'avatar') {
                 try {
-                    let user;
-                    let pfp;
+                    let user: Discord.User;
+                    let pfp: string;
                     if (args[0]) {
                         if (message.mentions.users.size > 0) {
                             user = message.mentions.users.first();
