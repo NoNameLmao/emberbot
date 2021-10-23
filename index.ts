@@ -16,7 +16,7 @@ const client = new Discord.Client({
 });
 const smartestchatbot = require('smartestchatbot');
 const scb = new smartestchatbot.Client();
-import config from './config.json';
+const config = require('./config.json');
 const guildID = '846807940727570433';
 const botchannelID = '846811100338323497';
 const DateChannelID = '848247855789375508';
@@ -168,7 +168,7 @@ function sleep(ms: number) {
 
 let botChannel: any, DateChannel: any, userCount: number, memberCount: number, botCount: number, onlineUsers: number;
 client.on('ready', async () => {
-    log(`Logged in successfully as ${client?.user.tag}!`);
+    log(`Logged in successfully as ${client?.user?.tag}!`);
     const filePath = path.resolve(__dirname, './config.json');
     process.on('uncaughtException', async (err) => {
         console.error(`[${now}] [${err.name}] ${err.stack}`);
@@ -195,7 +195,7 @@ client.on('ready', async () => {
     }
     try {
         updateGuildMembers();
-    } catch (error) {
+    } catch (error: any) {
         botChannel.send(`:x: error with member count stuff\n\`\`\`js\n${error?.stack}\`\`\``);
     }
     function debugSend(message: string) {
@@ -279,7 +279,7 @@ client.on('ready', async () => {
                 } else {
                     if (!message.content) return message.react('❌');
                     message.channel.sendTyping();
-                    scb.chat({ message: message.content, name: client?.user.username, user: message.author.id, owner: 'emberglaze', language: 'auto' }).then((msg: string) => {
+                    scb.chat({ message: message.content, name: client?.user?.username, user: message.author.id, owner: 'emberglaze', language: 'auto' }).then((msg: string) => {
                         message.reply({
                             content: msg.toLowerCase()
                             .replace('\'', '')
@@ -289,7 +289,7 @@ client.on('ready', async () => {
                         });
                     });
                 }
-            } catch (error) {
+            } catch (error: any) {
                 message.channel.send(`:x: epic fail \`\`\`js\n${error?.stack}\`\`\``);
             }
         }
