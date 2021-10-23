@@ -140,7 +140,7 @@ const liechtenstein = [
 
 function jsonRead(filePath: string) {
     return new Promise((resolve, reject) => {
-        fs.readFile(filePath, 'utf8', (err: NodeJS.ErrnoException, content: string) => {
+        fs.readFile(filePath, 'utf8', (err: any, content: string) => {
             if (err) {
                 reject(err);
             } else {
@@ -195,8 +195,8 @@ client.on('ready', async () => {
     }
     try {
         updateGuildMembers();
-    } catch (error) {
-        botChannel.send(`:x: error with member count stuff\n\`\`\`js\n${error?.stack}\`\`\``);
+    } catch (error: any) {
+        botChannel.send(`:x: error with member count stuff\n\`\`\`js\n${error.stack}\`\`\``);
     }
     function debugSend(message: string) {
         if (config.debug === true) botChannel.send(`\`[DEBUG]: ${message}\``);
@@ -237,8 +237,8 @@ client.on('ready', async () => {
                         });
                     });
                 }
-            } catch (error) {
-                message.channel.send(`:x: epic fail \`\`\`js\n${error?.stack}\`\`\``);
+            } catch (error: any) {
+                message.channel.send(`:x: epic fail \`\`\`js\n${error.stack}\`\`\``);
             }
         }
 
@@ -413,7 +413,7 @@ client.on('ready', async () => {
             } else if (command === 'pfp' || command === 'avatar') {
                 try {
                     let user: Discord.User;
-                    let pfp: string;
+                    let pfp: string | null;
                     if (args[0]) {
                         if (message.mentions.users.size > 0) {
                             user = message.mentions.users.first();
