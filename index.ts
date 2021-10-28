@@ -359,10 +359,11 @@ client.on('ready', async () => {
             } else if (command === 'setguildavatar' || command === 'setguildpfp') {
                 // todo
             } else if (command === 'eval') {
+                const code = args.join(' ');
                 let evalEmbed = new MessageEmbed()
-                .setTitle('eval result');
+                .setTitle('eval result')
+                .addField('Input', `\`\`\`js\n${code}\`\`\``);
                 if (message.member.roles.cache.some((role: Discord.Role) => role.name === 'Admin') || message.author.id === '341123308844220447') {
-                    const code = args.join(' ');
                     try {
                         const result = eval(code);
                         let output = result;
