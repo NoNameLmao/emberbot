@@ -398,11 +398,11 @@ client.on('ready', async () => {
                     message.channel.send('Your suggestion has been sent! thanks');
                 } else if (command === 'pfp' || command === 'avatar') {
                     try {
-                        let user: Discord.User;
+                        let user: Discord.User | undefined;
                         let pfp: string | null;
                         if (args[0]) {
                             if (message.mentions.users.size > 0) {
-                                user = message.mentions.users.first() || undefined;
+                                user = message.mentions.users.first();
                                 pfp = user?.displayAvatarURL({ dynamic: true });
                                 message.channel.send(`oh man you could've just sent me an id why did you ping that poor person just for his pfp...\nanyway, ${pfp}`);
                             } else {
