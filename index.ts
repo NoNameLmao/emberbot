@@ -15,11 +15,12 @@ const client = new Discord.Client({
 });
 import smartestchatbot = require('smartestchatbot');
 const scb = new smartestchatbot.Client();
-const config = require('./config.json');
+import * as config from './config.json';
+let prefix = config.prefix, debug = config.debug, chatbot = config.chatbot;
+
 const guildID = '846807940727570433';
 const botchannelID = '846811100338323497';
 const DateChannelID = '848247855789375508';
-const prefix = config.prefix;
 import fs = require('fs');
 import fsp = require('fs/promises');
 import path = require('path');
@@ -194,7 +195,7 @@ client.on('ready', async () => {
         botChannel.send(`:x: error with member count stuff\n\`\`\`js\n${error.stack}\`\`\``);
     }
     function debugSend(message: string) {
-        if (config.debug === true) botChannel.send(`\`[DEBUG]: ${message}\``);
+        if (debug === true) botChannel.send(`\`[DEBUG]: ${message}\``);
         else return;
     }
     try {
@@ -214,7 +215,7 @@ client.on('ready', async () => {
         if (message.channel.name === 'es-chatbot') {
             try {
                 if (message.author.bot) return;
-                if (config.chatbot === 'new') await message.reply({
+                if (chatbot === 'new') await message.reply({
                     content: netRun(message.content),
                     allowedMentions: { repliedUser: true }
                 });
@@ -241,7 +242,7 @@ client.on('ready', async () => {
         const command = args.shift().toLowerCase();
         function logCommand() {
             log(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
-            if (config.debug === true) debugSend(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
+            debugSend(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
         }
         if (message.content.startsWith(prefix)) {
             logCommand();
@@ -443,7 +444,7 @@ client.on('ready', async () => {
                 } else if (command === 'help') {
                     const helpEmbed = new Discord.MessageEmbed()
                     .setTitle('All list of commands')
-                    .setDescription(`prefix: ${config.prefix}\n<> = optional argument`)
+                    .setDescription(`prefix: ${prefix}\n<> = optional argument`)
                     .setColor(53380)
                     .setFooter('epic new chatbot (WIP af)')
                     .addFields(
@@ -514,48 +515,48 @@ client.on('ready', async () => {
                 } else if (command === 'dn') message.channel.send('deez nuts');
                 else if (command === 'debug') {
                     if (args[0] === 'true') {
-                        if (config.debug === false) {
+                        if (debug === false) {
                             message.channel.send('okie dokie');
-                            config.debug = true;
+                            debug = true;
                             jsonWrite(filePath, config);
                             message.channel.send('✅ done');
-                        } else if (config.debug === true) {
+                        } else if (debug === true) {
                             message.channel.send('❌ its already on');
                         }
                     } else if (args[0] === 'false') {
-                        if (config.debug === false) {
+                        if (debug === false) {
                             message.channel.send('its already off ❌ lol dont panic');
-                        } else if (config.debug === true) {
-                            config.debug = false;
+                        } else if (debug === true) {
+                            debug = false;
                             message.channel.send('okie dokie');
                             jsonWrite(filePath, config);
                             message.channel.send('✅ done');
                         }
                     } else if (!args[0]) {
-                        if (config.debug === true) {
+                        if (debug === true) {
                             message.channel.send('debug mode is currently on ✅');
-                        } else if (config.debug === false) {
+                        } else if (debug === false) {
                             message.channel.send('debug mode is currently off ❌');
                         }
                     }
                 } else if (command === 'chatbot') {
                     if (args[0] === 'new') {
-                        if (config.chatbot === 'old') {
+                        if (chatbot === 'old') {
                             message.channel.send('toggling chatbot into newer one');
-                            config.chatbot = 'new';
+                            chatbot = 'new';
                             jsonWrite(filePath, config);
                             message.channel.send('done');
                         } else message.channel.send(':x: either invalid value in config or its already toggled to new');
                     } else if (args[0] === 'old') {
-                        if (config.chatbot === 'new') {
+                        if (chatbot === 'new') {
                             message.channel.send('toggling chatbot into older one');
-                            config.chatbot = 'old';
+                            chatbot = 'old';
                             jsonWrite(filePath, config);
                             message.channel.send('done');
                         } else message.channel.send(':x: either invalid value in config or its already toggled to old');
                     } else if (!args[0]) {
-                        if (config.chatbot === 'new') message.channel.send('Chatbot is currently toggled to new');
-                        else if (config.chatbot === 'old') message.channel.send('Chatbot is currently toggled to old');
+                        if (chatbot === 'new') message.channel.send('Chatbot is currently toggled to new');
+                        else if (chatbot === 'old') message.channel.send('Chatbot is currently toggled to old');
                         else message.channel.send(':x: invalid value in config, tell emberglaze to fix it');
                     }
                 } else if (command === 'config') {
@@ -568,10 +569,14 @@ client.on('ready', async () => {
 
     async function updateDateLoop() {
         setTimeout(async () => {
-            updateMonth();
-            updateYear();
-            await DateChannel.setName(`${europesimCurrentYear}, ${europesimCurrentMonth}`);
-            if (a > 0) updateDateLoop();
+            try {
+                updateMonth();
+                updateYear();
+                await DateChannel.setName(`${europesimCurrentYear}, ${europesimCurrentMonth}`);
+                updateDateLoop();
+            } catch (error) {
+                botChannel.send(`❌ updateDateLoop() failure\n\`\`\`js\n${error?.stack}\`\`\``);
+            }
         }, 10000);
     }
     try {
