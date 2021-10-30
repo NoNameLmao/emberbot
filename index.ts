@@ -399,7 +399,7 @@ client.on('ready', async () => {
                 } else if (command === 'pfp' || command === 'avatar') {
                     try {
                         let user: Discord.User | undefined;
-                        let pfp: string | undefined;
+                        let pfp: string | null | undefined;
                         if (args[0]) {
                             if (message.mentions.users.size > 0) {
                                 user = message.mentions.users.first();
