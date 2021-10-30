@@ -402,8 +402,8 @@ client.on('ready', async () => {
                         let pfp: string | null;
                         if (args[0]) {
                             if (message.mentions.users.size > 0) {
-                                user = message.mentions.users.first();
-                                pfp = user.displayAvatarURL({ dynamic: true });
+                                user = message.mentions.users.first() || undefined;
+                                pfp = user?.displayAvatarURL({ dynamic: true });
                                 message.channel.send(`oh man you could've just sent me an id why did you ping that poor person just for his pfp...\nanyway, ${pfp}`);
                             } else {
                                 user = await client.users.fetch(args[0])
