@@ -24,7 +24,7 @@ import fs = require('fs');
 import fsp = require('fs/promises');
 import path = require('path');
 import http = require('http');
-import mcdata = require('mcdata');
+const mcdata = require('mcdata');
 const pingNNL = '<@341123308844220447>';
 
 let now = new Date();
@@ -190,7 +190,7 @@ client.on('ready', async () => {
     }
     try {
         updateGuildMembers();
-    } catch (error) {
+    } catch (error: any) {
         botChannel.send(`:x: error with member count stuff\n\`\`\`js\n${error.stack}\`\`\``);
     }
     function debugSend(message: string) {
@@ -221,7 +221,7 @@ client.on('ready', async () => {
                 else {
                     if (!message.content) message.react('❌');
                     message.channel.sendTyping();
-                    let msg = await scb.chat({ message: message.content, name: client?.user?.username, user: message.author.id, owner: 'emberglaze' });
+                    let msg = await scb.chat({ message: message?.content, name: client?.user?.username, owner: null, user: message?.author?.id });
                     await message.reply({
                         content: msg.toLowerCase()
                         .replace('\'', '')
@@ -230,8 +230,8 @@ client.on('ready', async () => {
                         allowedMentions: { repliedUser: true },
                     });
                 }
-            } catch (error) {
-                message.channel.send(`:x: epic fail \`\`\`js\n${error.stack}\`\`\``);
+            } catch (error: any) {
+                message.channel.send(`:x: epic fail \`\`\`js\n${error?.stack}\`\`\``);
             }
         }
         if (message.content.startsWith('..')) return log('"command" with .. start ignored');
@@ -354,7 +354,7 @@ client.on('ready', async () => {
                     let evalEmbed = new Discord.MessageEmbed()
                     .setTitle('eval result')
                     .addField('Input', `\`\`\`js\n${code}\`\`\``);
-                    if (message.member.roles.cache.some((role: Discord.Role) => role.name === 'Admin') || message.author.id === '341123308844220447') {
+                    if (message?.member?.roles?.cache?.some((role: Discord.Role) => role.name === 'Admin') || message?.author?.id === '341123308844220447') {
                         try {
                             const result = eval(code);
                             let output = result;
@@ -373,7 +373,7 @@ client.on('ready', async () => {
                         }
                     } else message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
                 } else if (command === 'exit') {
-                    if (message.author.id === '341123308844220447' || message.member.roles.cache.find((role: Discord.Role) => role.name === 'Admin')) {
+                    if (message?.author?.id === '341123308844220447' || message?.member?.roles?.cache?.find((role: Discord.Role) => role.name === 'Admin')) {
                         log(`recieved exit command from ${message.author.tag} @ ${now.toString()}. goodbye`);
                         await message.channel.send(':sob:');
                         process.exit(1);
@@ -402,7 +402,7 @@ client.on('ready', async () => {
                         let pfp: string | null;
                         if (args[0]) {
                             if (message.mentions.users.size > 0) {
-                                user = message.mentions.users.first();
+                                user = message?.mentions?.users?.first();
                                 pfp = user.displayAvatarURL({ dynamic: true });
                                 message.channel.send(`oh man you could've just sent me an id why did you ping that poor person just for his pfp...\nanyway, ${pfp}`);
                             } else {
