@@ -574,7 +574,7 @@ client.on('ready', async () => {
                 updateYear();
                 await DateChannel.setName(`${europesimCurrentYear}, ${europesimCurrentMonth}`);
                 updateDateLoop();
-            } catch (error) {
+            } catch (error: any) {
                 botChannel.send(`❌ updateDateLoop() failure\n\`\`\`js\n${error?.stack}\`\`\``);
             }
         }, 10000);
