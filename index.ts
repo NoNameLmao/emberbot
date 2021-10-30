@@ -221,7 +221,7 @@ client.on('ready', async () => {
                 else {
                     if (!message.content) message.react('❌');
                     message.channel.sendTyping();
-                    let msg = await scb.chat({ message: message?.content, name: client?.user?.username, owner: null, user: message?.author?.id });
+                    let msg = await scb.chat({ message: message?.content, name: message.author.username, owner: 'emberglaze', user: message?.author?.id });
                     await message.reply({
                         content: msg.toLowerCase()
                         .replace('\'', '')
@@ -402,7 +402,7 @@ client.on('ready', async () => {
                         let pfp: string | null;
                         if (args[0]) {
                             if (message.mentions.users.size > 0) {
-                                user = message?.mentions?.users?.first();
+                                user = message.mentions.users.first();
                                 pfp = user.displayAvatarURL({ dynamic: true });
                                 message.channel.send(`oh man you could've just sent me an id why did you ping that poor person just for his pfp...\nanyway, ${pfp}`);
                             } else {
