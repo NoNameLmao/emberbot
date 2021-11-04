@@ -2,7 +2,7 @@ const start = Date.now();
 require('dotenv').config();
 import Discord = require('discord.js');
 import DiscordVoice = require('@discordjs/voice');
-const client = new Discord.Client({
+export const client = new Discord.Client({
     intents: 32767,
     presence: {
         status: 'online',
@@ -16,7 +16,8 @@ const client = new Discord.Client({
 import smartestchatbot = require('smartestchatbot');
 const scb = new smartestchatbot.Client();
 import * as config from './config.json';
-let prefix = config.prefix, debug = config.debug, chatbot = config.chatbot;
+let { prefix, debug, chatbot } = config;
+let editableConfig = { prefix, debug, chatbot };
 
 const guildID = '846807940727570433';
 const botchannelID = '846811100338323497';
@@ -25,37 +26,15 @@ import fs = require('fs');
 import fsp = require('fs/promises');
 import path = require('path');
 import http = require('http');
+import stuff = require('./stuff');
 const mcdata = require('mcdata');
 const pingNNL = '<@341123308844220447>';
 
-let now = new Date();
-let nowUTC = now.getUTCHours();
-const europesimStartYear = 1900;
-let europesimCurrentYear: number;
-let europesimCurrentMonth: string;
-
-function updateYear() {
-    europesimStartDate = Date.parse('August 30 2021 00:00:00 GMT');
-    currentDate = Date.now();
-    differenceInDays = (currentDate - europesimStartDate) / (1000 * 3600 * 24);
-    europesimCurrentYear = (Math.floor(europesimStartYear + differenceInDays));
-}
-function updateMonth() {
-    now = new Date();
-    nowUTC = now.getUTCHours();
-    europesimCurrentMonth = months[Math.floor(nowUTC / 2)];
-}
-function log(message: string) {
-    console.log(`[server.js] ${message}`);
-}
-function removeMCColorCodes(string: string) {
-    return string
-    // color shenanigans
-    .replace('§4', '').replace('§c', '').replace('§6', '').replace('§e', '').replace('§2', '').replace('§a', '').replace('§b', '').replace('§3', '').replace('§1', '')
-    .replace('§9', '').replace('§d', '').replace('§5', '').replace('§f', '').replace('§7', '').replace('§8', '').replace('§0', '')
-    // other font shenanigans
-    .replace('§k', '').replace('§l', '').replace('§m', '').replace('§n', '').replace('§o', '').replace('§r', '');
-}
+export let now = new Date();
+export let nowUTC = now.getUTCHours();
+export const europesimStartYear = 1900;
+export let europesimCurrentYear: number;
+export let europesimCurrentMonth: string;
 
 const httpHost = '0.0.0.0';
 const httpPort = 42069;
@@ -69,19 +48,12 @@ const httpServer = http.createServer(requestListener);
 fsp.readFile(`${__dirname}/index.html`).then((contents: any) => {
     indexFile = contents;
     httpServer.listen(httpPort, httpHost, () => {
-        log(`[HttpServer] Server is running on http://${httpHost}:${httpPort}`);
+        stuff.log(`[HttpServer] Server is running on http://${httpHost}:${httpPort}`);
     });
 }).catch((error: any) => {
     console.error(`[HttpServer] Could not read index.html file: ${error}`);
     process.exit(1);
 });
-
-function getRandomArbitrary(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-}
-function getRandomInt(max: number) {
-    return Math.floor(Math.random() * max);
-}
 
 const TechnobladeQuote = [
     'NOT EVEN CLOSE BABY TECHNOBLADE NEVER DIES',
@@ -121,7 +93,7 @@ const TechnobladeQuote = [
     'am i wearing pants right now? you just have to take my word for it',
     'cant run away from your problems when they have ender pearls',
 ];
-let quoteInt = getRandomInt(TechnobladeQuote.length + 1);
+let quoteInt = stuff.getRandomInt(TechnobladeQuote.length + 1);
 function randomTechnoQuote(quoteNumber: number) {
     return TechnobladeQuote[quoteNumber];
 }
@@ -138,33 +110,9 @@ const liechtenstein = [
     'iechtenstein',
 ];
 
-function jsonRead(filePath: string) {
-    return new Promise((resolve, reject) => {
-        fs.readFile(filePath, 'utf8', (err: any, content: string) => {
-            if (err) reject(err);
-            else try {
-                resolve(JSON.parse(content));
-            } catch (error) {
-                reject(error);
-            }
-        });
-    });
-}
-function jsonWrite(filePath: string, data: any) {
-    return new Promise((resolve, reject) => {
-        fs.writeFile(filePath, JSON.stringify(data, null, 4), (err: any) => {
-            if (err) reject(err);
-            else resolve(true);
-        });
-    });
-}
-function sleep(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 let botChannel: any, DateChannel: Discord.VoiceChannel, userCount: number, memberCount: number, botCount: number, onlineUsers: number;
 client.on('ready', async () => {
-    log(`Logged in successfully as ${client?.user?.tag}!`);
+    stuff.log(`Logged in successfully as ${client?.user?.tag}!`);
     const filePath = path.resolve(__dirname, './config.json');
     process.on('uncaughtException', async (err) => {
         console.error(`[${now}] [${err.name}] ${err.stack}`);
@@ -182,7 +130,7 @@ client.on('ready', async () => {
         userCount = guild.members.cache.filter(
             (member: Discord.GuildMember) => !member.user.bot,
         ).size;
-        debugSend(`userCount = guild.members.cache.filter(member => !member.user.bot).size; ${userCount} (${guild.members.cache.filter((member: Discord.GuildMember) => !member.user.bot).size})`);
+        debugSend(`userCount = guild.members.cache.filter(member => !member.user.bot).size; ${userCount}`);
         botCount = memberCount - userCount;
         debugSend(`botCount = memberCount - userCount; ${botCount} = ${memberCount} - ${userCount}`);
         onlineUsers = guild.members.cache.filter(
@@ -196,7 +144,6 @@ client.on('ready', async () => {
     }
     function debugSend(message: string) {
         if (debug === true) botChannel.send(`\`[DEBUG]: ${message}\``);
-        else return;
     }
     try {
         DiscordVoice.joinVoiceChannel({
@@ -204,23 +151,24 @@ client.on('ready', async () => {
             guildId: guildID,
             adapterCreator: botChannel.guild.voiceAdapterCreator,
         });
-        debugSend('ran DiscordVoice.joinVoiceChannel({...})');
+        debugSend('ran DiscordVoice.joinVoiceChannel({...});');
     } catch (error) {
         botChannel.send(`:x: error with date voice channel stuff\n\`\`\`js\n${error}\`\`\``);
     }
 
-    client.on('error', (error: any) => log(error));
+    client.on('error', (error: any) => stuff.log(error));
     client.on('messageCreate', async (message: Discord.Message) => {
-        if (message.channel.type === 'DM') return log(`Direct message from ${message.author.tag} at ${message.createdAt}:\n${message.content}`);
+        if (message.channel.type === 'DM') return stuff.log(`Direct message from ${message.author.tag} at ${message.createdAt}:\n${message.content}`);
         if (message.channel.name === 'es-chatbot') {
             try {
                 if (message.author.bot) return;
-                if (chatbot === 'new') await message.reply({
-                    content: netRun(message.content),
-                    allowedMentions: { repliedUser: true }
-                });
-                else {
-                    if (!message.content) message.react('❌');
+                if (chatbot === 'new') {
+                    await message.reply({
+                        content: netRun(message.content),
+                        allowedMentions: { repliedUser: true }
+                    }); return;
+                } else if (chatbot === 'old') {
+                    if (!message.content) { await message.react('❌'); return; }
                     message.channel.sendTyping();
                     let msg = await scb.chat({ message: message?.content, name: message.author.username, owner: 'emberglaze', user: message?.author?.id });
                     await message.reply({
@@ -230,18 +178,19 @@ client.on('ready', async () => {
                         .replace('ok, ill stop when you click the “x” on the top-right', 'i will stop once you stop typing here dude'),
                         allowedMentions: { repliedUser: true },
                     });
-                }
+                    return;
+                } else { message.channel.send(`❌ Invalid chatbot value in config: ${chatbot}`); return; }
             } catch (error: any) {
-                message.channel.send(`:x: epic fail \`\`\`js\n${error?.stack}\`\`\``);
+                message.channel.send(`:x: epic fail \`\`\`js\n${error?.stack}\`\`\``); return;
             }
         }
-        if (message.content.startsWith('..')) { log('"command" with .. start ignored'); return; }
+        if (message.content.startsWith('..')) return;
         if (liechtenstein.includes(message.content)) message.channel.send('liechtenstein*');
 
         const args: any[] = message.content.slice(prefix.length).trim().split(/ +/g);
         const command = args.shift().toLowerCase();
         function logCommand() {
-            log(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
+            stuff.log(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
             debugSend(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
         }
         if (message.content.startsWith(prefix)) {
@@ -266,6 +215,7 @@ client.on('ready', async () => {
                         },
                     );
                     message.channel.send({ embeds: [esimEmbed] });
+                    return;
                 } else if (args[0] === 'info') {
                     try {
                         updateGuildMembers();
@@ -297,9 +247,9 @@ client.on('ready', async () => {
                         message.react('❌');
                     }
                 } else if (args[0] === 'roll') {
-                    let roll = getRandomArbitrary(1, 20); // roll
+                    let roll = stuff.getRandomArbitrary(1, 20); // roll
                     if (roll === 0) {
-                        roll = getRandomArbitrary(1, 20); // reroll
+                        roll = stuff.getRandomArbitrary(1, 20); // reroll
                         message.channel.send('got a 0 for some reason, rerolling automatically');
                         if (args[1]) {
                             if (roll === 20) {
@@ -339,7 +289,7 @@ client.on('ready', async () => {
                             .addField('Server IP', serverinfo.serverip, true)
                             .addField('Version', serverinfo.version, true)
                             .addField('Players', `${serverinfo.players}/${serverinfo.maxplayers} online`, true)
-                            .addField('MOTD', removeMCColorCodes(serverinfo.motd.text.toString()), true)
+                            .addField('MOTD', stuff.removeMCColorCodes(serverinfo.motd.text.toString()), true)
                             .addField('Ping', `${serverinfo.ping}ms`, true);
                             message.channel.send({ embeds:[serverInfoEmbed] });
                         });
@@ -365,33 +315,33 @@ client.on('ready', async () => {
                         .setColor(53380)
                         .addField('Output', `\`\`\`js\n${output}\`\`\``);
                         message.channel.send({ embeds: [evalEmbed] });
-                        log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${output}`);
+                        stuff.log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${output}`);
                     } catch (error) {
                         evalEmbed = evalEmbed
                         .setColor('RED')
                         .addField('Error output', `\`\`\`js\n${error}\`\`\``);
                         message.channel.send({ embeds: [evalEmbed] });
-                        log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${code} \nThere was an error running this code: \n${error}`);
+                        stuff.log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${code} \nThere was an error running this code: \n${error}`);
                     }
                 } else message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
             } else if (command === 'exit') {
                 if (message?.author?.id === '341123308844220447' || message?.member?.roles?.cache?.find((role: Discord.Role) => role.name === 'Admin')) {
-                    log(`recieved exit command from ${message.author.tag} @ ${now.toString()}. goodbye`);
+                    stuff.log(`recieved exit command from ${message.author.tag} @ ${now.toString()}. goodbye`);
                     await message.channel.send(':sob:');
                     process.exit(1);
                 } else {
-                    log(`recieved exit command from ${message.author.tag} @ ${now.toString()} lol permission denied have a technoblade quote instead nerd`);
-                    quoteInt = getRandomInt(37);
+                    stuff.log(`recieved exit command from ${message.author.tag} @ ${now.toString()} lol permission denied have a technoblade quote instead nerd`);
+                    quoteInt = stuff.getRandomInt(37);
                     message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
                 }
             } else if (command === 'sudo') {
-                quoteInt = getRandomInt(37);
+                quoteInt = stuff.getRandomInt(37);
                 if (message.author.id === '341123308844220447') {
                     const sudo = args.join(' ');
                     message.channel.send(sudo);
                 } else message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
             } else if (command === 'quote') {
-                quoteInt = getRandomInt(37);
+                quoteInt = stuff.getRandomInt(37);
                 message.channel.send(`quote number ${quoteInt}: \n"${TechnobladeQuote[quoteInt]}"`);
             } else if (command === 'suggest') {
                 const suggest = args.join(' ');
@@ -420,27 +370,28 @@ client.on('ready', async () => {
                 } catch (error) {
                     message.react('❌');
                     message.channel.send(`epic bruh moment (command error)\n\`${error}\``);
-                    log(`pfp command command fail: ${error}`);
+                    stuff.log(`pfp command command fail: ${error}`);
                 }
             } else if (command === 'rng') {
-                if (isNaN(args[1]) === true) message.channel.send(`random integer generator: \`${getRandomInt(args[0])}\`\nthis generator is inclusive at 0 but not at ${args[0] - 1} PLEASE keep that in mind\ntldr gives only 0 to ${args[0] - 1}`);
+                if (isNaN(args[1]) === true) message.channel.send(`random integer generator: \`${stuff.getRandomInt(args[0])}\`\nthis generator is inclusive at 0 but not at ${args[0] - 1} PLEASE keep that in mind\ntldr gives only 0 to ${args[0] - 1}`);
                 else if (isNaN(args[1]) === false) {
                     const min = args[0];
                     const max = args[1];
-                    message.channel.send(`random arbitrary generator: \`${getRandomArbitrary(min, max)}\`\nthis generator is inclusive at both ${min} and ${max}\nbasically gives values between ${min} and ${max} including them`);
+                    message.channel.send(`random arbitrary generator: \`${stuff.getRandomArbitrary(min, max)}\`\nthis generator is inclusive at both ${min} and ${max}\nbasically gives values between ${min} and ${max} including them`);
                 }
             } else if (command === 'rcg') {
                 const { countryList } = require('./countryList.json');
                 message.channel.send(`Random country generator: \`${countryList[Math.floor(Math.random() * countryList.length)]}\``);
+                return;
             } else if (command === 'code') {
                 if (args[0] === 'args') {
                     message.channel.send(
                         'u forgot again? bruh\n`.(command) (args[0]) (args[1])...` etc\nget good lol\nalso uh if you want to category `.(category => command) (command => args[0])`',
-                    );
+                    ); return;
                 } else if (args[0] === 'rae' || args[0] === 'randomarrayelement') {
                     message.channel.send(
                         'how many times do i have to remind u with this shit?\n```js\narray[Math.floor(Math.random() * array.length)];```',
-                    );
+                    ); return;
                 } else message.channel.send('what now? random array element or args 🤣🤣🤣');
             } else if (command === 'help') {
                 const helpEmbed = new Discord.MessageEmbed()
@@ -519,7 +470,7 @@ client.on('ready', async () => {
                     if (debug === false) {
                         message.channel.send('okie dokie');
                         debug = true;
-                        jsonWrite(filePath, config);
+                        stuff.jsonWrite(filePath, editableConfig);
                         message.channel.send('✅ done');
                     } else if (debug === true) {
                         message.channel.send('❌ its already on');
@@ -530,13 +481,13 @@ client.on('ready', async () => {
                     } else if (debug === true) {
                         debug = false;
                         message.channel.send('okie dokie');
-                        jsonWrite(filePath, config);
+                        stuff.jsonWrite(filePath, editableConfig);
                         message.channel.send('✅ done');
                     }
                 } else if (!args[0]) {
-                    if (debug === true) {
+                    if (debug) {
                         message.channel.send('debug mode is currently on ✅');
-                    } else if (debug === false) {
+                    } else if (!debug) {
                         message.channel.send('debug mode is currently off ❌');
                     }
                 }
@@ -545,14 +496,14 @@ client.on('ready', async () => {
                     if (chatbot === 'old') {
                         message.channel.send('toggling chatbot into newer one');
                         chatbot = 'new';
-                        jsonWrite(filePath, config);
+                        stuff.jsonWrite(filePath, editableConfig);
                         message.channel.send('done');
                     } else message.channel.send(':x: either invalid value in config or its already toggled to new');
                 } else if (args[0] === 'old') {
                     if (chatbot === 'new') {
                         message.channel.send('toggling chatbot into older one');
                         chatbot = 'old';
-                        jsonWrite(filePath, config);
+                        stuff.jsonWrite(filePath, editableConfig);
                         message.channel.send('done');
                     } else message.channel.send(':x: either invalid value in config or its already toggled to old');
                 } else if (!args[0]) {
@@ -570,8 +521,8 @@ client.on('ready', async () => {
     async function updateDateLoop() {
         setTimeout(async () => {
             try {
-                updateMonth();
-                updateYear();
+                stuff.updateMonth();
+                stuff.updateYear();
                 await DateChannel.setName(`${europesimCurrentYear}, ${europesimCurrentMonth}`);
                 updateDateLoop();
             } catch (error: any) {
@@ -586,11 +537,11 @@ client.on('ready', async () => {
     }
 });
 
-let europesimStartDate = Date.parse('August 30 2021 00:00:00 GMT');
-let currentDate = Date.now();
-let differenceInDays = (currentDate - europesimStartDate) / (1000 * 3600 * 24);
+export let europesimStartDate = Date.parse('August 30 2021 00:00:00 GMT');
+export let currentDate = Date.now();
+export let differenceInDays = (currentDate - europesimStartDate) / (1000 * 3600 * 24);
 europesimCurrentYear = (Math.floor(europesimStartYear + differenceInDays));
-const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+export const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 europesimCurrentMonth = months[Math.floor(nowUTC / 2)];
 
 client.login(process.env.DJS_TOKEN);
