@@ -1,4 +1,5 @@
 const start = Date.now();
+import fetch from 'node-fetch';
 require('dotenv').config();
 import Discord = require('discord.js');
 import DiscordVoice = require('@discordjs/voice');
@@ -119,6 +120,21 @@ client.on('ready', async () => {
         await botChannel.send(`Some serious af error happened <@341123308844220447>\n\`\`\`js\n${err.stack}\`\`\`\ncya losers`);
         process.exit(0);
     });
+    setInterval(() => {
+        fetch('https://bots.moe/api/bot/848217938288967710/server_count', {
+            method: 'POST',
+            body: JSON.stringify({
+                server_count: client.guilds.cache.size
+            }),
+            headers: {
+                'Authorization': process.env.BOTS_MOE_API_KEY,
+                'Content-Type': 'application/json'
+            }
+        }).then(i => i.json()).then(r => {
+            if (r.error) return stuff.log(r.error);
+            stuff.log(r.success);
+        });
+    }, 60000);
     botChannel = await client.channels.fetch(botchannelID);
     module.exports = { botChannel };
     const { netRun } = require('./chatbot/chatbot');
