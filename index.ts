@@ -131,8 +131,8 @@ client.on('ready', async () => {
                 'Content-Type': 'application/json'
             }
         }).then(i => i.json()).then(r => {
-            if (r.error) return stuff.log(r.error);
-            stuff.log(r.success);
+            if (r.error) return stuff.log(`[bots.moe] ${r.error}`);
+            stuff.log(`[bots.moe] ${r.success}`);
         });
     }, 60000);
     botChannel = await client.channels.fetch(botchannelID);
