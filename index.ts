@@ -235,7 +235,7 @@ client.on('ready', async () => {
                 message.channel.send(`:x: epic fail \`\`\`js\n${error?.stack}\`\`\``);
             }
         }
-        if (message.content.startsWith('..')) return log('"command" with .. start ignored');
+        if (message.content.startsWith('..')) { log('"command" with .. start ignored'); return; }
         if (liechtenstein.includes(message.content)) message.channel.send('liechtenstein*');
 
         const args: any[] = message.content.slice(prefix.length).trim().split(/ +/g);
@@ -311,258 +311,258 @@ client.on('ready', async () => {
                             message.channel.send(`\`${args[1]}\` rolled a \`${roll}\` :L`);
                         } else message.channel.send(`\`${args[1]}\` rolled a \`${roll}\``);
                     } else message.channel.send(`rolled a \`${roll}\``);
-                } else if (command === 'mc') {
-                    if (!args[0]) {
-                        const mcEmbed = new Discord.MessageEmbed()
-                        .setTitle('Command category: Minecraft')
-                        .setDescription(`Usage: ${prefix}mc (command)`)
-                        .setColor(53380)
-                        .setFooter(`${TechnobladeQuote[quoteInt]}\n- Technoblade`)
-                        .addFields(
-                            {
-                                name: 'serverinfo OR server OR sinfo (Minecraft Server IP)',
-                                value: 'Ping a minecraft server and return information about the server',
-                                inline: true,
-                            }
-                        );
-                        message.channel.send({ embeds: [mcEmbed] });
-                    } else if (['serverinfo', 'server', 'sinfo'].includes(args[0])) {
-                        try {
-                            message.channel.send('Pinging minecraft server...');
-                            mcdata.serverStatus(args[1]).then((serverinfo: any) => {
-                                const serverInfoEmbed = new Discord.MessageEmbed()
-                                .setTitle('Server Information')
-                                .setColor(53380)
-                                .setAuthor(`${args[1]}`)
-                                .addField('Status', serverinfo.serverStatus, true)
-                                .addField('Server IP', serverinfo.serverip, true)
-                                .addField('Version', serverinfo.version, true)
-                                .addField('Players', `${serverinfo.players}/${serverinfo.maxplayers} online`, true)
-                                .addField('MOTD', removeMCColorCodes(serverinfo.motd.text.toString()), true)
-                                .addField('Ping', `${serverinfo.ping}ms`, true);
-                                message.channel.send({ embeds:[serverInfoEmbed] });
-                            });
-                        } catch (error) {
-                            message.channel.send(`Error while running this command: \n\`${error}\``);
-                        }
-                    }
-                } else if (command === 'hi') {
-                    message.channel.send('hi im online what do u want (main branch)');
-                } else if (command === 'setguildavatar' || command === 'setguildpfp') {
-                    // todo
-                } else if (command === 'eval') {
-                    const code = args.join(' ');
-                    let evalEmbed = new Discord.MessageEmbed()
-                    .setTitle('eval result')
-                    .addField('Input', `\`\`\`js\n${code}\`\`\``);
-                    if (message?.member?.roles?.cache?.some((role: Discord.Role) => role.name === 'Admin') || message?.author?.id === '341123308844220447') {
-                        try {
-                            const result = eval(code);
-                            let output = result;
-                            if (typeof output !== 'string') output = require('util').inspect(result);
-                            evalEmbed = evalEmbed
-                            .setColor(53380)
-                            .addField('Output', `\`\`\`js\n${output}\`\`\``);
-                            message.channel.send({ embeds: [evalEmbed] });
-                            log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${output}`);
-                        } catch (error) {
-                            evalEmbed = evalEmbed
-                            .setColor('RED')
-                            .addField('Error output', `\`\`\`js\n${error}\`\`\``);
-                            message.channel.send({ embeds: [evalEmbed] });
-                            log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${code} \nThere was an error running this code: \n${error}`);
-                        }
-                    } else message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
-                } else if (command === 'exit') {
-                    if (message?.author?.id === '341123308844220447' || message?.member?.roles?.cache?.find((role: Discord.Role) => role.name === 'Admin')) {
-                        log(`recieved exit command from ${message.author.tag} @ ${now.toString()}. goodbye`);
-                        await message.channel.send(':sob:');
-                        process.exit(1);
-                    } else {
-                        log(`recieved exit command from ${message.author.tag} @ ${now.toString()} lol permission denied have a technoblade quote instead nerd`);
-                        quoteInt = getRandomInt(37);
-                        message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
-                    }
-                } else if (command === 'sudo') {
-                    quoteInt = getRandomInt(37);
-                    if (message.author.id === '341123308844220447') {
-                        const sudo = args.join(' ');
-                        message.channel.send(sudo);
-                    } else message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
-                } else if (command === 'quote') {
-                    quoteInt = getRandomInt(37);
-                    message.channel.send(`quote number ${quoteInt}: \n"${TechnobladeQuote[quoteInt]}"`);
-                } else if (command === 'suggest') {
-                    const suggest = args.join(' ');
-                    let nnl = await client.users.fetch('341123308844220447');
-                    nnl.send(`Bot suggestion by ${message.author.tag}:\n\`${suggest}\`\nSent at ${message.createdAt} in <#${message.channel.id}>`);
-                    message.channel.send('Your suggestion has been sent! thanks');
-                } else if (command === 'pfp' || command === 'avatar') {
-                    try {
-                        let user: Discord.User | undefined;
-                        let pfp: string | null | undefined;
-                        if (args[0]) {
-                            if (message.mentions.users.size > 0) {
-                                user = message.mentions.users.first();
-                                pfp = user?.displayAvatarURL({ dynamic: true });
-                                message.channel.send(`oh man you could've just sent me an id why did you ping that poor person just for his pfp...\nanyway, ${pfp}`);
-                            } else {
-                                user = await client.users.fetch(args[0])
-                                pfp = user.avatarURL({ dynamic: true });
-                                message.channel.send(`got it!\n${pfp}`);
-                            }
-                        } else {
-                            user = message.author;
-                            pfp = user.avatarURL({ dynamic: true });
-                            message.channel.send(`you wanna look at your own pfp? alright fine\n${pfp}`);
-                        }
-                    } catch (error) {
-                        message.react('❌');
-                        message.channel.send(`epic bruh moment (command error)\n\`${error}\``);
-                        log(`pfp command command fail: ${error}`);
-                    }
-                } else if (command === 'rng') {
-                    if (isNaN(args[1]) === true) message.channel.send(`random integer generator: \`${getRandomInt(args[0])}\`\nthis generator is inclusive at 0 but not at ${args[0] - 1} PLEASE keep that in mind\ntldr gives only 0 to ${args[0] - 1}`);
-                    else if (isNaN(args[1]) === false) {
-                        const min = args[0];
-                        const max = args[1];
-                        message.channel.send(`random arbitrary generator: \`${getRandomArbitrary(min, max)}\`\nthis generator is inclusive at both ${min} and ${max}\nbasically gives values between ${min} and ${max} including them`);
-                    }
-                } else if (command === 'rcg') {
-                    const { countryList } = require('./countryList.json');
-                    message.channel.send(`Random country generator: \`${countryList[Math.floor(Math.random() * countryList.length)]}\``);
-                } else if (command === 'code') {
-                    if (args[0] === 'args') {
-                        message.channel.send(
-                            'u forgot again? bruh\n`.(command) (args[0]) (args[1])...` etc\nget good lol\nalso uh if you want to category `.(category => command) (command => args[0])`',
-                        );
-                    } else if (args[0] === 'rae' || args[0] === 'randomarrayelement') {
-                        message.channel.send(
-                            'how many times do i have to remind u with this shit?\n```js\narray[Math.floor(Math.random() * array.length)];```',
-                        );
-                    } else message.channel.send('what now? random array element or args 🤣🤣🤣');
-                } else if (command === 'help') {
-                    const helpEmbed = new Discord.MessageEmbed()
-                    .setTitle('All list of commands')
-                    .setDescription(`prefix: ${prefix}\n<> = optional argument`)
+                }
+            } else if (command === 'mc') {
+                if (!args[0]) {
+                    const mcEmbed = new Discord.MessageEmbed()
+                    .setTitle('Command category: Minecraft')
+                    .setDescription(`Usage: ${prefix}mc (command)`)
                     .setColor(53380)
-                    .setFooter('epic new chatbot (WIP af)')
+                    .setFooter(`${TechnobladeQuote[quoteInt]}\n- Technoblade`)
                     .addFields(
                         {
-                            name: 'hi',
-                            value: 'Usually used to check if bot is responding/online or not',
+                            name: 'serverinfo OR server OR sinfo (Minecraft Server IP)',
+                            value: 'Ping a minecraft server and return information about the server',
                             inline: true,
-                        },
-                        {
-                            name: 'eval (code)',
-                            value: 'Run JavaScript code',
-                            inline: true,
-                        },
-                        {
-                            name: 'exit',
-                            value: 'Shortcut to process.exit(1)',
-                            inline: true,
-                        },
-                        {
-                            name: 'sudo (message)',
-                            value: 'Send messages as me (idk why i added it, might remove)',
-                            inline: true,
-                        },
-                        {
-                            name: 'quote',
-                            value: 'Random technoblade quote',
-                            inline: true,
-                        },
-                        {
-                            name: 'suggest (idea: string)',
-                            value: 'Send bot suggestions to emberglaze, may or may not be added :shrug:',
-                            inline: true,
-                        },
-                        {
-                            name: 'esim',
-                            value: 'Categorised commands that are related to europesim. Run this command for more info',
-                            inline: true,
-                        },
-                        {
-                            name: 'mc',
-                            value: 'Categorised minecraft commands. Run this command for more info',
-                            inline: true,
-                        },
-                        {
-                            name: 'rng <minValue> (maxValue)',
-                            value: 'Random number generator',
-                            inline: true,
-                        },
-                        {
-                            name: 'rcg',
-                            value: 'Random country generator, don\'t kill me',
-                            inline: true,
-                        },
-                        {
-                            name: 'avatar OR pfp <mention OR account id>',
-                            value: 'Returns a profile picture of either message author (leave arguments empty), mentioned/pinged account or account by id',
-                        },
-                        {
-                            name: 'code <code stuff>',
-                            value: `Serves as a reminder to ${pingNNL} for some parts of code he frequently forgets about lol he is so bad he forgets his own code`,
-                        },
-                        {
-                            name: 'help',
-                            value: 'It does exactly what you think it does',
-                        },
+                        }
                     );
-                    message.channel.send({ embeds: [helpEmbed] });
-                } else if (command === 'dn') message.channel.send('deez nuts');
-                else if (command === 'debug') {
-                    if (args[0] === 'true') {
-                        if (debug === false) {
-                            message.channel.send('okie dokie');
-                            debug = true;
-                            jsonWrite(filePath, config);
-                            message.channel.send('✅ done');
-                        } else if (debug === true) {
-                            message.channel.send('❌ its already on');
-                        }
-                    } else if (args[0] === 'false') {
-                        if (debug === false) {
-                            message.channel.send('its already off ❌ lol dont panic');
-                        } else if (debug === true) {
-                            debug = false;
-                            message.channel.send('okie dokie');
-                            jsonWrite(filePath, config);
-                            message.channel.send('✅ done');
-                        }
-                    } else if (!args[0]) {
-                        if (debug === true) {
-                            message.channel.send('debug mode is currently on ✅');
-                        } else if (debug === false) {
-                            message.channel.send('debug mode is currently off ❌');
-                        }
+                    message.channel.send({ embeds: [mcEmbed] });
+                } else if (['serverinfo', 'server', 'sinfo'].includes(args[0])) {
+                    try {
+                        message.channel.send('Pinging minecraft server...');
+                        mcdata.serverStatus(args[1]).then((serverinfo: any) => {
+                            const serverInfoEmbed = new Discord.MessageEmbed()
+                            .setTitle('Server Information')
+                            .setColor(53380)
+                            .setAuthor(`${args[1]}`)
+                            .addField('Status', serverinfo.serverStatus, true)
+                            .addField('Server IP', serverinfo.serverip, true)
+                            .addField('Version', serverinfo.version, true)
+                            .addField('Players', `${serverinfo.players}/${serverinfo.maxplayers} online`, true)
+                            .addField('MOTD', removeMCColorCodes(serverinfo.motd.text.toString()), true)
+                            .addField('Ping', `${serverinfo.ping}ms`, true);
+                            message.channel.send({ embeds:[serverInfoEmbed] });
+                        });
+                    } catch (error) {
+                        message.channel.send(`Error while running this command: \n\`${error}\``);
                     }
-                } else if (command === 'chatbot') {
-                    if (args[0] === 'new') {
-                        if (chatbot === 'old') {
-                            message.channel.send('toggling chatbot into newer one');
-                            chatbot = 'new';
-                            jsonWrite(filePath, config);
-                            message.channel.send('done');
-                        } else message.channel.send(':x: either invalid value in config or its already toggled to new');
-                    } else if (args[0] === 'old') {
-                        if (chatbot === 'new') {
-                            message.channel.send('toggling chatbot into older one');
-                            chatbot = 'old';
-                            jsonWrite(filePath, config);
-                            message.channel.send('done');
-                        } else message.channel.send(':x: either invalid value in config or its already toggled to old');
-                    } else if (!args[0]) {
-                        if (chatbot === 'new') message.channel.send('Chatbot is currently toggled to new');
-                        else if (chatbot === 'old') message.channel.send('Chatbot is currently toggled to old');
-                        else message.channel.send(':x: invalid value in config, tell emberglaze to fix it');
+                }
+            } else if (command === 'hi') {
+                message.channel.send('hi im online what do u want (main branch)');
+            } else if (command === 'setguildavatar' || command === 'setguildpfp') {
+                // todo
+            } else if (command === 'eval') {
+                const code = args.join(' ');
+                let evalEmbed = new Discord.MessageEmbed()
+                .setTitle('eval result')
+                .addField('Input', `\`\`\`js\n${code}\`\`\``);
+                if (message?.member?.roles?.cache?.some((role: Discord.Role) => role.name === 'Admin') || message?.author?.id === '341123308844220447') {
+                    try {
+                        const result = eval(code);
+                        let output = result;
+                        if (typeof output !== 'string') output = require('util').inspect(result);
+                        evalEmbed = evalEmbed
+                        .setColor(53380)
+                        .addField('Output', `\`\`\`js\n${output}\`\`\``);
+                        message.channel.send({ embeds: [evalEmbed] });
+                        log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${output}`);
+                    } catch (error) {
+                        evalEmbed = evalEmbed
+                        .setColor('RED')
+                        .addField('Error output', `\`\`\`js\n${error}\`\`\``);
+                        message.channel.send({ embeds: [evalEmbed] });
+                        log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${code} \nThere was an error running this code: \n${error}`);
                     }
-                } else if (command === 'config') {
-                    message.channel.send(`\`\`\`json\n${JSON.stringify(require('./config.json'), null, 4)}\`\`\``);
-                } else if (command === '') return;
-            }
+                } else message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
+            } else if (command === 'exit') {
+                if (message?.author?.id === '341123308844220447' || message?.member?.roles?.cache?.find((role: Discord.Role) => role.name === 'Admin')) {
+                    log(`recieved exit command from ${message.author.tag} @ ${now.toString()}. goodbye`);
+                    await message.channel.send(':sob:');
+                    process.exit(1);
+                } else {
+                    log(`recieved exit command from ${message.author.tag} @ ${now.toString()} lol permission denied have a technoblade quote instead nerd`);
+                    quoteInt = getRandomInt(37);
+                    message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
+                }
+            } else if (command === 'sudo') {
+                quoteInt = getRandomInt(37);
+                if (message.author.id === '341123308844220447') {
+                    const sudo = args.join(' ');
+                    message.channel.send(sudo);
+                } else message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
+            } else if (command === 'quote') {
+                quoteInt = getRandomInt(37);
+                message.channel.send(`quote number ${quoteInt}: \n"${TechnobladeQuote[quoteInt]}"`);
+            } else if (command === 'suggest') {
+                const suggest = args.join(' ');
+                let nnl = await client.users.fetch('341123308844220447');
+                nnl.send(`Bot suggestion by ${message.author.tag}:\n\`${suggest}\`\nSent at ${message.createdAt} in <#${message.channel.id}>`);
+                message.channel.send('Your suggestion has been sent! thanks');
+            } else if (command === 'pfp' || command === 'avatar') {
+                try {
+                    let user: Discord.User | undefined;
+                    let pfp: string | null | undefined;
+                    if (args[0]) {
+                        if (message.mentions.users.size > 0) {
+                            user = message.mentions.users.first();
+                            pfp = user?.displayAvatarURL({ dynamic: true });
+                            message.channel.send(`oh man you could've just sent me an id why did you ping that poor person just for his pfp...\nanyway, ${pfp}`);
+                        } else {
+                            user = await client.users.fetch(args[0])
+                            pfp = user.avatarURL({ dynamic: true });
+                            message.channel.send(`got it!\n${pfp}`);
+                        }
+                    } else {
+                        user = message.author;
+                        pfp = user.avatarURL({ dynamic: true });
+                        message.channel.send(`you wanna look at your own pfp? alright fine\n${pfp}`);
+                    }
+                } catch (error) {
+                    message.react('❌');
+                    message.channel.send(`epic bruh moment (command error)\n\`${error}\``);
+                    log(`pfp command command fail: ${error}`);
+                }
+            } else if (command === 'rng') {
+                if (isNaN(args[1]) === true) message.channel.send(`random integer generator: \`${getRandomInt(args[0])}\`\nthis generator is inclusive at 0 but not at ${args[0] - 1} PLEASE keep that in mind\ntldr gives only 0 to ${args[0] - 1}`);
+                else if (isNaN(args[1]) === false) {
+                    const min = args[0];
+                    const max = args[1];
+                    message.channel.send(`random arbitrary generator: \`${getRandomArbitrary(min, max)}\`\nthis generator is inclusive at both ${min} and ${max}\nbasically gives values between ${min} and ${max} including them`);
+                }
+            } else if (command === 'rcg') {
+                const { countryList } = require('./countryList.json');
+                message.channel.send(`Random country generator: \`${countryList[Math.floor(Math.random() * countryList.length)]}\``);
+            } else if (command === 'code') {
+                if (args[0] === 'args') {
+                    message.channel.send(
+                        'u forgot again? bruh\n`.(command) (args[0]) (args[1])...` etc\nget good lol\nalso uh if you want to category `.(category => command) (command => args[0])`',
+                    );
+                } else if (args[0] === 'rae' || args[0] === 'randomarrayelement') {
+                    message.channel.send(
+                        'how many times do i have to remind u with this shit?\n```js\narray[Math.floor(Math.random() * array.length)];```',
+                    );
+                } else message.channel.send('what now? random array element or args 🤣🤣🤣');
+            } else if (command === 'help') {
+                const helpEmbed = new Discord.MessageEmbed()
+                .setTitle('All list of commands')
+                .setDescription(`prefix: ${prefix}\n<> = optional argument`)
+                .setColor(53380)
+                .setFooter('epic new chatbot (WIP af)')
+                .addFields(
+                    {
+                        name: 'hi',
+                        value: 'Usually used to check if bot is responding/online or not',
+                        inline: true,
+                    },
+                    {
+                        name: 'eval (code)',
+                        value: 'Run JavaScript code',
+                        inline: true,
+                    },
+                    {
+                        name: 'exit',
+                        value: 'Shortcut to process.exit(1)',
+                        inline: true,
+                    },
+                    {
+                        name: 'sudo (message)',
+                        value: 'Send messages as me (idk why i added it, might remove)',
+                        inline: true,
+                    },
+                    {
+                        name: 'quote',
+                        value: 'Random technoblade quote',
+                        inline: true,
+                    },
+                    {
+                        name: 'suggest (idea: string)',
+                        value: 'Send bot suggestions to emberglaze, may or may not be added :shrug:',
+                        inline: true,
+                    },
+                    {
+                        name: 'esim',
+                        value: 'Categorised commands that are related to europesim. Run this command for more info',
+                        inline: true,
+                    },
+                    {
+                        name: 'mc',
+                        value: 'Categorised minecraft commands. Run this command for more info',
+                        inline: true,
+                    },
+                    {
+                        name: 'rng <minValue> (maxValue)',
+                        value: 'Random number generator',
+                        inline: true,
+                    },
+                    {
+                        name: 'rcg',
+                        value: 'Random country generator, don\'t kill me',
+                        inline: true,
+                    },
+                    {
+                        name: 'avatar OR pfp <mention OR account id>',
+                        value: 'Returns a profile picture of either message author (leave arguments empty), mentioned/pinged account or account by id',
+                    },
+                    {
+                        name: 'code <code stuff>',
+                        value: `Serves as a reminder to ${pingNNL} for some parts of code he frequently forgets about lol he is so bad he forgets his own code`,
+                    },
+                    {
+                        name: 'help',
+                        value: 'It does exactly what you think it does',
+                    },
+                );
+                message.channel.send({ embeds: [helpEmbed] });
+            } else if (command === 'dn') message.channel.send('deez nuts');
+            else if (command === 'debug') {
+                if (args[0] === 'true') {
+                    if (debug === false) {
+                        message.channel.send('okie dokie');
+                        debug = true;
+                        jsonWrite(filePath, config);
+                        message.channel.send('✅ done');
+                    } else if (debug === true) {
+                        message.channel.send('❌ its already on');
+                    }
+                } else if (args[0] === 'false') {
+                    if (debug === false) {
+                        message.channel.send('its already off ❌ lol dont panic');
+                    } else if (debug === true) {
+                        debug = false;
+                        message.channel.send('okie dokie');
+                        jsonWrite(filePath, config);
+                        message.channel.send('✅ done');
+                    }
+                } else if (!args[0]) {
+                    if (debug === true) {
+                        message.channel.send('debug mode is currently on ✅');
+                    } else if (debug === false) {
+                        message.channel.send('debug mode is currently off ❌');
+                    }
+                }
+            } else if (command === 'chatbot') {
+                if (args[0] === 'new') {
+                    if (chatbot === 'old') {
+                        message.channel.send('toggling chatbot into newer one');
+                        chatbot = 'new';
+                        jsonWrite(filePath, config);
+                        message.channel.send('done');
+                    } else message.channel.send(':x: either invalid value in config or its already toggled to new');
+                } else if (args[0] === 'old') {
+                    if (chatbot === 'new') {
+                        message.channel.send('toggling chatbot into older one');
+                        chatbot = 'old';
+                        jsonWrite(filePath, config);
+                        message.channel.send('done');
+                    } else message.channel.send(':x: either invalid value in config or its already toggled to old');
+                } else if (!args[0]) {
+                    if (chatbot === 'new') message.channel.send('Chatbot is currently toggled to new');
+                    else if (chatbot === 'old') message.channel.send('Chatbot is currently toggled to old');
+                    else message.channel.send(':x: invalid value in config, tell emberglaze to fix it');
+                }
+            } else if (command === 'config') {
+                message.channel.send(`\`\`\`json\n${JSON.stringify(require('./config.json'), null, 4)}\`\`\``);
+            } else if (command === '') return;
         }
     })
     const a = 1;
