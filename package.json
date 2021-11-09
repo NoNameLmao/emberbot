@@ -1,7 +1,7 @@
 {
-  "name": "europesim-bot",
-  "version": "2.1.0",
-  "description": "a bot for ourworldofpixels.com/europesim discord server",
+  "name": "emberbot",
+  "version": "3.0",
+  "description": "discord bot, does things.",
   "main": "index.ts",
   "scripts": {
     "start": "ts-node index.ts"
@@ -31,6 +31,6 @@
     "xmlhttprequest": "^1.8.0"
   },
   "keywords": [],
-  "author": "NoNameLmao/emberglaze",
+  "author": "emberglaze",
   "license": "ISC"
 }
