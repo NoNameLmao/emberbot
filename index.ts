@@ -1,8 +1,9 @@
-const start = Date.now();
-import fetch from'node-fetch';
+export const startTime = Date.now();
+import fetch from 'node-fetch';
 require('dotenv').config();
 import Discord = require('discord.js');
 import DiscordVoice = require('@discordjs/voice');
+import { run } from './eval';
 export const client = new Discord.Client({
     intents: 32767,
     presence: {
@@ -15,21 +16,20 @@ export const client = new Discord.Client({
     allowedMentions: { parse: ['roles', 'users'] },
 });
 import smartestchatbot = require('smartestchatbot');
-const scb = new smartestchatbot.Client();
+export const scb = new smartestchatbot.Client();
 import * as config from './config.json';
-let { prefix, debug, chatbot } = config;
-let editableConfig = { prefix, debug, chatbot };
-
-const guildID = '846807940727570433';
-const botchannelID = '846811100338323497';
-const DateChannelID = '848247855789375508';
+export let { prefix, debug, chatbot } = config;
+export let editableConfig = { prefix, debug, chatbot };
+export const guildID = '846807940727570433';
+export const botchannelID = '846811100338323497';
+export const DateChannelID = '848247855789375508';
 import fs = require('fs');
 import fsp = require('fs/promises');
 import path = require('path');
 import http = require('http');
 import stuff = require('./stuff');
-const mcdata = require('mcdata');
-const pingNNL = '<@341123308844220447>';
+export const mcdata = require('mcdata');
+export const pingNNL = '<@341123308844220447>';
 
 export let now = new Date();
 export let nowUTC = now.getUTCHours();
@@ -37,15 +37,15 @@ export const europesimStartYear = 1900;
 export let europesimCurrentYear: number;
 export let europesimCurrentMonth: string;
 
-const httpHost = '0.0.0.0';
-const httpPort = 42069;
-let indexFile: string;
-const requestListener: http.RequestListener = (req: http.IncomingMessage, res: http.ServerResponse) => {
+export const httpHost = '0.0.0.0';
+export const httpPort = 42069;
+export let indexFile: string;
+export const requestListener: http.RequestListener = (req: http.IncomingMessage, res: http.ServerResponse) => {
     res.setHeader('Content-Type', 'text/html"');
     res.writeHead(200);
     res.end(indexFile);
 };
-const httpServer = http.createServer(requestListener);
+export const httpServer = http.createServer(requestListener);
 fsp.readFile(`${__dirname}/index.html`).then((contents: any) => {
     indexFile = contents;
     httpServer.listen(httpPort, httpHost, () => {
@@ -56,7 +56,7 @@ fsp.readFile(`${__dirname}/index.html`).then((contents: any) => {
     process.exit(1);
 });
 
-const TechnobladeQuote = [
+export const TechnobladeQuote = [
     'NOT EVEN CLOSE BABY TECHNOBLADE NEVER DIES',
     'technoblade never dies',
     'dude these orphans are getting destroyed',
@@ -94,9 +94,9 @@ const TechnobladeQuote = [
     'am i wearing pants right now? you just have to take my word for it',
     'cant run away from your problems when they have ender pearls',
 ];
-let quoteInt = stuff.getRandomInt(TechnobladeQuote.length + 1);
-function randomTechnoQuote(quoteNumber: number) {
-    return TechnobladeQuote[quoteNumber];
+export let quoteInt = stuff.getRandomInt(TechnobladeQuote.length + 1);
+export function randomTechnoQuote() {
+    return TechnobladeQuote[stuff.getRandomInt(TechnobladeQuote.length + 1)];
 }
 
 const liechtenstein = [
@@ -111,7 +111,7 @@ const liechtenstein = [
     'iechtenstein',
 ];
 
-let botChannel: any, DateChannel: Discord.VoiceChannel, userCount: number, memberCount: number, botCount: number, onlineUsers: number;
+export let botChannel: any, DateChannel: Discord.VoiceChannel, userCount: number, memberCount: number, botCount: number, onlineUsers: number;
 client.on('ready', async () => {
     stuff.log(`Logged in successfully as ${client?.user?.tag}!`);
     const filePath = path.resolve(__dirname, './config.json');
@@ -141,7 +141,7 @@ client.on('ready', async () => {
     botChannel = await client.channels.fetch(botchannelID);
     module.exports = { botChannel };
     const { netRun } = require('./chatbot/chatbot');
-    botChannel.send(`hi im online, i took ${(Date.now() - start) / 1000}s to start`);
+    botChannel.send(`hi im online, i took ${(Date.now() - startTime) / 1000}s to start`);
     let guild = await client.guilds.fetch(guildID);
     function updateGuildMembers() {
         memberCount = guild.memberCount;
@@ -287,7 +287,7 @@ client.on('ready', async () => {
                     .setTitle('Command category: Minecraft')
                     .setDescription(`Usage: ${prefix}mc (command)`)
                     .setColor(53380)
-                    .setFooter(`${TechnobladeQuote[quoteInt]}\n- Technoblade`)
+                    .setFooter(`${randomTechnoQuote()}\n- Technoblade`)
                     .addFields(
                         {
                             name: 'serverinfo OR server OR sinfo (Minecraft Server IP)',
@@ -325,9 +325,9 @@ client.on('ready', async () => {
                 let evalEmbed = new Discord.MessageEmbed()
                 .setTitle('eval result')
                 .addField('Input', `\`\`\`js\n${code}\`\`\``);
-                if (message?.member?.roles?.cache?.some((role: Discord.Role) => role.name === 'Admin') || message?.author?.id === '341123308844220447') {
+                if (message.author.id === '341123308844220447') {
                     try {
-                        const result = eval(code);
+                        const result = run(code);
                         let output = result;
                         if (typeof output !== 'string') output = require('util').inspect(result);
                         evalEmbed = evalEmbed
@@ -342,7 +342,7 @@ client.on('ready', async () => {
                         message.channel.send({ embeds: [evalEmbed] });
                         stuff.log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${code} \nThere was an error running this code: \n${error}`);
                     }
-                } else message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
+                } else message.channel.send(`${randomTechnoQuote()} (No permission)`);
             } else if (command === 'exit') {
                 if (message?.author?.id === '341123308844220447' || message?.member?.roles?.cache?.find((role: Discord.Role) => role.name === 'Admin')) {
                     stuff.log(`recieved exit command from ${message.author.tag} @ ${now.toString()}. goodbye`);
@@ -351,7 +351,7 @@ client.on('ready', async () => {
                 } else {
                     stuff.log(`recieved exit command from ${message.author.tag} @ ${now.toString()} lol permission denied have a technoblade quote instead nerd`);
                     quoteInt = stuff.getRandomInt(37);
-                    message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
+                    message.channel.send(`${randomTechnoQuote()} (No permission)`);
                 }
             } else if (command === 'sudo') {
                 quoteInt = stuff.getRandomInt(37);
