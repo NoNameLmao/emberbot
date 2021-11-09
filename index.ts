@@ -1,5 +1,5 @@
 const start = Date.now();
-import fetch from 'node-fetch';
+import fetch from'node-fetch';
 require('dotenv').config();
 import Discord = require('discord.js');
 import DiscordVoice = require('@discordjs/voice');
@@ -130,10 +130,13 @@ client.on('ready', async () => {
                 'Authorization': process.env.BOTS_MOE_API_KEY,
                 'Content-Type': 'application/json'
             }
-        }).then(i => i.json()).then(r => {
-            if (r.error) return stuff.log(`[bots.moe] ${r.error}`);
-            stuff.log(`[bots.moe] ${r.success}`);
-        });
+        }).then(response => response.json()).then(response => {
+            if (response.error) {
+                stuff.log(`[bots.moe] Recieved error in response! JSON: ${JSON.stringify(response, null, 4)}`);
+            } else {
+                stuff.log(`[bots.moe] Successful request. JSON: ${JSON.stringify(response, null, 4)}`);
+            }
+        }).catch(error => stuff.log(`[bots.moe] Error! ${error}`));
     }, 60000);
     botChannel = await client.channels.fetch(botchannelID);
     module.exports = { botChannel };

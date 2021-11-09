@@ -53,7 +53,7 @@ export function updateMonth() {
  * @returns `[index.ts] ${message}` in console.
  */
 export function log(message: string) {
-    return console.log(`[index.ts] ${message}`);
+    return console.log(`[${new Date().toUTCString()}] [index.ts] ${message}`);
 }
 /**
  * Remove Minecraft color codes from a string the wackiest way possible.
