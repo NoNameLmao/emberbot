@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@discordjs/voice": "^0.6.0",
+    "@types/shelljs": "^0.8.9",
     "body-parser": "^1.19.0",
     "chance": "^1.1.7",
     "chance.js": "^0.0.1",
@@ -25,6 +26,7 @@
     "node": "^16.5.0",
     "pick-one-by-weight": "^1.0.2",
     "request": "^2.88.2",
+    "shelljs": "^0.8.4",
     "smartestchatbot": "^2.0.0",
     "typescript": "^4.4.4",
     "webhook-discord": "^3.7.8",

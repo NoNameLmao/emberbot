@@ -1,5 +1,6 @@
 {
     "prefix": ".",
     "debug": false,
-    "chatbot": "old"
+    "chatbot": "old",
+    "susprefix": "$"
 }
