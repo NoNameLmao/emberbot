@@ -33,20 +33,21 @@ import smartestchatbot = require('smartestchatbot');
         guildID = '846807940727570433',
         botchannelID = '846811100338323497',
         dateChannelID = '848247855789375508',
-        pingNNL = '<@341123308844220447>',
+        nnlID = '341123308844220447',
+        pingNNL = `<@${nnlID}>`,
         europesimStartYear = 1900,
         httpHost = '0.0.0.0',
-        httpPort = 42069
+        httpPort = 42069,
+        requestListener: http.RequestListener = (req: http.IncomingMessage, res: http.ServerResponse) => {
+            res.setHeader('Content-Type', 'text/html"');
+            res.writeHead(200);
+            res.end(indexFile);
+        },
+        httpServer = http.createServer(requestListener)
     ;
 
-    const requestListener: http.RequestListener = (req: http.IncomingMessage, res: http.ServerResponse) => {
-        res.setHeader('Content-Type', 'text/html"');
-        res.writeHead(200);
-        res.end(indexFile);
-    };
-    const httpServer = http.createServer(requestListener);
     let contents = await fsp.readFile(`${__dirname}/index.html`, { encoding: 'utf8' }).catch(error => {
-        console.error(`[HttpServer] Could not read index.html file: ${error}`);
+        console.log(`[HttpServer] fsp couldnt read index.html file:\n${error}`);
         process.exit(1);
     });
     indexFile = contents;
@@ -91,13 +92,8 @@ import smartestchatbot = require('smartestchatbot');
         'a little known fact, im actually the best fortnite player of all time',
         'am i wearing pants right now? you just have to take my word for it',
         'cant run away from your problems when they have ender pearls',
-    ];
-    let quoteInt = randomTechnoQuote();
-    function randomTechnoQuote(): string {
-        return TechnobladeQuote[getRandomInt(TechnobladeQuote.length + 1)];
-    }
-
-    const liechtenstein = [
+    ],
+        liechtenstein = [
         'lichestien',
         'lichistint',
         'lechtenstei',
@@ -108,8 +104,13 @@ import smartestchatbot = require('smartestchatbot');
         'liechtenstien',
         'liechtensteing',
     ];
-
-    let botChannel: any,
+    function randomTechnoQuote(): string {
+        return TechnobladeQuote[getRandomInt(TechnobladeQuote.length + 1)];
+    }
+    
+    
+    let quoteInt = randomTechnoQuote(),
+        botChannel: any,
         userCount: number,
         memberCount: number,
         botCount: number,
@@ -139,11 +140,14 @@ import smartestchatbot = require('smartestchatbot');
             }).catch(error => log(`[bots.moe] Error! ${error}`));
         }, 10 * 60000); // every 10 minutes
         botChannel = await client.channels.fetch(botchannelID);
-        module.exports = { botChannel };
-        const { netRun } = require('./chatbot/chatbot');
-        botChannel.send(`hi im online, i took ${(Date.now() - startTime) / 1000}s to start`);
-        let guild = await client.guilds.fetch(guildID);
-        const dateChannel = guild.channels.resolve(dateChannelID);
+
+        const { netRun } = require('./chatbot/chatbot'),
+            guild = await client.guilds.fetch(guildID),
+            nnl = await client.users.fetch(nnlID),
+            me = await guild.members.fetch(client.user.id),
+            dateChannel = guild.channels.resolve(dateChannelID)
+        ;
+
         function updateGuildMembers() {
             memberCount = guild.memberCount;
             debugSend(`memberCount = guild.memberCount; ${memberCount} (${guild.memberCount})`);
@@ -175,6 +179,7 @@ import smartestchatbot = require('smartestchatbot');
         } catch (error) {
             botChannel.send(`:x: error with date voice channel stuff\n\`\`\`js\n${error}\`\`\``);
         }
+        botChannel.send(`hi im online, i took ${(Date.now() - startTime) / 1000}s to start`);
 
         client.on('error', (error) => log(error.stack));
         client.on('messageCreate', async (message: Discord.Message) => {
@@ -206,7 +211,8 @@ import smartestchatbot = require('smartestchatbot');
                         return;
                     } else { message.channel.send(`❌ Invalid chatbot value in config: ${config.chatbot}`); return; }
                 } catch (error) {
-                    message.channel.send(`:x: epic fail \`\`\`js\n${error?.stack}\`\`\``); return;
+                    await message.channel.send(`:x: epic fail \`\`\`js\n${error?.stack}\`\`\``);
+                    return;
                 }
             }
             if (message.content.startsWith('..')) return;
@@ -241,7 +247,7 @@ import smartestchatbot = require('smartestchatbot');
                                 inline: true
                             }
                         );
-                        message.channel.send({ embeds: [esimEmbed] });
+                        await message.channel.send({ embeds: [esimEmbed] });
                         return;
                     } else if (args[0] === 'info') {
                         try {
@@ -268,26 +274,25 @@ import smartestchatbot = require('smartestchatbot');
                                     value: `${userCount} users + ${botCount} bots = ${memberCount} overall. Online users: ${onlineUsers}`,
                                 },
                             );
-                            message.channel.send({ embeds: [infoEmbed] });
+                            await message.channel.send({ embeds: [infoEmbed] });
                         } catch (error) {
-                            message.channel.send(`:x: error\n\`\`\`js\n${error}\`\`\``);
-                            message.react('❌');
+                            await message.channel.send(`:x: error\n\`\`\`js\n${error}\`\`\``);
+                            await message.react('❌');
+                            return;
                         }
                     } else if (args[0] === 'roll') {
                         let roll = getRandomArbitrary(1, 20);
                         if (roll === 0) {
                             roll = getRandomArbitrary(1, 20);
-                            message.channel.send('got a 0 for some reason, rerolling automatically');
+                            await message.channel.send('got a 0 for some reason, rerolling automatically');
                             if (args[1]) {
-                                if (roll === 20) {
-                                    message.channel.send(`\`${args[1]}\` rolled a \`${roll}\` :L`);
-                                } else message.channel.send(`\`${args[1]}\` rolled a \`${roll}\``);
-                            } else message.channel.send(`rolled a \`${roll}\``);
+                                if (roll === 20) await message.channel.send(`\`${args[1]}\` rolled a \`${roll}\` :L`);
+                                else await message.channel.send(`\`${args[1]}\` rolled a \`${roll}\``);
+                            } else await message.channel.send(`rolled a \`${roll}\``);
                         } else if (args[1]) {
-                            if (roll === 20) {
-                                message.channel.send(`\`${args[1]}\` rolled a \`${roll}\` :L`);
-                            } else message.channel.send(`\`${args[1]}\` rolled a \`${roll}\``);
-                        } else message.channel.send(`rolled a \`${roll}\``);
+                            if (roll === 20) await message.channel.send(`\`${args[1]}\` rolled a \`${roll}\` :L`);
+                            else await message.channel.send(`\`${args[1]}\` rolled a \`${roll}\``);
+                        } else await message.channel.send(`rolled a \`${roll}\``);
                     }
                 } else if (command === 'mc') {
                     if (!args[0]) {
@@ -303,10 +308,10 @@ import smartestchatbot = require('smartestchatbot');
                                 inline: true,
                             }
                         );
-                        message.channel.send({ embeds: [mcEmbed] });
+                        await message.channel.send({ embeds: [mcEmbed] });
                     } else if (['serverinfo', 'server', 'sinfo'].includes(args[0])) {
                         try {
-                            message.channel.send('Pinging minecraft server...');
+                            await message.channel.send('Pinging minecraft server...');
                             mcdata.serverStatus(args[1]).then((serverinfo: any) => {
                                 const serverInfoEmbed = new Discord.MessageEmbed()
                                 .setTitle('Server Information')
@@ -321,11 +326,11 @@ import smartestchatbot = require('smartestchatbot');
                                 message.channel.send({ embeds:[serverInfoEmbed] });
                             });
                         } catch (error) {
-                            message.channel.send(`Error while running this command: \n\`${error}\``);
+                            await message.channel.send(`Error while running this command: \n\`${error}\``);
                         }
                     }
                 } else if (command === 'hi') {
-                    message.channel.send('hi im online what do u want (main branch)');
+                    await message.channel.send('hi im online what do u want (main branch)');
                 } else if (command === 'setguildavatar' || command === 'setguildpfp') {
                     // todo
                 } else if (command === 'eval') {
@@ -341,13 +346,13 @@ import smartestchatbot = require('smartestchatbot');
                             evalEmbed = evalEmbed
                             .setColor(53380)
                             .addField('Output', `\`\`\`js\n${output}\`\`\``);
-                            message.channel.send({ embeds: [evalEmbed] });
+                            await message.channel.send({ embeds: [evalEmbed] });
                             log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${output}`);
                         } catch (error) {
                             evalEmbed = evalEmbed
                             .setColor('RED')
                             .addField('Error output', `\`\`\`js\n${error}\`\`\``);
-                            message.channel.send({ embeds: [evalEmbed] });
+                            await message.channel.send({ embeds: [evalEmbed] });
                             log(`recieved ${command} command from ${message.author.tag} @ ${now.toString()} ${message.content} \n${code} \nThere was an error running this code: \n${error}`);
                         }
                     } else message.channel.send(`${randomTechnoQuote()} (No permission)`);
@@ -359,22 +364,21 @@ import smartestchatbot = require('smartestchatbot');
                     } else {
                         log(`recieved exit command from ${message.author.tag} @ ${now.toString()} lol permission denied have a technoblade quote instead nerd`);
                         quoteInt = randomTechnoQuote();
-                        message.channel.send(`${randomTechnoQuote()} (No permission)`);
+                        await message.channel.send(`${randomTechnoQuote()} (No permission)`);
                     }
                 } else if (command === 'sudo') {
                     quoteInt = randomTechnoQuote();
                     if (message.author.id === '341123308844220447') {
                         const sudo = args.join(' ');
-                        message.channel.send(sudo);
-                    } else message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
+                        await message.channel.send(sudo);
+                    } else await message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
                 } else if (command === 'quote') {
                     quoteInt = randomTechnoQuote();
-                    message.channel.send(`quote number ${quoteInt}: \n"${TechnobladeQuote[quoteInt]}"`);
+                    await message.channel.send(`quote number ${quoteInt}: \n"${TechnobladeQuote[quoteInt]}"`);
                 } else if (command === 'suggest') {
                     const suggestion = args.join(' ');
-                    let nnl = await client.users.fetch('341123308844220447');
                     nnl.send(`Bot suggestion by ${message.author.tag}:\n\`${suggestion}\`\nSent at ${message.createdAt} in <#${message.channel.id}>`);
-                    message.channel.send('Your suggestion has been sent! thanks');
+                    await message.channel.send('Your suggestion has been sent! thanks');
                 } else if (command === 'pfp' || command === 'avatar') {
                     try {
                         let user: Discord.User | undefined;
@@ -383,41 +387,41 @@ import smartestchatbot = require('smartestchatbot');
                             if (message.mentions.users.size > 0) {
                                 user = message.mentions.users.first();
                                 pfp = user?.displayAvatarURL({ dynamic: true });
-                                message.channel.send(`oh man you could've just sent me an id why did you ping that poor person just for his pfp...\nanyway, ${pfp}`);
+                                await message.channel.send(`oh man you could've just sent me an id why did you ping that poor person just for his pfp...\nanyway, ${pfp}`);
                             } else {
                                 user = await client.users.fetch(args[0])
                                 pfp = user.avatarURL({ dynamic: true });
-                                message.channel.send(`got it!\n${pfp}`);
+                                await message.channel.send(`got it!\n${pfp}`);
                             }
                         } else {
                             user = message.author;
                             pfp = user.avatarURL({ dynamic: true });
-                            message.channel.send(`you wanna look at your own pfp? alright fine\n${pfp}`);
+                            await message.channel.send(`you wanna look at your own pfp? alright fine\n${pfp}`);
                         }
                     } catch (error) {
-                        message.react('❌');
-                        message.channel.send(`epic bruh moment (command error)\n\`${error}\``);
+                        await message.react('❌');
+                        await message.channel.send(`epic bruh moment (command error)\n\`${error}\``);
                         log(`pfp command command fail: ${error}`);
                     }
                 } else if (command === 'rng') {
                     if (args.filter(arg => !isNaN(parseInt(arg))).length === 0) message.channel.send(`you didnt provide any numbers :gun:\nactual usage: \`${config.prefix}rng (number) <number>\``);
-                    else if (isNaN(args[1])) message.channel.send(`random integer generator: \`${getRandomInt(args[0])}\`\nthis generator is inclusive at 0 but not at ${args[0] - 1} PLEASE keep that in mind\ntldr gives only 0 to ${args[0] - 1}`);
+                    else if (isNaN(args[1])) await message.channel.send(`random integer generator: \`${getRandomInt(args[0])}\`\nthis generator is inclusive at 0 but not at ${args[0] - 1} PLEASE keep that in mind\ntldr gives only 0 to ${args[0] - 1}`);
                     else if (!isNaN(args[1])) {
                         const min = args[0];
                         const max = args[1];
-                        message.channel.send(`random arbitrary generator: \`${getRandomArbitrary(min, max)}\`\nthis generator is inclusive at both ${min} and ${max}\nbasically gives values between ${min} and ${max} including them`);
+                        await message.channel.send(`random arbitrary generator: \`${getRandomArbitrary(min, max)}\`\nthis generator is inclusive at both ${min} and ${max}\nbasically gives values between ${min} and ${max} including them`);
                     }
                 } else if (command === 'rcg') {
                     const { countryList } = require('./countryList.json');
-                    message.channel.send(`Random country generator: \`${countryList[Math.floor(Math.random() * countryList.length)]}\``);
+                    await message.channel.send(`Random country generator: \`${countryList[Math.floor(Math.random() * countryList.length)]}\``);
                     return;
                 } else if (command === 'code') {
                     if (args[0] === 'args') {
-                        message.channel.send(
+                        await message.channel.send(
                             'u forgot again? bruh\n`.(command) (args[0]) (args[1])...` etc\nget good lol\nalso uh if you want to category `.(category => command) (command => args[0])`',
                         ); return;
                     } else if (args[0] === 'rae' || args[0] === 'randomarrayelement') {
-                        message.channel.send(
+                        await message.channel.send(
                             'how many times do i have to remind u with this shit?\n```js\narray[Math.floor(Math.random() * array.length)];```',
                         ); return;
                     } else message.channel.send('what now? random array element or args 🤣🤣🤣');
@@ -491,68 +495,67 @@ import smartestchatbot = require('smartestchatbot');
                             value: 'It does exactly what you think it does',
                         },
                     );
-                    message.channel.send({ embeds: [helpEmbed] });
+                    await message.channel.send({ embeds: [helpEmbed] });
                 } else if (command === 'dn') message.channel.send('deez nuts');
                 else if (command === 'debug') {
                     if (args[0] === 'true') {
                         if (config.debug === false) {
-                            message.channel.send('okie dokie');
+                            await message.channel.send('doing rn...');
                             config.debug = true;
-                            jsonWrite(filePath, config);
-                            message.channel.send('✅ done');
+                            await jsonWrite(filePath, config);
+                            await message.channel.send('✅ done');
                         } else if (config.debug === true) {
-                            message.channel.send('❌ its already on');
+                            await message.channel.send('❌ its already on');
                         }
                     } else if (args[0] === 'false') {
                         if (config.debug === false) {
-                            message.channel.send('its already off ❌ lol dont panic');
+                            await message.channel.send('its already off ❌ lol dont panic');
                         } else if (config.debug === true) {
                             config.debug = false;
-                            message.channel.send('okie dokie');
-                            jsonWrite(filePath, config);
-                            message.channel.send('✅ done');
+                            await message.channel.send('doing rn...');
+                            await jsonWrite(filePath, config);
+                            await message.channel.send('✅ done');
                         }
                     } else if (!args[0]) {
                         if (config.debug) {
-                            message.channel.send('debug mode is currently on ✅');
+                            await message.channel.send('debug mode is currently on ✅');
                         } else if (!config.debug) {
-                            message.channel.send('debug mode is currently off ❌');
+                            await message.channel.send('debug mode is currently off ❌');
                         }
                     }
                 } else if (command === 'chatbot') {
                     if (args[0] === 'new') {
                         if (config.chatbot === 'old') {
-                            message.channel.send('toggling chatbot into newer one');
+                            await message.channel.send('toggling chatbot into newer one');
                             config.chatbot = 'new';
-                            jsonWrite(filePath, config);
-                            message.channel.send('done');
+                            await jsonWrite(filePath, config);
+                            await message.channel.send('done');
                         } else message.channel.send(':x: either invalid value in config or its already toggled to new');
                     } else if (args[0] === 'old') {
                         if (config.chatbot === 'new') {
-                            message.channel.send('toggling chatbot into older one');
+                            await message.channel.send('toggling chatbot into older one');
                             config.chatbot = 'old';
-                            jsonWrite(filePath, config);
-                            message.channel.send('done');
-                        } else message.channel.send('❌ either invalid value in config or its already toggled to old');
+                            await jsonWrite(filePath, config);
+                            await message.channel.send('done');
+                        } else await message.channel.send('❌ either invalid value in config or its already toggled to old');
                     } else if (!args[0]) {
-                        if (config.chatbot === 'new') message.channel.send('Chatbot is currently toggled to new');
-                        else if (config.chatbot === 'old') message.channel.send('Chatbot is currently toggled to old');
-                        else message.channel.send('❌ invalid value in config, tell emberglaze to fix it');
+                        if (config.chatbot === 'new') await message.channel.send('Chatbot is currently toggled to new');
+                        else if (config.chatbot === 'old') await message.channel.send('Chatbot is currently toggled to old');
+                        else await message.channel.send('❌ invalid value in config, tell emberglaze to fix it');
                     }
                 } else if (command === 'config') {
-                    message.channel.send(`\`\`\`json\n${JSON.stringify(require('./config.json'), null, 4)}\`\`\``);
+                    await message.channel.send(`\`\`\`json\n${JSON.stringify(require('./config.json'), null, 4)}\`\`\``);
                 } else if (command === '') return;
             } else if (command === 'setNickame' && message.author.id === '341123308844220447') {
-                const me = await message.guild.members.fetch(client.user.id);
-                await me.setNickname(args.join(' ')).catch(error => {
-                    message.channel.send(`❌ Error changing nickname:\n\`\`\`${error}\`\`\``);
+                await me.setNickname(args.join(' ')).catch(async error => {
+                    await message.channel.send(`❌ Error changing nickname:\n\`\`\`${error}\`\`\``);
                 });
-                message.channel.send(`Changed my nickname to \`${args.join(' ')}\``);
+                await message.channel.send(`Changed my nickname to \`${args.join(' ')}\``);
             } else if (message.content.startsWith(config.susprefix) && message.author.id === '341123308844220447') {
                 let shelljs = await import('shelljs');
                 shelljs.exec(suscommand, (code, stdout, stderr) => {
                     message.reply({
-                        content: stderr.length > 0 ? `\`\`\`${stderr}\`\`\`` : `\`\`\`${stdout}\`\`\``,
+                        content: stderr.length > 0 ? `stderr:\n\`\`\`${stderr}\`\`\`` : `stdout:\n\`\`\`${stdout}\`\`\``,
                         allowedMentions: { repliedUser: true }
                     });
                 });
