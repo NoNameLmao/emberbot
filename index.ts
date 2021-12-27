@@ -118,7 +118,7 @@ import { serverinfo } from './interfaces';
         onlineUsers: number
     ;
     client.once('ready', async () => {
-        log(`Logged in successfully as ${client?.user?.tag}!`);
+        log(`Logged in successfully as ${client.user.tag}!`);
         const filePath = path.resolve(__dirname, './config.json');
         setInterval(() => {
             fetch('https://bots.moe/api/bot/848217938288967710/server_count', {
@@ -199,7 +199,10 @@ import { serverinfo } from './interfaces';
                         });
                         return;
                     } else if (config.chatbot === 'old') {
-                        if (!message.content) { await message.react('❌'); return; }
+                        if (!message.content) {
+                            await message.react('❌');
+                            return;
+                        }
                         message.channel.sendTyping();
                         let msg = await scb.chat({
                             message: message.content,
@@ -237,7 +240,7 @@ import { serverinfo } from './interfaces';
                 command = args.shift().toLowerCase()
             ;
             function logCommand() {
-                log(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
+                log(`recieved a ${command} command from ${message.author.tag}: ${args}`);
                 debugSend(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
             }
             if (message.content.startsWith(config.prefix)) {
@@ -351,34 +354,36 @@ import { serverinfo } from './interfaces';
                     await client.user.setAvatar(url);
                     await message.channel.send('done, how do i look? (refresh discord or make me send another message)');
                 } else if (command === 'eval') {
-                    const code = args.join(' ');
-                    let evalEmbed = new Discord.MessageEmbed()
-                    .setTitle('eval result')
-                    .addField('Input', `\`\`\`js\n${code}\`\`\``);
-                    if (message.author.id === nnlID) {
-                        try {
-                            const result = eval(code);
-                            let output = result;
-                            if (typeof output !== 'string') output = require('util').inspect(result);
-                            evalEmbed = evalEmbed
-                            .setColor('GREEN')
-                            .addField('Output', `\`\`\`js\n${output}\`\`\``);
-                            await message.channel.send({ embeds: [evalEmbed] });
-                        } catch (error) {
+                    (async () => {
+                        const code = args.join(' ');
+                        let evalEmbed = new Discord.MessageEmbed()
+                        .setTitle('eval result')
+                        .addField('Input', `\`\`\`js\n${code}\`\`\``);
+                        if (message.author.id === nnlID) {
+                            try {
+                                const result = eval(code);
+                                let output = result;
+                                if (typeof output !== 'string') output = require('util').inspect(result);
+                                evalEmbed = evalEmbed
+                                .setColor('GREEN')
+                                .addField('Output', `\`\`\`js\n${output}\`\`\``);
+                                await message.channel.send({ embeds: [evalEmbed] });
+                            } catch (error) {
+                                evalEmbed = evalEmbed
+                                .setColor('RED')
+                                .addField('Error output', `\`\`\`js\n${error}\`\`\``);
+                                await message.channel.send({ embeds: [evalEmbed] });
+                            }
+                        } else {
                             evalEmbed = evalEmbed
                             .setColor('RED')
-                            .addField('Error output', `\`\`\`js\n${error}\`\`\``);
+                            .addField('technoblade never dies', `${randomTechnoQuote()}`)
+                            .setFooter('❌ No permission');
                             await message.channel.send({ embeds: [evalEmbed] });
                         }
-                    } else {
-                        evalEmbed = evalEmbed
-                        .setColor('RED')
-                        .addField('technoblade never dies', `${randomTechnoQuote()}`)
-                        .setFooter('❌ No permission');
-                        await message.channel.send({ embeds: [evalEmbed] });
-                    }
+                    })();
                 } else if (command === 'exit') {
-                    if (message?.author?.id === nnlID || message.member.roles.cache.find(role => role.name === 'Admin')) {
+                    if (message.author.id === nnlID || message.member.roles.cache.find(role => role.name === 'Admin')) {
                         log(`recieved exit command from ${message.author.tag} @ ${now.toString()}. goodbye`);
                         await message.channel.send(':sob:');
                         process.exit(1);
@@ -500,6 +505,11 @@ import { serverinfo } from './interfaces';
                             inline: true,
                         },
                         {
+                            name: 'convert',
+                            value: 'Categorised commands for conversion. Run this command for more info',
+                            inline: true
+                        },
+                        {
                             name: 'rng <minValue> (maxValue)',
                             value: 'Random number generator',
                             inline: true,
@@ -520,11 +530,12 @@ import { serverinfo } from './interfaces';
                         {
                             name: 'help',
                             value: 'It does exactly what you think it does',
-                        },
+                        }
                     );
                     await message.channel.send({ embeds: [helpEmbed] });
-                } else if (command === 'dn') message.channel.send('deez nuts');
-                else if (command === 'debug') {
+                } else if (command === 'dn') {
+                    await message.channel.send('deez nuts');
+                } else if (command === 'debug') {
                     if (args[0] === 'true') {
                         if (!config.debug) {
                             await message.channel.send('doing rn...');
@@ -554,7 +565,7 @@ import { serverinfo } from './interfaces';
                             config.chatbot = 'new';
                             await jsonWrite(filePath, config);
                             await message.channel.send('done');
-                        } else message.channel.send(':x: either invalid value in config or its already toggled to new');
+                        } else message.channel.send('❌ either invalid value in config or its already toggled to new');
                     } else if (args[0] === 'old') {
                         if (config.chatbot === 'new') {
                             await message.channel.send('toggling chatbot into older one');
@@ -567,51 +578,51 @@ import { serverinfo } from './interfaces';
                         else if (config.chatbot === 'old') await message.channel.send('Chatbot is currently toggled to old');
                         else await message.channel.send('❌ invalid value in config, tell emberglaze to fix it');
                     }
+                } else if (command === 'setNickame' && message.author.id === nnlID) {
+                    await me.setNickname(args.join(' ')).catch(async error => {
+                        await message.channel.send(`❌ Error changing nickname:\n\`\`\`${error}\`\`\``);
+                    });
+                    await message.channel.send(`Changed my nickname to \`${args.join(' ')}\``);
+                } else if (command === 'convert') {
+                    if (!args[0]) {
+                        const convertEmbed = new Discord.MessageEmbed()
+                        .setTitle('Command category: Convert')
+                        .setDescription(`Usage: ${config.prefix}convert (command)\n<> = Optional argument(s)`)
+                        .setColor(53380)
+                        .addField('text2bf', 'Convert text to brainfuck')
+                        .setFooter('Commands for converting stuff to other stuff');
+                        await message.channel.send({ embeds: [convertEmbed] });
+                    } else if (args[0] === 'text2bf') {
+                        if (!args[1]) {
+                            await message.channel.send(`❌ you didnt provide any text\nusage: ${config.prefix}convert text2bf (text)`);
+                            return;
+                        } else {
+                            const { text2bf } = await import('./stuff/text2bf'),
+                                text = args.slice(1).join(' '),
+                                bf = text2bf(text),
+                                text2bfEmbed = new Discord.MessageEmbed()
+                                .setTitle('convert text2bf')
+                                .setDescription('Converted text to brainfuck')
+                                .setColor(53380)
+                                .setFields(
+                                    {
+                                        name: 'Original text',
+                                        value: text
+                                    },
+                                    {
+                                        name: 'Brainfuck',
+                                        value: bf
+                                    }
+                                )
+                            ;
+                            await message.channel.send({ embeds: [text2bfEmbed] });
+                        }
+                    }
                 } else if (command === 'config') {
                     await message.channel.send(`\`\`\`json\n${JSON.stringify(require('./config.json'), null, 4)}\`\`\``);
                 } else if (command === '') return;
-            } else if (command === 'setNickame' && message.author.id === nnlID) {
-                await me.setNickname(args.join(' ')).catch(async error => {
-                    await message.channel.send(`❌ Error changing nickname:\n\`\`\`${error}\`\`\``);
-                });
-                await message.channel.send(`Changed my nickname to \`${args.join(' ')}\``);
-            } else if (command === 'convert') {
-                if (!args[0]) {
-                    const convertEmbed = new Discord.MessageEmbed()
-                    .setTitle('Command category: Convert')
-                    .setDescription(`Usage: ${config.prefix}convert (command)\n<> = Optional argument(s)`)
-                    .setColor(53380)
-                    .setFooter('Commands for converting stuff to other stuff')
-                    .addField('text2bf', 'Convert text to brainfuck');
-                    await message.channel.send({ embeds: [convertEmbed] });
-                } else if (args[0] === 'text2bf') {
-                    if (!args[1]) {
-                        await message.channel.send(`❌ you didnt provide any text\nusage: ${config.prefix}convert text2bf (text)`);
-                        return;
-                    } else {
-                        const { text2bf } = await import('./stuff/text2bf'),
-                            text = args.slice(1).join(' '),
-                            bf = text2bf(text),
-                            text2bfEmbed = new Discord.MessageEmbed()
-                            .setTitle('convert text2bf')
-                            .setDescription('Converted text to brainfuck')
-                            .setColor(53380)
-                            .setFields(
-                                {
-                                    name: 'Original text',
-                                    value: text
-                                },
-                                {
-                                    name: 'Brainfuck',
-                                    value: bf
-                                }
-                            )
-                        ;
-                        await message.channel.send({ embeds: [text2bfEmbed] });
-                    }
-                }
             } else if (message.content.startsWith(config.susprefix) && message.author.id === nnlID) {
-                let shelljs = await import('shelljs');
+                const shelljs = await import('shelljs');
                 shelljs.exec(suscommand, (code, stdout, stderr) => {
                     message.reply({
                         content: stderr.length > 0 ? `stderr:\n\`\`\`${stderr}\`\`\`` : `stdout:\n\`\`\`${stdout}\`\`\``,
@@ -640,7 +651,7 @@ import { serverinfo } from './interfaces';
                     updateDateLoop();
                     await dateChannel.setName(`${europesimCurrentYear}, ${europesimCurrentMonth}`);
                 } catch (error) {
-                    if (error instanceof Error) botChannel.send(`❌ updateDateLoop() failure\n\`\`\`js\n${error?.stack}\`\`\``);
+                    if (error instanceof Error) botChannel.send(`❌ updateDateLoop() failure\n\`\`\`js\n${error.stack}\`\`\``);
                 }
             }, 10000);
         }
