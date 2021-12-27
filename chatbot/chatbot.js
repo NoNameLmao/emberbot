@@ -8,7 +8,7 @@ net.fromJSON(JSON.parse(fs.readFileSync('./chatbot/neuralnet.json', 'utf8')));
 /**
  * Run a string through the net.
  * @param {string} string
- * @returns {String} string
+ * @returns {string} string
  */
 function netRun(string) {
     return net.run(string);

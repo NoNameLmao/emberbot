@@ -1,38 +1,27 @@
 {
-  "name": "emberbot",
-  "version": "3.0",
-  "description": "discord bot, does things.",
-  "main": "index.ts",
-  "scripts": {
-    "start": "ts-node index.ts"
-  },
-  "dependencies": {
-    "@discordjs/voice": "^0.6.0",
-    "@types/shelljs": "^0.8.9",
-    "body-parser": "^1.19.0",
-    "chance": "^1.1.7",
-    "chance.js": "^0.0.1",
-    "discord.js": "^13.3.0",
-    "dotenv": "^10.0.0",
-    "eventemitter3": "^4.0.7",
-    "express": "^4.17.1",
-    "flying-squid": "^1.4.0",
-    "js-markov": "^3.0.3",
-    "mcdata": "^1.0.9",
-    "minecraft-data": "^2.86.0",
-    "mineflayer-navigate": "^0.0.10",
-    "neuro": "^0.0.1",
-    "neuro.js": "^0.1.4",
-    "node": "^16.5.0",
-    "pick-one-by-weight": "^1.0.2",
-    "request": "^2.88.2",
-    "shelljs": "^0.8.4",
-    "smartestchatbot": "^2.0.0",
-    "typescript": "^4.4.4",
-    "webhook-discord": "^3.7.8",
-    "xmlhttprequest": "^1.8.0"
-  },
-  "keywords": [],
-  "author": "emberglaze",
-  "license": "ISC"
+    "name": "emberbot",
+    "version": "3.1",
+    "description": "discord bot, does things.",
+    "main": "index.ts",
+    "scripts": {
+        "start": "ts-node index.ts"
+    },
+    "dependencies": {
+        "@discordjs/voice": "^0.7.5",
+        "@types/shelljs": "^0.8.10",
+        "body-parser": "^1.19.1",
+        "brain.js": "^2.0.0-beta.4",
+        "discord.js": "^13.4.0",
+        "dotenv": "^10.0.0",
+        "eventemitter3": "^4.0.7",
+        "mcdata": "^1.0.9",
+        "node": "^17.3.0",
+        "pick-one-by-weight": "^1.0.2",
+        "shelljs": "^0.8.4",
+        "smartestchatbot": "^2.0.1",
+        "typescript": "^4.5.4"
+    },
+    "keywords": [],
+    "author": "emberglaze",
+    "license": "ISC"
 }

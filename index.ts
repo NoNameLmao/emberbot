@@ -34,6 +34,7 @@ import { serverinfo } from './interfaces';
         guildID = '846807940727570433',
         botchannelID = '846811100338323497',
         dateChannelID = '848247855789375508',
+        chatbotChannelID = '871507861132423168',
         nnlID = '341123308844220447',
         pingNNL = `<@${nnlID}>`,
         europesimStartYear = 1900,
@@ -186,7 +187,7 @@ import { serverinfo } from './interfaces';
         botChannel.send(`hi im online, i took ${(Date.now() - startTime) / 1000}s to start`);
 
         client.on('error', (error) => log(error.stack));
-        client.on('messageCreate', async (message: Discord.Message) => {
+        client.on('messageCreate', async message => {
             if (message.channel.type === 'DM') return log(`Direct message from ${message.author.tag} at ${message.createdAt}:\n${message.content}`);
             if (message.channel.name === 'es-chatbot') {
                 try {
@@ -219,8 +220,13 @@ import { serverinfo } from './interfaces';
                         return;
                     }
                 } catch (error) {
-                    await message.channel.send(`:x: epic fail \`\`\`js\n${error?.stack}\`\`\``);
-                    return;
+                    if (error.stack.includes('Message content must be a non-empty string.')) {
+                        await message.channel.send('❌ <message content must be a non-empty string>');
+                        return;
+                    } else {
+                        await message.channel.send(`❌ epic fail \`\`\`js\n${error.stack}\`\`\``);
+                        return;
+                    }
                 }
             }
             if (message.content.startsWith('..')) return;
@@ -433,7 +439,7 @@ import { serverinfo } from './interfaces';
                         return;
                     }
                 } else if (command === 'rcg') {
-                    const { countryList } = require('./countryList.json');
+                    const countryList = await import('./countryList.json');
                     await message.channel.send(`Random country generator: \`${countryList[Math.floor(Math.random() * countryList.length)]}\``);
                     return;
                 } else if (command === 'code') {
