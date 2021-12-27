@@ -356,7 +356,7 @@ import smartestchatbot = require('smartestchatbot');
                         }
                     } else message.channel.send(`${randomTechnoQuote()} (No permission)`);
                 } else if (command === 'exit') {
-                    if (message?.author?.id === '341123308844220447' || message?.member?.roles?.cache?.find((role: Discord.Role) => role.name === 'Admin')) {
+                    if (message?.author?.id === '341123308844220447' || message.member.roles.cache.find(role => role.name === 'Admin')) {
                         log(`recieved exit command from ${message.author.tag} @ ${now.toString()}. goodbye`);
                         await message.channel.send(':sob:');
                         process.exit(1);
@@ -369,11 +369,12 @@ import smartestchatbot = require('smartestchatbot');
                     quoteInt = randomTechnoQuote();
                     if (message.author.id === '341123308844220447') {
                         const sudo = args.join(' ');
+                        message.delete();
                         await message.channel.send(sudo);
-                    } else await message.channel.send(`${TechnobladeQuote[quoteInt]} (No permission)`);
+                    } else await message.channel.send(`${randomTechnoQuote()} (No permission)`);
                 } else if (command === 'quote') {
                     quoteInt = randomTechnoQuote();
-                    await message.channel.send(`quote number ${quoteInt}: \n"${TechnobladeQuote[quoteInt]}"`);
+                    await message.channel.send(`quote number ${quoteInt}: \n"${randomTechnoQuote()}"`);
                 } else if (command === 'suggest') {
                     const suggestion = args.join(' ');
                     nnl.send(`Bot suggestion by ${message.author.tag}:\n\`${suggestion}\`\nSent at ${message.createdAt} in <#${message.channel.id}>`);
@@ -386,7 +387,7 @@ import smartestchatbot = require('smartestchatbot');
                             if (message.mentions.users.size > 0) {
                                 user = message.mentions.users.first();
                                 pfp = user?.displayAvatarURL({ dynamic: true });
-                                await message.channel.send(`oh man you could've just sent me an id why did you ping that poor person just for his pfp...\nanyway, ${pfp}`);
+                                await message.channel.send(`oh man you could've just sent me an id why did you ping that poor person just for his pfp...\n${pfp}`);
                             } else {
                                 user = await client.users.fetch(args[0])
                                 pfp = user.avatarURL({ dynamic: true });
