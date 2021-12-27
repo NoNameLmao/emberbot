@@ -110,7 +110,6 @@ import smartestchatbot = require('smartestchatbot');
     
     
     let quoteInt = randomTechnoQuote(),
-        botChannel: any,
         userCount: number,
         memberCount: number,
         botCount: number,
@@ -119,11 +118,6 @@ import smartestchatbot = require('smartestchatbot');
     client.once('ready', async () => {
         log(`Logged in successfully as ${client?.user?.tag}!`);
         const filePath = path.resolve(__dirname, './config.json');
-        process.on('uncaughtException', async (err) => {
-            console.error(`[${now}] [${err.name}] ${err.stack}`);
-            await botChannel.send(`Some serious af error happened <@341123308844220447>\n\`\`\`js\n${err.stack}\`\`\`\ncya losers`);
-            process.exit(0);
-        });
         setInterval(() => {
             fetch('https://bots.moe/api/bot/848217938288967710/server_count', {
                 method: 'POST',
@@ -139,14 +133,19 @@ import smartestchatbot = require('smartestchatbot');
                 else log(`[bots.moe] Successful request. JSON: ${JSON.stringify(response, null, 4)}`);
             }).catch(error => log(`[bots.moe] Error! ${error}`));
         }, 10 * 60000); // every 10 minutes
-        botChannel = await client.channels.fetch(botchannelID);
 
         const { netRun } = require('./chatbot/chatbot'),
             guild = await client.guilds.fetch(guildID),
             nnl = await client.users.fetch(nnlID),
             me = await guild.members.fetch(client.user.id),
-            dateChannel = guild.channels.resolve(dateChannelID)
+            dateChannel = guild.channels.resolve(dateChannelID),
+            botChannel = client.channels.cache.get(botchannelID) as Discord.TextChannel;
         ;
+        process.on('uncaughtException', async (err) => {
+            console.error(`[${now}] [${err.name}] ${err.stack}`);
+            await botChannel.send(`Some serious af error happened <@341123308844220447>\n\`\`\`js\n${err.stack}\`\`\`\ncya losers`);
+            process.exit(0);
+        });
 
         function updateGuildMembers() {
             memberCount = guild.memberCount;
@@ -173,7 +172,7 @@ import smartestchatbot = require('smartestchatbot');
             DiscordVoice.joinVoiceChannel({
                 channelId: dateChannelID,
                 guildId: guildID,
-                adapterCreator: botChannel.guild.voiceAdapterCreator,
+                adapterCreator: (dateChannel.guild.voiceAdapterCreator as unknown) as DiscordVoice.DiscordGatewayAdapterCreator,
             });
             debugSend('ran DiscordVoice.joinVoiceChannel({...});');
         } catch (error) {
@@ -253,8 +252,8 @@ import smartestchatbot = require('smartestchatbot');
                         try {
                             updateGuildMembers();
                             const infoEmbed = new Discord.MessageEmbed()
-                            .setTitle('Useless information about europesim')
-                            .setDescription('totally useless why did you use this command')
+                            .setTitle('esim info')
+                            .setDescription('Europesim information')
                             .setAuthor('Bot information', 'https://cdn.discordapp.com/icons/846807940727570433/4bbf13c1ce8bfb351fc7eafdc898e7d1.png')
                             .setColor(53380)
                             .setFooter('https://ourworldofpixels.com/europesim')
@@ -551,6 +550,41 @@ import smartestchatbot = require('smartestchatbot');
                     await message.channel.send(`❌ Error changing nickname:\n\`\`\`${error}\`\`\``);
                 });
                 await message.channel.send(`Changed my nickname to \`${args.join(' ')}\``);
+            } else if (command === 'convert') {
+                if (!args[0]) {
+                    const convertEmbed = new Discord.MessageEmbed()
+                    .setTitle('Command category: Convert')
+                    .setDescription(`Usage: ${config.prefix}convert (command)\n<> = Optional argument(s)`)
+                    .setColor(53380)
+                    .setFooter('Commands for converting stuff to other stuff')
+                    .addField('text2bf', 'Convert text to brainfuck');
+                    await message.channel.send({ embeds: [convertEmbed] });
+                } else if (args[0] === 'text2bf') {
+                    if (!args[1]) {
+                        await message.channel.send(`❌ you didnt provide any text\nusage: ${config.prefix}convert text2bf (text)`);
+                        return;
+                    } else {
+                        const { text2bf } = await import('./stuff/text2bf'),
+                            text = args.slice(1).join(' '),
+                            bf = text2bf(text),
+                            text2bfEmbed = new Discord.MessageEmbed()
+                            .setTitle('convert text2bf')
+                            .setDescription('Converted text to brainfuck')
+                            .setColor(53380)
+                            .setFields(
+                                {
+                                    name: 'Original text',
+                                    value: text
+                                },
+                                {
+                                    name: 'Brainfuck',
+                                    value: bf
+                                }
+                            )
+                        ;
+                        await message.channel.send({ embeds: [text2bfEmbed] });
+                    }
+                }
             } else if (message.content.startsWith(config.susprefix) && message.author.id === '341123308844220447') {
                 let shelljs = await import('shelljs');
                 shelljs.exec(suscommand, (code, stdout, stderr) => {
@@ -561,7 +595,6 @@ import smartestchatbot = require('smartestchatbot');
                 });
             }
         });
-        const a = 1;
         function updateYear() {
             europesimStartDate = Date.parse('August 30 2021 00:00:00 GMT');
             currentDate = Date.now();
@@ -582,7 +615,7 @@ import smartestchatbot = require('smartestchatbot');
                     updateDateLoop();
                     await dateChannel.setName(`${europesimCurrentYear}, ${europesimCurrentMonth}`);
                 } catch (error: any) {
-                    botChannel.send(`❌ updateDateLoop() failure\n\`\`\`js\n${error?.stack}\`\`\``);
+                    if (error instanceof Error) botChannel.send(`❌ updateDateLoop() failure\n\`\`\`js\n${error?.stack}\`\`\``);
                 }
             }, 10000);
         }
