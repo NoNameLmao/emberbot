@@ -3,7 +3,7 @@ let jsoncfg: config;
 (async () => {
     jsoncfg = JSON.parse(await fs.readFile('./config.json', { encoding: 'utf8' }));
 })();
-let { prefix, debug, chatbot, susprefix } = jsoncfg;
+let { prefix, debug, susprefix } = jsoncfg;
 // mcdata.serverStatus();
 export interface serverinfo {
     serverStatus: 'online' | 'offline',
@@ -22,12 +22,10 @@ export interface serverinfo {
 export interface config {
     prefix: string,
     debug: boolean,
-    chatbot: 'old' | 'new',
     susprefix: string
 }
 export const config: config = {
     prefix,
     debug,
-    chatbot,
     susprefix
 }
