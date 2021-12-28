@@ -453,11 +453,6 @@ import { serverinfo } from './interfaces';
                     .setFooter('3.2')
                     .addFields(
                         {
-                            name: 'hi',
-                            value: 'Usually used to check if bot is responding/online or not',
-                            inline: true,
-                        },
-                        {
                             name: 'eval (code)',
                             value: 'Run JavaScript code',
                             inline: true,
@@ -468,17 +463,12 @@ import { serverinfo } from './interfaces';
                             inline: true,
                         },
                         {
-                            name: 'sudo (message)',
-                            value: 'Send messages as me (idk why i added it, might remove)',
-                            inline: true,
-                        },
-                        {
                             name: 'quote',
                             value: 'Random technoblade quote',
                             inline: true,
                         },
                         {
-                            name: 'suggest (idea: string)',
+                            name: 'suggest (idea)',
                             value: 'Send bot suggestions to emberglaze, may or may not be added :shrug:',
                             inline: true,
                         },
@@ -512,12 +502,8 @@ import { serverinfo } from './interfaces';
                             value: 'Returns a profile picture of either message author (leave arguments empty), mentioned/pinged account or account by id',
                         },
                         {
-                            name: 'code <code stuff>',
-                            value: `Serves as a reminder to ${pingNNL} for some parts of code he frequently forgets about lol he is so bad he forgets his own code`,
-                        },
-                        {
                             name: 'help',
-                            value: 'It does exactly what you think it does',
+                            value: 'Display this',
                         }
                     );
                     await message.channel.send({ embeds: [helpEmbed] });
@@ -526,21 +512,19 @@ import { serverinfo } from './interfaces';
                 } else if (command === 'debug') {
                     if (args[0] === 'true') {
                         if (!config.debug) {
-                            await message.channel.send('doing rn...');
                             config.debug = true;
                             await jsonWrite(filePath, config);
-                            await message.channel.send('✅ done');
+                            await message.react('✅');
                         } else if (config.debug) {
-                            await message.channel.send('❌ its already on');
+                            await message.react('❌');
                         }
                     } else if (args[0] === 'false') {
                         if (!config.debug) {
-                            await message.channel.send('its already off ❌ lol dont panic');
+                            await message.react('❌');
                         } else if (config.debug) {
                             config.debug = false;
-                            await message.channel.send('doing rn...');
                             await jsonWrite(filePath, config);
-                            await message.channel.send('✅ done');
+                            await message.react('✅');
                         }
                     } else if (!args[0]) {
                         if (config.debug) await message.channel.send('debug mode is currently on ✅');
