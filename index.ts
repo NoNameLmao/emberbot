@@ -136,8 +136,7 @@ import { serverinfo } from './interfaces';
             }).catch(error => log(`[bots.moe] Error! ${error}`));
         }, 10 * 60000); // every 10 minutes
 
-        const { netRun } = require('./chatbot/chatbot'),
-            guild = await client.guilds.fetch(guildID),
+        const guild = await client.guilds.fetch(guildID),
             nnl = await client.users.fetch(nnlID),
             me = await guild.members.fetch(client.user.id),
             dateChannel = guild.channels.resolve(dateChannelID),
@@ -192,36 +191,25 @@ import { serverinfo } from './interfaces';
             if (message.channel.name === 'es-chatbot') {
                 try {
                     if (message.author.bot) return;
-                    if (config.chatbot === 'new') {
-                        await message.reply({
-                            content: netRun(message.content),
-                            allowedMentions: { repliedUser: true }
-                        });
-                        return;
-                    } else if (config.chatbot === 'old') {
-                        if (!message.content) {
-                            await message.react('❌');
-                            return;
-                        }
-                        message.channel.sendTyping();
-                        let msg = await scb.chat({
-                            message: message.content,
-                            name: message.author.username,
-                            owner: 'emberglaze',
-                            user: message.author.id
-                        });
-                        await message.reply({
-                            content: msg.toLowerCase()
-                            .replace('\'', '')
-                            .replace('you can interrupt me at any time by clicking the “x” on the top-right', 'if you want me to stop then stop talking here, its that simple')
-                            .replace('ok, ill stop when you click the “x” on the top-right', 'i will stop once you stop typing here dude'),
-                            allowedMentions: { repliedUser: true },
-                        });
-                        return;
-                    } else {
-                        await message.channel.send(`❌ Invalid chatbot value in config: ${config.chatbot}`);
+                    if (!message.content) {
+                        await message.react('❌');
                         return;
                     }
+                    message.channel.sendTyping();
+                    let msg = await scb.chat({
+                        message: message.content,
+                        name: message.author.username,
+                        owner: 'emberglaze',
+                        user: message.author.id
+                    });
+                    await message.reply({
+                        content: msg.toLowerCase()
+                        .replace('\'', '')
+                        .replace('you can interrupt me at any time by clicking the “x” on the top-right', 'if you want me to stop then stop talking here, its that simple')
+                        .replace('ok, ill stop when you click the “x” on the top-right', 'i will stop once you stop typing here dude'),
+                        allowedMentions: { repliedUser: true },
+                    });
+                    return;
                 } catch (error) {
                     if (error.stack.includes('Message content must be a non-empty string.')) {
                         await message.channel.send('❌ <message content must be a non-empty string>');
@@ -462,7 +450,7 @@ import { serverinfo } from './interfaces';
                     .setTitle('All list of commands')
                     .setDescription(`prefix: ${config.prefix}\n<> = optional argument`)
                     .setColor(53380)
-                    .setFooter('epic new chatbot (WIP af)')
+                    .setFooter('3.2')
                     .addFields(
                         {
                             name: 'hi',
@@ -557,26 +545,6 @@ import { serverinfo } from './interfaces';
                     } else if (!args[0]) {
                         if (config.debug) await message.channel.send('debug mode is currently on ✅');
                         else if (!config.debug) await message.channel.send('debug mode is currently off ❌');
-                    }
-                } else if (command === 'chatbot') {
-                    if (args[0] === 'new') {
-                        if (config.chatbot === 'old') {
-                            await message.channel.send('toggling chatbot into newer one');
-                            config.chatbot = 'new';
-                            await jsonWrite(filePath, config);
-                            await message.channel.send('done');
-                        } else message.channel.send('❌ either invalid value in config or its already toggled to new');
-                    } else if (args[0] === 'old') {
-                        if (config.chatbot === 'new') {
-                            await message.channel.send('toggling chatbot into older one');
-                            config.chatbot = 'old';
-                            await jsonWrite(filePath, config);
-                            await message.channel.send('done');
-                        } else await message.channel.send('❌ either invalid value in config or its already toggled to old');
-                    } else if (!args[0]) {
-                        if (config.chatbot === 'new') await message.channel.send('Chatbot is currently toggled to new');
-                        else if (config.chatbot === 'old') await message.channel.send('Chatbot is currently toggled to old');
-                        else await message.channel.send('❌ invalid value in config, tell emberglaze to fix it');
                     }
                 } else if (command === 'setNickame' && message.author.id === nnlID) {
                     await me.setNickname(args.join(' ')).catch(async error => {
