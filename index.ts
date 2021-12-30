@@ -659,5 +659,6 @@ declare global {
     }
 }
 String.prototype.limit = (length: number) => {
+    // @ts-ignore: Object is possibly 'undefined'.
     return this!.length > length ? (this!.substring(0, length - 1) + '…') : this;
 }
