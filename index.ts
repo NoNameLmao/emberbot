@@ -354,12 +354,12 @@ import { serverinfo } from './interfaces';
                                 if (typeof output !== 'string') output = require('util').inspect(result);
                                 evalEmbed = evalEmbed
                                 .setColor('GREEN')
-                                .addField('Output', `\`\`\`js\n${output}\`\`\``);
+                                .addField('Output', `\`\`\`js\n${output.limit(512)}\`\`\``);
                                 await message.channel.send({ embeds: [evalEmbed] });
                             } catch (error) {
                                 evalEmbed = evalEmbed
                                 .setColor('RED')
-                                .addField('Error output', `\`\`\`js\n${error}\`\`\``);
+                                .addField('Error output', `\`\`\`js\n${error.limit(512)}\`\`\``);
                                 await message.channel.send({ embeds: [evalEmbed] });
                             }
                         } else {
