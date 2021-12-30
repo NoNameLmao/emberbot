@@ -354,12 +354,12 @@ import { serverinfo } from './interfaces';
                                 if (typeof output !== 'string') output = require('util').inspect(result);
                                 evalEmbed = evalEmbed
                                 .setColor('GREEN')
-                                .addField('Output', `\`\`\`js\n${output}\`\`\``);
+                                .addField('Output', `\`\`\`js\n${limit(output, 512)}\`\`\``);
                                 await message.channel.send({ embeds: [evalEmbed] });
                             } catch (error) {
                                 evalEmbed = evalEmbed
                                 .setColor('RED')
-                                .addField('Error output', `\`\`\`js\n${error}\`\`\``);
+                                .addField('Error output', `\`\`\`js\n${limit(error, 512)}\`\`\``);
                                 await message.channel.send({ embeds: [evalEmbed] });
                             }
                         } else {
@@ -652,4 +652,11 @@ async function readGuildConfig() {
 }
 function sleep(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+function limit(string: string, length: number) {
+    if (string.length > length) {
+        return string.slice(0, string.length - length - 1) + '…'; // U+2026
+    } else {
+        return string;
+    }
 }
