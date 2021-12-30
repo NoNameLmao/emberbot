@@ -653,6 +653,9 @@ async function readGuildConfig() {
 function sleep(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
-String.prototype.limit = length => {
-    return this.length > length ? (this.substring(0, length - 1) + '…') : this;
+interface String {
+    limit(length): string;
+}
+String.prototype.limit = function(length: number) {
+    return this?.length > length ? (this?.substring(0, length - 1) + '…') : this;
 }
