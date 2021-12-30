@@ -659,5 +659,5 @@ declare global {
     }
 }
 String.prototype.limit = (length: number) => {
-    return this?.length > length ? (this?.substring(0, length - 1) + '…') : this;
+    return this!.length > length ? (this!.substring(0, length - 1) + '…') : this;
 }
