@@ -9,7 +9,7 @@ import fsp = require('fs/promises');
 import Discord = require('discord.js');
 import DiscordVoice = require('@discordjs/voice');
 import smartestchatbot = require('smartestchatbot');
-import { serverinfo } from './interfaces';
+import { serverinfo, playerinfo } from './interfaces';
 (async () => {
     let config = await jsonRead('./config.json'),
         now = new Date(),
@@ -148,7 +148,7 @@ import { serverinfo } from './interfaces';
                 await botChannel.send('❌ <empty message error>');
             } else {
                 await botChannel.send(`some error happened ${pingNNL}\n\`\`\`js\n${err.stack}\`\`\`\nbye`);
-                process.exit(0);
+                process.exit(1);
             }
         });
 
@@ -168,7 +168,7 @@ import { serverinfo } from './interfaces';
         try {
             updateGuildMembers();
         } catch (error) {
-            botChannel.send(`❌ error with member count stuff\n\`\`\`js\n${error.stack}\`\`\``);
+            botChannel.send(`❌ error with member count stuff\n\`\`\`ts\n${error.stack}\`\`\``);
         }
         function debugSend(message: string) {
             if (config.debug) botChannel.send(`\`[DEBUG]: ${message}\``);
@@ -331,6 +331,18 @@ import { serverinfo } from './interfaces';
                             await message.channel.send({ embeds: [serverInfoEmbed] });
                         } catch (error) {
                             await message.channel.send(`Error while running this command: \n\`${error}\``);
+                        }
+                    } else if (['playerinfo', 'pinfo', 'playerstatus', 'pstatus'].includes(args[0])) {
+                        try {
+                            const playerinfo: playerinfo = await mcdata.playerStatus(args[1]);
+                            const playerinfoEmber = new Discord.MessageEmbed()
+                            .setTitle('Player information')
+                            .setColor(53380)
+                            .setAuthor(`${args[1]}`)
+                            .addField('UUID', playerinfo.uuid);
+                        } catch (error) {
+                            message.react(':x:');
+                            await message.channel.send(`There was an error!\n${error}`);
                         }
                     }
                 } else if (command === 'hi') await message.channel.send('hi im online what do u want (main branch)');

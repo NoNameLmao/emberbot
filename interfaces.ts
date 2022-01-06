@@ -19,6 +19,36 @@ export interface serverinfo {
     ping: number,
     icon: string
 }
+export interface namehistory {
+    name: string,
+    changedToAt?: number;
+}[];
+export interface playerinfo {
+    uuid: string;
+    username: string;
+    nameHistory: namehistory;
+    skin: {
+        avatar: string;
+        renders: {
+            head: {
+                left: string;
+                right: string;
+            },
+            body: {
+                left: string;
+                right: string;
+            }
+        },
+        fullBody: string;
+        combo: string;
+        cape: string;
+        texture: {
+            get: string;
+            download: string;
+            apply: string;
+        }
+    }
+}
 export interface config {
     prefix: string,
     debug: boolean,
