@@ -365,12 +365,12 @@ import { ServerInfo, PlayerInfo, Config } from './interfaces';
                                 if (typeof output !== 'string') output = require('util').inspect(result);
                                 evalEmbed = evalEmbed
                                 .setColor('GREEN')
-                                .addField('Output', `\`\`\`js\n${output.limit(512)}\`\`\``);
+                                .addField('Output', `\`\`\`js\n${(output as String).limit(512)}\`\`\``);
                                 await message.channel.send({ embeds: [evalEmbed] });
                             } catch (error) {
                                 evalEmbed = evalEmbed
                                 .setColor('RED')
-                                .addField('Error output', `\`\`\`js\n${error.limit(512)}\`\`\``);
+                                .addField('Error output', `\`\`\`js\n${error}\`\`\``);
                                 await message.channel.send({ embeds: [evalEmbed] });
                             }
                         } else {
@@ -465,7 +465,7 @@ import { ServerInfo, PlayerInfo, Config } from './interfaces';
                     .addFields(
                         {
                             name: 'eval (code)',
-                            value: 'Run JavaScript code',
+                            value: 'Run JavaScript code (not TypeScript!)',
                             inline: true,
                         },
                         {
@@ -581,6 +581,16 @@ import { ServerInfo, PlayerInfo, Config } from './interfaces';
                             await message.channel.send({ embeds: [text2bfEmbed] });
                         }
                     }
+                } else if (command === 'info') {
+                    const infoEmbed = new Discord.MessageEmbed()
+                    .setTitle('Bot information')
+                    .setColor(53380)
+                    .setFields(
+                        {
+                            name: 'Amount of guilds',
+                            value: `${client.guilds.cache.size}`
+                        }
+                    )
                 } else if (command === 'config') {
                     await message.channel.send(`\`\`\`json\n${JSON.stringify(require('./config.json'), null, 4)}\`\`\``);
                 } else if (command === '') return;
