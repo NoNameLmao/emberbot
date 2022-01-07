@@ -120,7 +120,7 @@ import { ServerInfo, PlayerInfo, Config } from './interfaces';
     }
     
     
-    let quoteInt = randomTechnoQuote(),
+    let quote = randomTechnoQuote(),
         userCount: number,
         memberCount: number,
         botCount: number,
@@ -398,19 +398,19 @@ import { ServerInfo, PlayerInfo, Config } from './interfaces';
                         process.exit(1);
                     } else {
                         log(`recieved exit command from ${message.author.tag} @ ${now.toString()} lol permission denied have a technoblade quote instead nerd`);
-                        quoteInt = randomTechnoQuote();
+                        quote = randomTechnoQuote();
                         await message.channel.send(`${randomTechnoQuote()} (No permission)`);
                     }
                 } else if (command === 'sudo') {
-                    quoteInt = randomTechnoQuote();
+                    quote = randomTechnoQuote();
                     if (message.author.id === nnlID) {
                         const sudo = args.join(' ');
                         message.delete();
                         await message.channel.send(sudo);
                     } else await message.channel.send(`${randomTechnoQuote()} (No permission)`);
                 } else if (command === 'quote') {
-                    quoteInt = randomTechnoQuote();
-                    await message.channel.send(`quote number ${quoteInt}: \n"${randomTechnoQuote()}"`);
+                    quote = randomTechnoQuote();
+                    await message.channel.send(`"${randomTechnoQuote()}"`);
                 } else if (command === 'suggest') {
                     const suggestion = args.join(' ');
                     nnl.send(`Bot suggestion by ${message.author.tag}:\n\`${suggestion}\`\nSent at ${message.createdAt} in <#${message.channel.id}>`);
