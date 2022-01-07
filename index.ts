@@ -365,12 +365,12 @@ import { ServerInfo, PlayerInfo, Config } from './interfaces';
                                 if (typeof output !== 'string') output = require('util').inspect(result);
                                 evalEmbed = evalEmbed
                                 .setColor('GREEN')
-                                .addField('Output', `\`\`\`js\n${(output as String).limit(512)}\`\`\``);
+                                .addField('Output', limit(`\`\`\`js\n${output}\`\`\``, 512));
                                 await message.channel.send({ embeds: [evalEmbed] });
                             } catch (error) {
                                 evalEmbed = evalEmbed
                                 .setColor('RED')
-                                .addField('Error output', `\`\`\`js\n${error}\`\`\``);
+                                .addField('Error output', limit(`\`\`\`js\n${error}\`\`\``, 512));
                                 await message.channel.send({ embeds: [evalEmbed] });
                             }
                         } else {
@@ -673,12 +673,7 @@ async function readGuildConfig() {
 function sleep(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
-declare global {
-    interface String {
-        limit(length: number): string;
-    }
-}
-String.prototype.limit = (length: number) => {
-    // @ts-ignore: Object is possibly 'undefined'.
-    return this!.length > length ? (this!.substring(0, length - 1) + '…') : this;
-}
+function limit(string: string, limit: number) {
+    if (string.length > limit) return string.substring(0, limit - 1) + '…';
+    else return string;
+} 
