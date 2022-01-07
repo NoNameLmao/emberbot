@@ -93,6 +93,16 @@ import { ServerInfo, PlayerInfo, Config } from './interfaces';
         'a little known fact, im actually the best fortnite player of all time',
         'am i wearing pants right now? you just have to take my word for it',
         'cant run away from your problems when they have ender pearls',
+        'christmas - cancelled, halloween - cancelled! things were getting so fast, people thought it was twitter',
+        'think of how far i could dropkick a dog that small',
+        'these orphans are my toys',
+        'i aint never seen a horse go to church',
+        'just found out there are goverments irl',
+        'i wanna rod this guy but he\'s a slideshow',
+        'technoboat',
+        'technoplane',
+        'AY CARAMBA DONDE ESTA LA BIBLIOTECA',
+        'i was using an advanced technique called LYING'
     ],
         liechtenstein = [
         'lichestien',
@@ -365,18 +375,18 @@ import { ServerInfo, PlayerInfo, Config } from './interfaces';
                                 if (typeof output !== 'string') output = require('util').inspect(result);
                                 evalEmbed = evalEmbed
                                 .setColor('GREEN')
-                                .addField('Output', limit(`\`\`\`js\n${output}\`\`\``, 512));
+                                .addField('✅ Output', limit(`\`\`\`js\n${output}\`\`\``, 512));
                                 await message.channel.send({ embeds: [evalEmbed] });
                             } catch (error) {
                                 evalEmbed = evalEmbed
                                 .setColor('RED')
-                                .addField('Error output', limit(`\`\`\`js\n${error}\`\`\``, 512));
+                                .addField('❌ Error output', limit(`\`\`\`js\n${error}\`\`\``, 512));
                                 await message.channel.send({ embeds: [evalEmbed] });
                             }
                         } else {
                             evalEmbed = evalEmbed
                             .setColor('RED')
-                            .addField('technoblade never dies', `${randomTechnoQuote()}`)
+                            .addField('Technoblade never dies', `${randomTechnoQuote()}`)
                             .setFooter({ text: '❌ No permission' });
                             await message.channel.send({ embeds: [evalEmbed] });
                         }
