@@ -1,11 +1,4 @@
-import fs = require('fs/promises');
-let jsoncfg: config;
-(async () => {
-    jsoncfg = JSON.parse(await fs.readFile('./config.json', { encoding: 'utf8' }));
-})();
-let { prefix, debug, susprefix } = jsoncfg;
-// mcdata.serverStatus();
-export interface serverinfo {
+export interface ServerInfo {
     serverStatus: 'online' | 'offline',
     serverip: string,
     version: string,
@@ -19,13 +12,40 @@ export interface serverinfo {
     ping: number,
     icon: string
 }
-export interface config {
+export interface Config {
     prefix: string,
     debug: boolean,
-    susprefix: string
+    susprefix: string,
+    europesimStartYear: number,
+    europesimStartDate: string
 }
-export const config: config = {
-    prefix,
-    debug,
-    susprefix
+export interface NameHistory {
+    name: string,
+    changedToAt?: number;
+}[];
+export interface PlayerInfo {
+    uuid: string;
+    username: string;
+    nameHistory: NameHistory;
+    skin: {
+        avatar: string;
+        renders: {
+            head: {
+                left: string;
+                right: string;
+            },
+            body: {
+                left: string;
+                right: string;
+            }
+        },
+        fullBody: string;
+        combo: string;
+        cape: string;
+        texture: {
+            get: string;
+            download: string;
+            apply: string;
+        }
+    }
 }

@@ -1,6 +1,7 @@
 {
     "prefix": ".",
     "debug": false,
-    "chatbot": "old",
-    "susprefix": "$"
+    "susprefix": "$",
+    "europesimStartYear": 1500,
+    "europesimStartDate": "January 7 2022 00:00:00 GMT"
 }

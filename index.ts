@@ -9,9 +9,9 @@ import fsp = require('fs/promises');
 import Discord = require('discord.js');
 import DiscordVoice = require('@discordjs/voice');
 import smartestchatbot = require('smartestchatbot');
-import { serverinfo } from './interfaces';
+import { ServerInfo, PlayerInfo, Config } from './interfaces';
 (async () => {
-    let config = await jsonRead('./config.json'),
+    let config: Config = await jsonRead('./config.json'),
         now = new Date(),
         nowUTC = now.getUTCHours(),
         europesimCurrentYear: number,
@@ -37,7 +37,6 @@ import { serverinfo } from './interfaces';
         chatbotChannelID = '871507861132423168',
         nnlID = '341123308844220447',
         pingNNL = `<@${nnlID}>`,
-        europesimStartYear = 1900,
         httpHost = '0.0.0.0',
         httpPort = 42069,
         requestListener: http.RequestListener = (req: http.IncomingMessage, res: http.ServerResponse) => {
@@ -147,28 +146,24 @@ import { serverinfo } from './interfaces';
             if (err.message.includes('Cannot send an empty message')) {
                 await botChannel.send('❌ <empty message error>');
             } else {
-                await botChannel.send(`some error happened ${pingNNL}\n\`\`\`js\n${err.stack}\`\`\`\nbye`);
-                process.exit(0);
+                await botChannel.send(`some error happened ${pingNNL}\n\`\`\`ts\n${err.stack}\`\`\`\nbye`);
+                process.exit(1);
             }
         });
 
         function updateGuildMembers() {
             memberCount = guild.memberCount;
             debugSend(`memberCount = guild.memberCount; ${memberCount} (${guild.memberCount})`);
-            userCount = guild.members.cache.filter(
-                (member: Discord.GuildMember) => !member.user.bot
-            ).size;
+            userCount = guild.members.cache.filter(member => !member.user.bot).size;
             debugSend(`userCount = guild.members.cache.filter(member => !member.user.bot).size; ${userCount}`);
             botCount = memberCount - userCount;
             debugSend(`botCount = memberCount - userCount; ${botCount} = ${memberCount} - ${userCount}`);
-            onlineUsers = guild.members.cache.filter(
-                (member: Discord.GuildMember) => member.presence?.status !== 'offline' && !member.user.bot,
-            ).size;
+            onlineUsers = guild.members.cache.filter(member => member.presence?.status !== 'offline' && !member.user.bot).size;
         }
         try {
             updateGuildMembers();
         } catch (error) {
-            botChannel.send(`❌ error with member count stuff\n\`\`\`js\n${error.stack}\`\`\``);
+            botChannel.send(`❌ error with member count stuff\n\`\`\`ts\n${error.stack}\`\`\``);
         }
         function debugSend(message: string) {
             if (config.debug) botChannel.send(`\`[DEBUG]: ${message}\``);
@@ -181,7 +176,7 @@ import { serverinfo } from './interfaces';
             });
             debugSend('ran DiscordVoice.joinVoiceChannel({...});');
         } catch (error) {
-            botChannel.send(`:x: error with date voice channel stuff\n\`\`\`js\n${error}\`\`\``);
+            botChannel.send(`❌ error with date voice channel stuff\n\`\`\`ts\n${error}\`\`\``);
         }
         botChannel.send(`hi im online, i took ${(Date.now() - startTime) / 1000}s to start`);
 
@@ -192,7 +187,7 @@ import { serverinfo } from './interfaces';
                 try {
                     if (message.author.bot) return;
                     if (!message.content) {
-                        await message.react('❌');
+                        message.react('❌');
                         return;
                     }
                     message.channel.sendTyping();
@@ -239,7 +234,7 @@ import { serverinfo } from './interfaces';
                         .setTitle('Command category: Europesim')
                         .setDescription(`Usage: ${config.prefix}esim (command)\n<> = Optional argument(s)`)
                         .setColor(53380)
-                        .setFooter('https://ourworldofpixels.com/europesim')
+                        .setFooter({ text: 'https://ourworldofpixels.com/europesim' })
                         .addFields(
                             {
                                 name: 'info',
@@ -260,9 +255,12 @@ import { serverinfo } from './interfaces';
                             const infoEmbed = new Discord.MessageEmbed()
                             .setTitle('esim info')
                             .setDescription('Europesim information')
-                            .setAuthor('Bot information', 'https://cdn.discordapp.com/icons/846807940727570433/4bbf13c1ce8bfb351fc7eafdc898e7d1.png')
+                            .setAuthor({
+                                name: 'Bot information',
+                                iconURL: 'https://cdn.discordapp.com/icons/846807940727570433/4bbf13c1ce8bfb351fc7eafdc898e7d1.png'
+                            })
                             .setColor(53380)
-                            .setFooter('https://ourworldofpixels.com/europesim')
+                            .setFooter({ text: 'https://ourworldofpixels.com/europesim' })
                             .addFields(
                                 {
                                     name: 'Current UTC hour',
@@ -281,8 +279,8 @@ import { serverinfo } from './interfaces';
                             );
                             await message.channel.send({ embeds: [infoEmbed] });
                         } catch (error) {
-                            await message.channel.send(`:x: error\n\`\`\`js\n${error}\`\`\``);
-                            await message.react('❌');
+                            message.react('❌');
+                            await message.channel.send(`❌ error\n\`\`\`js\n${error}\`\`\``);
                             return;
                         }
                     } else if (args[0] === 'roll') {
@@ -305,7 +303,7 @@ import { serverinfo } from './interfaces';
                         .setTitle('Command category: Minecraft')
                         .setDescription(`Usage: ${config.prefix}mc (command)`)
                         .setColor(53380)
-                        .setFooter(`${randomTechnoQuote()}\n- Technoblade`)
+                        .setFooter({ text: `${randomTechnoQuote()}\n- Technoblade` })
                         .addFields(
                             {
                                 name: 'serverinfo OR server OR sinfo (Minecraft Server IP)',
@@ -317,11 +315,11 @@ import { serverinfo } from './interfaces';
                     } else if (['serverinfo', 'server', 'sinfo'].includes(args[0])) {
                         try {
                             await message.channel.send('Pinging minecraft server...');
-                            const serverinfo: serverinfo = await mcdata.serverStatus(args[1]);
+                            const serverinfo: ServerInfo = await mcdata.serverStatus(args[1]);
                             const serverInfoEmbed = new Discord.MessageEmbed()
                             .setTitle('Server Information')
                             .setColor(53380)
-                            .setAuthor(`${args[1]}`)
+                            .setAuthor({ name: `${args[1]}` })
                             .addField('Status', serverinfo.serverStatus, true)
                             .addField('Server IP', serverinfo.serverip, true)
                             .addField('Version', serverinfo.version, true)
@@ -331,6 +329,19 @@ import { serverinfo } from './interfaces';
                             await message.channel.send({ embeds: [serverInfoEmbed] });
                         } catch (error) {
                             await message.channel.send(`Error while running this command: \n\`${error}\``);
+                        }
+                    } else if (['playerinfo', 'pinfo', 'playerstatus', 'pstatus'].includes(args[0])) {
+                        try {
+                            const playerInfo: PlayerInfo = await mcdata.playerStatus(args[1]);
+                            const playerInfoEmbed = new Discord.MessageEmbed()
+                            .setTitle('Player information')
+                            .setColor(53380)
+                            .setAuthor({ name: `${args[1]}` })
+                            .addField('UUID', playerInfo.uuid);
+                            await message.channel.send({ embeds: [playerInfoEmbed]});
+                        } catch (error) {
+                            message.react('❌');
+                            await message.channel.send(`There was an error!\n${error}`);
                         }
                     }
                 } else if (command === 'hi') await message.channel.send('hi im online what do u want (main branch)');
@@ -366,7 +377,7 @@ import { serverinfo } from './interfaces';
                             evalEmbed = evalEmbed
                             .setColor('RED')
                             .addField('technoblade never dies', `${randomTechnoQuote()}`)
-                            .setFooter('❌ No permission');
+                            .setFooter({ text: '❌ No permission' });
                             await message.channel.send({ embeds: [evalEmbed] });
                         }
                     })();
@@ -414,7 +425,7 @@ import { serverinfo } from './interfaces';
                             await message.channel.send(`you wanna look at your own pfp? alright fine\n${pfp}`);
                         }
                     } catch (error) {
-                        await message.react('❌');
+                        message.react('❌');
                         await message.channel.send(`epic bruh moment (command error)\n\`${error}\``);
                         log(`pfp command command fail: ${error}`);
                     }
@@ -450,7 +461,7 @@ import { serverinfo } from './interfaces';
                     .setTitle('All list of commands')
                     .setDescription(`prefix: ${config.prefix}\n<> = optional argument`)
                     .setColor(53380)
-                    .setFooter('3.2')
+                    .setFooter({ text: '3.2' })
                     .addFields(
                         {
                             name: 'eval (code)',
@@ -542,7 +553,7 @@ import { serverinfo } from './interfaces';
                         .setDescription(`Usage: ${config.prefix}convert (command)\n<> = Optional argument(s)`)
                         .setColor(53380)
                         .addField('text2bf', 'Convert text to brainfuck')
-                        .setFooter('Commands for converting stuff to other stuff');
+                        .setFooter({ text: 'Commands for converting stuff to other stuff'});
                         await message.channel.send({ embeds: [convertEmbed] });
                     } else if (args[0] === 'text2bf') {
                         if (!args[1]) {
@@ -584,17 +595,16 @@ import { serverinfo } from './interfaces';
             }
         });
         function updateYear() {
-            europesimStartDate = Date.parse('August 30 2021 00:00:00 GMT');
+            europesimStartDate = Date.parse(config.europesimStartDate);
             currentDate = Date.now();
             differenceInDays = (currentDate - europesimStartDate) / (1000 * 3600 * 24);
-            europesimCurrentYear = (Math.floor(europesimStartYear + differenceInDays));
+            europesimCurrentYear = (Math.floor(config.europesimStartYear + differenceInDays));
         }
         function updateMonth() {
             now = new Date();
             nowUTC = now.getUTCHours();
             europesimCurrentMonth = months[Math.floor(nowUTC / 2)];
         }
-
         async function updateDateLoop() {
             setTimeout(async () => {
                 try {
@@ -614,10 +624,10 @@ import { serverinfo } from './interfaces';
         }
     });
 
-    let europesimStartDate = Date.parse('August 30 2021 00:00:00 GMT');
+    let europesimStartDate = Date.parse(config.europesimStartDate);
     let currentDate = Date.now();
     let differenceInDays = (currentDate - europesimStartDate) / (1000 * 3600 * 24);
-    europesimCurrentYear = (Math.floor(europesimStartYear + differenceInDays));
+    europesimCurrentYear = (Math.floor(config.europesimStartYear + differenceInDays));
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     europesimCurrentMonth = months[Math.floor(nowUTC / 2)];
 
