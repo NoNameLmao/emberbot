@@ -397,14 +397,14 @@ import { ServerInfo, PlayerInfo, Config } from './interfaces';
                         process.exit(1);
                     } else {
                         log(`recieved exit command from ${message.author.tag} @ ${now.toString()} lol permission denied have a technoblade quote instead nerd`);
-                        await message.channel.send(`${randomTechnoQuote()} (No permission)`);
+                        await message.channel.send(`❌ ${randomTechnoQuote()}`);
                     }
                 } else if (command === 'sudo') {
                     if (message.author.id === nnlID) {
                         const sudo = args.join(' ');
                         message.delete();
                         await message.channel.send(sudo);
-                    } else await message.channel.send(`${randomTechnoQuote()} (No permission)`);
+                    } else await message.channel.send(`❌ ${randomTechnoQuote()}`);
                 } else if (command === 'quote') {
                     await message.channel.send(`"${randomTechnoQuote()}"`);
                 } else if (command === 'suggest') {
