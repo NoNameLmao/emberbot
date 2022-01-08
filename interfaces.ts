@@ -49,3 +49,24 @@ export interface PlayerInfo {
         }
     }
 }
+export interface Tag {
+    text: string;
+    info: {
+        created: {
+            at: number;
+            by: string;
+            byID: string;
+        },
+        used: number;
+    }
+}
+export interface TagList {
+    user_specific: {
+        [user_id: string]: {
+            [tagName: string]: Tag
+        }
+    },
+    global: {
+        [tagName: string]: Tag
+    }
+}

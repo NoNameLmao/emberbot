@@ -9,9 +9,10 @@ import fsp = require('fs/promises');
 import Discord = require('discord.js');
 import DiscordVoice = require('@discordjs/voice');
 import smartestchatbot = require('smartestchatbot');
-import { ServerInfo, PlayerInfo, Config } from './interfaces';
+import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
 (async () => {
     let config: Config = await jsonRead('./config.json'),
+        tagList: TagList = await jsonRead('./tags.json'),
         now = new Date(),
         nowUTC = now.getUTCHours(),
         europesimCurrentYear: number,
@@ -356,7 +357,7 @@ import { ServerInfo, PlayerInfo, Config } from './interfaces';
                 } else if (command === 'hi') await message.channel.send('hi im online what do u want (main branch)');
                 else if (command === 'setpfp' && message.author.id === nnlID) {
                     await message.channel.send('alright king');
-                    let url;
+                    let url: string;
                     if (message.attachments?.first()?.url?.length > 0) url = message.attachments?.first()?.url;
                     else url = args[0];
                     await client.user.setAvatar(url);
@@ -597,6 +598,146 @@ import { ServerInfo, PlayerInfo, Config } from './interfaces';
                             value: `${client.guilds.cache.size}`
                         }
                     )
+                    await message.channel.send({ embeds: [infoEmbed] });
+                } else if (['tags', 'tag'].includes(command)) {
+                    if (!args[0]) {
+                        const tagsEmbed = new Discord.MessageEmbed()
+                        .setTitle('tags (you can also use "tag" instead)')
+                        .setDescription('Basically minicommands that you can create and store text in')
+                        .setColor(53380)
+                        .setFields(
+                            {
+                                name: 'global',
+                                value: `For global tags use "${config.prefix}tags global" instead`
+                            },
+                            {
+                                name: 'view (tag name)',
+                                value: 'View a tag',
+                                inline: true
+                            },
+                            {
+                                name: 'add (tag name) (text)',
+                                value: 'Add your own tag!',
+                                inline: true
+                            },
+                            {
+                                name: 'create (tag name) text',
+                                value: 'Same as "add"'
+                            },
+                            {
+                                name: 'info (tag name)',
+                                value: 'See information about a tag',
+                                inline: true
+                            }
+                        )
+                        .setFooter({ text: 'WIP af' });
+                        await message.channel.send({ embeds: [tagsEmbed] });
+                    } else if (args[0] === 'view') {
+                        let tag = tagList.user_specific[message.author.id][args[1]];
+                        if (!tag) {
+                            message.channel.send('❌ That tag does not exist or isn\'t yours');
+                            return;
+                        }
+                        await message.channel.send(tag.text);
+                    } else if (['add', 'create'].includes(args[0])) {
+                        console.log(args[1]);
+                        console.log(args.slice(2).join(' '));
+                        console.log(new Date(). getTime());
+                        console.log(message.author.tag);
+                        console.log(message.author.id);
+                        if (typeof tagList.user_specific[message.author.id] === 'undefined') {
+                            tagList.user_specific[message.author.id] = {};
+                        }
+                        tagList.user_specific[message.author.id][args[1]] = {
+                            text: args.slice(2).join(' '),
+                            info: {
+                                created: {
+                                    at: new Date().getTime(),
+                                    by: message.author.tag,
+                                    byID: message.author.id
+                                },
+                                used: 0
+                            }
+                        }
+                        await jsonWrite('./tags.json', tagList);
+                        await message.channel.send('✅ Your tag was saved!');
+                    } else if (args[0] === 'info') {
+                        let tag = tagList.global[args[2]];
+                        if (!tag) {
+                            await message.channel.send('❌ That tag does not exist or isn\'t yours');
+                            return;
+                        }
+                        await message.channel.send(
+                            `Tag name: **${args[2]}**\n\n` +
+                            `Author: **${tag.info.created.by}**\n` +
+                            `Creation date: **${new Date(tag.info.created.at).toUTCString()}**\n` +
+                            `It had been used **${tag.info.used}** time(s)`
+                        );
+                    } else if (args[0] === 'global') {
+                        if (!args[1]) {
+                            const tagsGlobalEmbed = new Discord.MessageEmbed()
+                            .setTitle('tags global')
+                            .setDescription('A global version of tags - tags that aren\'t exclusive to their authors and usable by everyone')
+                            .setColor(53380)
+                            .setFields(
+                                {
+                                    name: 'view (tag name)',
+                                    value: 'View a tag',
+                                    inline: true
+                                },
+                                {
+                                    name: 'add (tag name) (text)',
+                                    value: 'Add your own tag!',
+                                    inline: true
+                                },
+                                {
+                                    name: 'create (tag name) text',
+                                    value: 'Same as "add"',
+                                    inline: true
+                                },
+                                {
+                                    name: 'info (tag name)',
+                                    value: 'See information about a tag',
+                                    inline: true
+                                }
+                            );
+                            await message.channel.send({ embeds: [tagsGlobalEmbed] });
+                        } else if (args[1] === 'view') {
+                            let tag = tagList.global[args[2]];
+                            if (!tag) {
+                                await message.channel.send('❌ That tag does not exist.');
+                                return;
+                            }
+                            await message.channel.send(tag.text);
+                            tag.info.used++;
+                        } else if (['add', 'create'].includes(args[1])) {
+                            tagList.global[args[2]] = {
+                                text: args.slice(3).join(' '),
+                                info: {
+                                    created: {
+                                        at: new Date().getTime(),
+                                        by: message.author.tag,
+                                        byID: message.author.id
+                                    },
+                                    used: 0
+                                }
+                            }
+                            await jsonWrite('./tags.json', tagList).catch(error => message.channel.send(`❌ ${error}`));
+                            message.channel.send('✅ Your tag was saved!');
+                        } else if (args[1] === 'info') {
+                            let tag = tagList.global[args[2]];
+                            if (!tag) {
+                                await message.channel.send('❌ That tag does not exist.');
+                                return;
+                            }
+                            await message.channel.send(
+                                `Tag name: **${args[2]}**\n\n` +
+                                `Author: **${tag.info.created.by}**\n` +
+                                `Creation date: **${new Date(tag.info.created.at).toUTCString()}**\n` +
+                                `It had been used **${tag.info.used}** time(s)`
+                            );
+                        }
+                    }
                 } else if (command === 'config') {
                     await message.channel.send(`\`\`\`json\n${JSON.stringify(require('./config.json'), null, 4)}\`\`\``);
                 } else if (command === '') return;
@@ -604,7 +745,7 @@ import { ServerInfo, PlayerInfo, Config } from './interfaces';
                 const shelljs = await import('shelljs');
                 shelljs.exec(suscommand, (code, stdout, stderr) => {
                     message.reply({
-                        content: stderr.length > 0 ? `stderr:\n\`\`\`${stderr}\`\`\`` : `stdout:\n\`\`\`${stdout}\`\`\``,
+                        content: stderr.length > 0 ? limit(`stderr:\n\`\`\`${stderr}\`\`\``, 512) : limit(`stdout:\n\`\`\`${stdout}\`\`\``, 512),
                         allowedMentions: { repliedUser: true }
                     });
                 });
@@ -670,8 +811,11 @@ function removeMCColorCodes(string: string): string {
 async function jsonRead(filePath: string) {
     return JSON.parse(await fsp.readFile(filePath, { encoding: 'utf8' }));
 }
-async function jsonWrite(filePath: string, data: object | string[]) {
-    return await fsp.writeFile(filePath, JSON.stringify(data, null, 4));
+async function jsonWrite(filePath: string, data: object | object[] | string[]) {
+    return new Promise<void>(async (resolve, reject) => {
+        await fsp.writeFile(filePath, JSON.stringify(data, null, 4), { encoding: 'utf8' }).catch(reject);
+        resolve();
+    });
 }
 async function readGuildConfig() {
     return JSON.parse(await fsp.readFile('guild-config.json', { encoding: 'utf8' }));
@@ -682,4 +826,4 @@ function sleep(ms: number): Promise<void> {
 function limit(string: string, limit: number) {
     if (string.length > limit) return string.substring(0, limit - 1) + '…';
     else return string;
-} 
+}
