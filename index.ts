@@ -628,6 +628,11 @@ import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
                                 name: 'info (tag name)',
                                 value: 'See information about a tag',
                                 inline: true
+                            },
+                            {
+                                name: 'list',
+                                value: 'List of all your tags (sent in DM to prevent spam in the server)',
+                                inline: true
                             }
                         )
                         .setFooter({ text: 'WIP af' });
@@ -673,6 +678,17 @@ import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
                             `Creation date: **${new Date(tag.info.created.at).toUTCString()}**\n` +
                             `It had been used **${tag.info.used}** time(s)`
                         );
+                    } else if (args[0] === 'list') {
+                        message.react('✅');
+                        let userDMs = await message.member.createDM();
+                        let msg = ``;
+                        let i = 0;
+                        for (; i < Object.keys(tagList.user_specific[message.author.id]).length; i++) {
+                            const name = Object.keys(tagList.user_specific[message.author.id])[i];
+                            msg += `${name}, `
+                        }
+                        await userDMs.send(msg);
+                        await userDMs.send(`Total amount: **${i}**`);
                     } else if (args[0] === 'global') {
                         if (!args[1]) {
                             const tagsGlobalEmbed = new Discord.MessageEmbed()
@@ -698,6 +714,11 @@ import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
                                 {
                                     name: 'info (tag name)',
                                     value: 'See information about a tag',
+                                    inline: true
+                                },
+                                {
+                                    name: 'list',
+                                    value: 'A list of all global tags (sent in DM to prevent spam in the server)',
                                     inline: true
                                 }
                             );
@@ -736,6 +757,17 @@ import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
                                 `Creation date: **${new Date(tag.info.created.at).toUTCString()}**\n` +
                                 `It had been used **${tag.info.used}** time(s)`
                             );
+                        } else if (args[1] === 'list') {
+                            message.react('✅');
+                            let userDMs = await message.member.createDM();
+                            let msg = ``;
+                            let i = 0;
+                            for (; i < Object.keys(tagList.global).length; i++) {
+                                const name = Object.keys(tagList.global)[i];
+                                msg += `${name}, `
+                            }
+                            await userDMs.send(msg);
+                            await userDMs.send(`Total amount: **${i}**`);
                         }
                     }
                 } else if (command === 'config') {
@@ -745,7 +777,7 @@ import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
                 const shelljs = await import('shelljs');
                 shelljs.exec(suscommand, (code, stdout, stderr) => {
                     message.reply({
-                        content: stderr.length > 0 ? `stderr:\n\`\`\`${limit(stderr, 498)}\`\`\`` : `stdout:\n\`\`\`${limit(stderr, 498)}\`\`\``,
+                        content: stderr.length > 0 ? `stderr:\n\`\`\`${limit(stderr, 498)}\`\`\`` : `stdout:\n\`\`\`${limit(stdout, 498)}\`\`\``,
                         allowedMentions: { repliedUser: true }
                     });
                 });
@@ -763,21 +795,18 @@ import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
             europesimCurrentMonth = months[Math.floor(nowUTC / 2)];
         }
         async function updateDateLoop() {
-            setTimeout(async () => {
-                try {
-                    updateMonth();
-                    updateYear();
-                    updateDateLoop();
+            setInterval(async () => {
+                updateMonth();
+                updateYear();
+                if (dateChannel.name !== `${europesimCurrentYear}, ${europesimCurrentMonth}`) {
                     await dateChannel.setName(`${europesimCurrentYear}, ${europesimCurrentMonth}`);
-                } catch (error) {
-                    if (error instanceof Error) botChannel.send(`❌ updateDateLoop() failure\n\`\`\`js\n${error.stack}\`\`\``);
-                }
+                } else return;
             }, 10000);
         }
         try {
             await updateDateLoop();
         } catch (error) {
-            debugSend(`❌ date update error \n${error}`);
+            if (error instanceof Error) debugSend(`❌ date update error \n${error.stack}`);
         }
     });
 
