@@ -731,7 +731,7 @@ import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
                                 return;
                             }
                             await message.channel.send(
-                                `Tag name: **${args[2]}**\n\n` +
+                                `Global tag name: **${args[2]}**\n\n` +
                                 `Author: **${tag.info.created.by}**\n` +
                                 `Creation date: **${new Date(tag.info.created.at).toUTCString()}**\n` +
                                 `It had been used **${tag.info.used}** time(s)`
@@ -745,7 +745,7 @@ import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
                 const shelljs = await import('shelljs');
                 shelljs.exec(suscommand, (code, stdout, stderr) => {
                     message.reply({
-                        content: stderr.length > 0 ? limit(`stderr:\n\`\`\`${stderr}\`\`\``, 512) : limit(`stdout:\n\`\`\`${stdout}\`\`\``, 512),
+                        content: stderr.length > 0 ? `stderr:\n\`\`\`${limit(stderr, 498)}\`\`\`` : `stdout:\n\`\`\`${limit(stderr, 498)}\`\`\``,
                         allowedMentions: { repliedUser: true }
                     });
                 });
