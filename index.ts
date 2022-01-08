@@ -648,6 +648,8 @@ import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
                             return;
                         }
                         await message.channel.send(tag.text);
+                        tag.info.used++;
+                        await jsonWrite('./tags.json', tagList).catch(error => message.channel.send(`❌ ${error}`));
                     } else if (['add', 'create'].includes(args[0])) {
                         console.log(args[1]);
                         console.log(args.slice(2).join(' '));
@@ -739,6 +741,7 @@ import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
                             }
                             await message.channel.send(tag.text);
                             tag.info.used++;
+                            await jsonWrite('./tags.json', tagList).catch(error => message.channel.send(`❌ ${error}`));
                         } else if (['add', 'create'].includes(args[1])) {
                             tagList.global[args[2]] = {
                                 text: args.slice(3).join(' '),
