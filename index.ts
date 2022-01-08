@@ -243,7 +243,7 @@ import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
                         const esimEmbed = new Discord.MessageEmbed()
                         .setTitle('Command category: Europesim')
                         .setDescription(`Usage: ${config.prefix}esim (command)\n<> = Optional argument(s)`)
-                        .setColor(53380)
+                        .setColor(message.member.displayHexColor)
                         .setFooter({ text: 'https://ourworldofpixels.com/europesim' })
                         .addFields(
                             {
@@ -269,7 +269,7 @@ import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
                                 name: 'Bot information',
                                 iconURL: 'https://cdn.discordapp.com/icons/846807940727570433/4bbf13c1ce8bfb351fc7eafdc898e7d1.png'
                             })
-                            .setColor(53380)
+                            .setColor(message.member.displayHexColor)
                             .setFooter({ text: 'https://ourworldofpixels.com/europesim' })
                             .addFields(
                                 {
@@ -312,7 +312,7 @@ import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
                         const mcEmbed = new Discord.MessageEmbed()
                         .setTitle('Command category: Minecraft')
                         .setDescription(`Usage: ${config.prefix}mc (command)`)
-                        .setColor(53380)
+                        .setColor(message.member.displayHexColor)
                         .setFooter({ text: `${randomTechnoQuote()}\n- Technoblade` })
                         .addFields(
                             {
@@ -328,7 +328,7 @@ import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
                             const serverinfo: ServerInfo = await mcdata.serverStatus(args[1]);
                             const serverInfoEmbed = new Discord.MessageEmbed()
                             .setTitle('Server Information')
-                            .setColor(53380)
+                            .setColor(message.member.displayHexColor)
                             .setAuthor({ name: `${args[1]}` })
                             .addField('Status', serverinfo.serverStatus, true)
                             .addField('Server IP', serverinfo.serverip, true)
@@ -345,7 +345,7 @@ import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
                             const playerInfo: PlayerInfo = await mcdata.playerStatus(args[1]);
                             const playerInfoEmbed = new Discord.MessageEmbed()
                             .setTitle('Player information')
-                            .setColor(53380)
+                            .setColor(message.member.displayHexColor)
                             .setAuthor({ name: `${args[1]}` })
                             .addField('UUID', playerInfo.uuid);
                             await message.channel.send({ embeds: [playerInfoEmbed]});
@@ -374,7 +374,7 @@ import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
                                 let output = result;
                                 if (typeof output !== 'string') output = require('util').inspect(result);
                                 evalEmbed = evalEmbed
-                                .setColor('GREEN')
+                                .setColor(message.member.displayHexColor)
                                 .addField('✅ Output', limit(`\`\`\`js\n${output}\`\`\``, 512));
                                 await message.channel.send({ embeds: [evalEmbed] });
                             } catch (error) {
@@ -467,7 +467,7 @@ import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
                     const helpEmbed = new Discord.MessageEmbed()
                     .setTitle('All list of commands')
                     .setDescription(`prefix: ${config.prefix}\n<> = optional argument`)
-                    .setColor(53380)
+                    .setColor(message.member.displayHexColor)
                     .setFooter({ text: '3.2' })
                     .addFields(
                         {
@@ -558,7 +558,7 @@ import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
                         const convertEmbed = new Discord.MessageEmbed()
                         .setTitle('Command category: Convert')
                         .setDescription(`Usage: ${config.prefix}convert (command)\n<> = Optional argument(s)`)
-                        .setColor(53380)
+                        .setColor(message.member.displayHexColor)
                         .addField('text2bf', 'Convert text to brainfuck')
                         .setFooter({ text: 'Commands for converting stuff to other stuff'});
                         await message.channel.send({ embeds: [convertEmbed] });
@@ -573,7 +573,7 @@ import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
                                 text2bfEmbed = new Discord.MessageEmbed()
                                 .setTitle('convert text2bf')
                                 .setDescription('Converted text to brainfuck')
-                                .setColor(53380)
+                                .setColor(message.member.displayHexColor)
                                 .setFields(
                                     {
                                         name: 'Original text',
@@ -591,7 +591,7 @@ import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
                 } else if (command === 'info') {
                     const infoEmbed = new Discord.MessageEmbed()
                     .setTitle('Bot information')
-                    .setColor(53380)
+                    .setColor(message.member.displayHexColor)
                     .setFields(
                         {
                             name: 'Amount of guilds',
@@ -604,7 +604,7 @@ import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
                         const tagsEmbed = new Discord.MessageEmbed()
                         .setTitle('tags (you can also use "tag" instead)')
                         .setDescription('Basically minicommands that you can create and store text in')
-                        .setColor(53380)
+                        .setColor(message.member.displayHexColor)
                         .setFields(
                             {
                                 name: 'global',
@@ -678,7 +678,7 @@ import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
                             const tagsGlobalEmbed = new Discord.MessageEmbed()
                             .setTitle('tags global')
                             .setDescription('A global version of tags - tags that aren\'t exclusive to their authors and usable by everyone')
-                            .setColor(53380)
+                            .setColor(message.member.displayHexColor)
                             .setFields(
                                 {
                                     name: 'view (tag name)',
