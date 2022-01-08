@@ -639,6 +639,10 @@ import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
                         await message.channel.send({ embeds: [tagsEmbed] });
                     } else if (args[0] === 'view') {
                         let tag = tagList.user_specific[message.author.id][args[1]];
+                        if (!tagList.user_specific[message.author.id]) {
+                            message.channel.send('❌ You do not have any tags');
+                            return;
+                        }
                         if (!tag) {
                             message.channel.send('❌ That tag does not exist or isn\'t yours');
                             return;
@@ -667,13 +671,17 @@ import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
                         await jsonWrite('./tags.json', tagList);
                         await message.channel.send('✅ Your tag was saved!');
                     } else if (args[0] === 'info') {
-                        let tag = tagList.global[args[2]];
+                        let tag = tagList.user_specific[message.author.id][args[1]];
+                        if (!tagList.user_specific[message.author.id]) {
+                            message.channel.send('❌ You do not have any tags');
+                            return;
+                        }
                         if (!tag) {
                             await message.channel.send('❌ That tag does not exist or isn\'t yours');
                             return;
                         }
                         await message.channel.send(
-                            `Tag name: **${args[2]}**\n\n` +
+                            `Tag name: **${args[1]}**\n\n` +
                             `Author: **${tag.info.created.by}**\n` +
                             `Creation date: **${new Date(tag.info.created.at).toUTCString()}**\n` +
                             `It had been used **${tag.info.used}** time(s)`
