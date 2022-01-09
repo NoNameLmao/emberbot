@@ -239,27 +239,33 @@ import { ServerInfo, PlayerInfo, Config, TagList, GuildConfig } from './interfac
             } 
             if (message.content.startsWith('..')) return;
             if (liechtenstein.includes(message.content)) message.channel.send('liechtenstein*');
-            function logCommand() {
-                log(`recieved a ${command} command from ${message.author.tag}: ${args}`);
-                debugSend(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
-            }
+            
             if (message.content.startsWith(config.tagPrefix.user_specific)) {
                 if (message.content.startsWith(config.tagPrefix.global)) {
-                    let tag = tagList.global[command];
-                    if (!tag) return;
+                    const name = message.content.slice(config.tagPrefix.global.length);
+                    let tag = tagList.global[name];
+                    if (!tag) {
+                        message.react('❌');
+                        return;
+                    }
                     message.channel.send(tag.text);
                     tag.info.used++;
                     await jsonWrite('./tags.json', tagList);
                 } else {
-                    let tag = tagList.user_specific[message.author.id][command];
-                    if (!tag) return;
+                    const name = message.content.slice(config.tagPrefix.user_specific.length);
+                    let tag = tagList.user_specific[message.author.id][name];
+                    if (!tag) {
+                        message.react('❌');
+                        return;
+                    }
                     message.channel.send(tag.text);
                     tag.info.used++;
                     await jsonWrite('./tags.json', tagList);
                 }
             }
             if (message.content.startsWith(config.prefix)) {
-                logCommand();
+                log(`recieved a ${command} command from ${message.author.tag}: ${args}`);
+                debugSend(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
                 if (command === 'esim') {
                     if (!args[0]) {
                         const esimEmbed = new Discord.MessageEmbed()
