@@ -243,19 +243,20 @@ import { ServerInfo, PlayerInfo, Config, TagList, GuildConfig } from './interfac
                 log(`recieved a ${command} command from ${message.author.tag}: ${args}`);
                 debugSend(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
             }
-            if (message.content.startsWith(config.tagPrefix.user_specific) && !message.content.startsWith(config.tagPrefix.global)) {
-                let tag = tagList.user_specific[message.author.id][command];
-                if (!tag) return;
-                message.channel.send(tag.text);
-                tag.info.used++;
-                await jsonWrite('./tags.json', tagList);
-            }
-            if (message.content.startsWith(config.tagPrefix.global)) {
-                let tag = tagList.global[command];
-                if (!tag) return;
-                message.channel.send(tag.text);
-                tag.info.used++;
-                await jsonWrite('./tags.json', tagList);
+            if (message.content.startsWith(config.tagPrefix.user_specific)) {
+                if (message.content.startsWith(config.tagPrefix.global)) {
+                    let tag = tagList.global[command];
+                    if (!tag) return;
+                    message.channel.send(tag.text);
+                    tag.info.used++;
+                    await jsonWrite('./tags.json', tagList);
+                } else {
+                    let tag = tagList.user_specific[message.author.id][command];
+                    if (!tag) return;
+                    message.channel.send(tag.text);
+                    tag.info.used++;
+                    await jsonWrite('./tags.json', tagList);
+                }
             }
             if (message.content.startsWith(config.prefix)) {
                 logCommand();
