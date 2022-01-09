@@ -9,7 +9,7 @@
                         "by": "emberglaze#9184",
                         "byID": "341123308844220447"
                     },
-                    "used": 0
+                    "used": 2
                 }
             }
         }
@@ -23,7 +23,7 @@
                     "by": "emberglaze#9184",
                     "byID": "341123308844220447"
                 },
-                "used": 0
+                "used": 1
             }
         },
         "amogus": {
@@ -45,7 +45,7 @@
                     "by": "emberglaze#9184",
                     "byID": "341123308844220447"
                 },
-                "used": 0
+                "used": 2
             }
         },
         "test": {
@@ -57,6 +57,28 @@
                     "byID": "638422704550313984"
                 },
                 "used": 0
+            }
+        },
+        "dieaboutit": {
+            "text": "https://tenor.com/view/die-hbox-fuck-shit-simpleflips-gif-21689253",
+            "info": {
+                "created": {
+                    "at": 1641730695558,
+                    "by": "emberglaze#9184",
+                    "byID": "341123308844220447"
+                },
+                "used": 5
+            }
+        },
+        "aaaa": {
+            "text": "yes?",
+            "info": {
+                "created": {
+                    "at": 1641753292595,
+                    "by": "emberglaze#9184",
+                    "byID": "341123308844220447"
+                },
+                "used": 2
             }
         }
     }
