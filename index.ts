@@ -16,8 +16,7 @@ import { ServerInfo, PlayerInfo, Config, TagList, GuildConfig } from './interfac
         now = new Date(),
         nowUTC = now.getUTCHours(),
         europesimCurrentYear: number,
-        europesimCurrentMonth: string,
-        indexFile: string
+        europesimCurrentMonth: string
     ;
 
     const client = new Discord.Client({
