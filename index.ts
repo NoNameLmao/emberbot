@@ -242,25 +242,43 @@ import { ServerInfo, PlayerInfo, Config, TagList, GuildConfig } from './interfac
             
             if (message.content.startsWith(config.tagPrefix.user_specific)) {
                 if (message.content.startsWith(config.tagPrefix.global)) {
-                    const name = message.content.slice(config.tagPrefix.global.length);
-                    let tag = tagList.global[name];
-                    if (!tag) {
-                        message.react('❌');
-                        return;
+                    try {
+                        const name = message.content.slice(config.tagPrefix.global.length);
+                        let tag = tagList.global[name];
+                        if (!tag) {
+                            message.react('❌');
+                            return;
+                        }
+                        message.channel.send(tag.text);
+                        tag.info.used++;
+                        await jsonWrite('./tags.json', tagList);
+                    } catch (error) {
+                        log(
+                            'Error with viewing a global tag!\n' +
+                            `${error}\n` +
+                            `Message author: ${message.author.tag}\n` +
+                            `Server name: ${message.guild.name}`
+                        )
                     }
-                    message.channel.send(tag.text);
-                    tag.info.used++;
-                    await jsonWrite('./tags.json', tagList);
                 } else {
-                    const name = message.content.slice(config.tagPrefix.user_specific.length);
-                    let tag = tagList.user_specific[message.author.id][name];
-                    if (!tag) {
-                        message.react('❌');
-                        return;
+                    try {
+                        const name = message.content.slice(config.tagPrefix.user_specific.length);
+                        let tag = tagList.user_specific[message.author.id][name];
+                        if (!tag) {
+                            message.react('❌');
+                            return;
+                        }
+                        message.channel.send(tag.text);
+                        tag.info.used++;
+                        await jsonWrite('./tags.json', tagList);
+                    } catch (error) {
+                        log(
+                            'Error with viewing a tag!\n' +
+                            `${error}\n` +
+                            `Message author: ${message.author.tag}\n` +
+                            `Server name: ${message.guild.name}`
+                        )
                     }
-                    message.channel.send(tag.text);
-                    tag.info.used++;
-                    await jsonWrite('./tags.json', tagList);
                 }
             }
             if (message.content.startsWith(config.prefix)) {
