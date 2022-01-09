@@ -17,7 +17,11 @@ export interface Config {
     debug: boolean,
     susprefix: string,
     europesimStartYear: number,
-    europesimStartDate: string
+    europesimStartDate: string,
+    tagPrefix: {
+        user_specific: string;
+        global: string;
+    }
 }
 export interface NameHistory {
     name: string,
@@ -68,5 +72,14 @@ export interface TagList {
     },
     global: {
         [tagName: string]: Tag
+    }
+}
+export interface GuildConfig {
+    [guild_id: string]: {
+        prefix: string;
+        tagPrefix: {
+            user_specific: string;
+            global: string;
+        }
     }
 }

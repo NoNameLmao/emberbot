@@ -9,10 +9,11 @@ import fsp = require('fs/promises');
 import Discord = require('discord.js');
 import DiscordVoice = require('@discordjs/voice');
 import smartestchatbot = require('smartestchatbot');
-import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
+import { ServerInfo, PlayerInfo, Config, TagList, GuildConfig } from './interfaces';
 (async () => {
     let config: Config = await jsonRead('./config.json'),
         tagList: TagList = await jsonRead('./tags.json'),
+        guildConfig = await readGuildConfig(),
         now = new Date(),
         nowUTC = now.getUTCHours(),
         europesimCurrentYear: number,
@@ -192,6 +193,10 @@ import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
 
         client.on('error', (error) => log(error.stack));
         client.on('messageCreate', async message => {
+            let args: string[] = message.content.slice(config.prefix.length).trim().split(/ +/g),
+                suscommand: string = message.content.slice(config.susprefix.length).trim().toLowerCase(),
+                command = args.shift().toLowerCase()
+            ;
             if (message.channel.type === 'DM') return log(`Direct message from ${message.author.tag} at ${message.createdAt}:\n${message.content}`);
             if (message.channel.name === 'es-chatbot') {
                 try {
@@ -224,19 +229,33 @@ import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
                         return;
                     }
                 }
-            }
+            } else if (message.channel.id === '846866765530660874' && message.author.id === '337339955787333642') { // europesim #gateway
+                if (/(^\(M\) .+: )|(^\[\d+\] .+: )/gm.test(message.content)) {
+                    message.content = message.content.slice(/(^\(M\) .+: )|(^\[\d+\] .+: )/gm.exec(message.content)[0].length);
+                    args = message.content.slice(config.prefix.length).trim().split(/ +/g);
+                    suscommand = message.content.slice(config.susprefix.length).trim().toLowerCase();
+                    command = args.shift().toLowerCase();
+                }
+            } 
             if (message.content.startsWith('..')) return;
             if (liechtenstein.includes(message.content)) message.channel.send('liechtenstein*');
-
-            const args: string[] = message.content.slice(config.prefix.length).trim().split(/ +/g),
-                suscommand: string = message.content.slice(config.susprefix.length).trim().toLowerCase(),
-                command = args.shift().toLowerCase()
-            ;
             function logCommand() {
                 log(`recieved a ${command} command from ${message.author.tag}: ${args}`);
                 debugSend(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
             }
-            if (message.content.startsWith(config.prefix)) {
+            if (message.content.startsWith(config.tagPrefix.user_specific)) {
+                let tag = tagList.user_specific[message.author.id][command];
+                if (!tag) return;
+                message.channel.send(tag.text);
+                tag.info.used++;
+                await jsonWrite('./tags.json', tagList);
+            } else if (message.content.startsWith(config.tagPrefix.global)) {
+                let tag = tagList.global[command];
+                if (!tag) return;
+                message.channel.send(tag.text);
+                tag.info.used++;
+                await jsonWrite('./tags.json', tagList);
+            } else if (message.content.startsWith(config.prefix)) {
                 logCommand();
                 if (command === 'esim') {
                     if (!args[0]) {
@@ -347,7 +366,16 @@ import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
                             .setTitle('Player information')
                             .setColor(message.member.displayHexColor)
                             .setAuthor({ name: `${args[1]}` })
-                            .addField('UUID', playerInfo.uuid);
+                            .addFields(
+                                {
+                                    name: 'UUID',
+                                    value: `${playerInfo.uuid}`
+                                },
+                                {
+                                    name: 'Name history',
+                                    value: `${playerInfo.nameHistory}`
+                                }
+                            )
                             await message.channel.send({ embeds: [playerInfoEmbed]});
                         } catch (error) {
                             message.react('❌');
@@ -468,18 +496,8 @@ import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
                     .setTitle('All list of commands')
                     .setDescription(`prefix: ${config.prefix}\n<> = optional argument`)
                     .setColor(message.member.displayHexColor)
-                    .setFooter({ text: '3.2' })
+                    .setFooter({ text: '3.3' })
                     .addFields(
-                        {
-                            name: 'eval (code)',
-                            value: 'Run JavaScript code (not TypeScript!)',
-                            inline: true,
-                        },
-                        {
-                            name: 'exit',
-                            value: 'Shortcut to process.exit(1)',
-                            inline: true,
-                        },
                         {
                             name: 'quote',
                             value: 'Random technoblade quote',
@@ -522,28 +540,36 @@ import { ServerInfo, PlayerInfo, Config, TagList } from './interfaces';
                         {
                             name: 'help',
                             value: 'Display this',
+                        },
+                        {
+                            name: 'tag OR tags',
+                            value: 'Basically minicommands that you can create and store text in'
+                        },
+                        {
+                            name: 'info',
+                            value: 'See information about the bot'
                         }
                     );
                     await message.channel.send({ embeds: [helpEmbed] });
                 } else if (command === 'dn') {
                     await message.channel.send('deez nuts');
-                } else if (command === 'debug') {
+                } else if (command === 'debug' && message.author.id === nnlID) {
                     if (args[0] === 'true') {
-                        if (!config.debug) {
-                            config.debug = true;
-                            await jsonWrite(filePath, config);
-                            await message.react('✅');
-                        } else if (config.debug) {
+                        if (config.debug) {
                             await message.react('❌');
+                            return;
                         }
+                        config.debug = true;
+                        await jsonWrite(filePath, config);
+                        await message.react('✅');
                     } else if (args[0] === 'false') {
                         if (!config.debug) {
                             await message.react('❌');
-                        } else if (config.debug) {
-                            config.debug = false;
-                            await jsonWrite(filePath, config);
-                            await message.react('✅');
+                            return;
                         }
+                        config.debug = false;
+                        await jsonWrite(filePath, config);
+                        await message.react('✅');
                     } else if (!args[0]) {
                         if (config.debug) await message.channel.send('debug mode is currently on ✅');
                         else if (!config.debug) await message.channel.send('debug mode is currently off ❌');
@@ -858,7 +884,7 @@ async function jsonWrite(filePath: string, data: object | object[] | string[]) {
     });
 }
 async function readGuildConfig() {
-    return JSON.parse(await fsp.readFile('guild-config.json', { encoding: 'utf8' }));
+    return await jsonRead('./guild-config.json') as GuildConfig;
 }
 function sleep(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
