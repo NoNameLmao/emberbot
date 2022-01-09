@@ -722,15 +722,20 @@ import { ServerInfo, PlayerInfo, Config, TagList, GuildConfig } from './interfac
                             `It had been used **${tag.info.used}** time(s)`
                         );
                     } else if (args[0] === 'list') {
-                        message.react('✅');
-                        let userDMs = await message.member.createDM();
+                        const userDMs = await message.member.createDM();
                         let msg = ``;
                         let i = 0;
+                        if (!tagList.user_specific[message.author.id]) tagList.user_specific[message.author.id] = {};
                         for (; i < Object.keys(tagList.user_specific[message.author.id]).length; i++) {
                             const name = Object.keys(tagList.user_specific[message.author.id])[i];
-                            msg += `${name}, `
+                            msg += `${name}, `;
                         }
-                        await userDMs.send(msg);
+                        message.react('✅');
+                        if (msg.length == 0) {
+                            await userDMs.send(`You don't have any tags!`);
+                            return;
+                        }
+                        await userDMs.send(msg.slice(0, 2)); // remove the last ", ";
                         await userDMs.send(`Total amount: **${i}**`);
                     } else if (args[0] === 'global') {
                         if (!args[1]) {
