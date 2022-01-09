@@ -2,7 +2,6 @@ const startTime = Date.now();
 
 require('dotenv').config();
 import path = require('path');
-import http = require('http');
 import fetch from 'node-fetch';
 import mcdata = require('mcdata');
 import fsp = require('fs/promises');
@@ -38,25 +37,8 @@ import { ServerInfo, PlayerInfo, Config, TagList, GuildConfig } from './interfac
         dateChannelID = '848247855789375508',
         chatbotChannelID = '871507861132423168',
         nnlID = '341123308844220447',
-        pingNNL = `<@${nnlID}>`,
-        httpHost = '0.0.0.0',
-        httpPort = 42069,
-        requestListener: http.RequestListener = (req: http.IncomingMessage, res: http.ServerResponse) => {
-            res.setHeader('Content-Type', 'text/html"');
-            res.writeHead(200);
-            res.end(indexFile);
-        },
-        httpServer = http.createServer(requestListener)
+        pingNNL = `<@${nnlID}>`
     ;
-
-    let contents = await fsp.readFile(`${__dirname}/index.html`, { encoding: 'utf8' }).catch(error => {
-        console.log(`[HttpServer] fsp couldnt read index.html file:\n${error}`);
-        process.exit(1);
-    });
-    indexFile = contents;
-    httpServer.listen(httpPort, httpHost, () => {
-        log(`[HttpServer] Server is running on http://${httpHost}:${httpPort}`);
-    });
 
     const TechnobladeQuote = [
         'NOT EVEN CLOSE BABY TECHNOBLADE NEVER DIES',
