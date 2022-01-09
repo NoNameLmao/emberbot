@@ -128,7 +128,7 @@ import { ServerInfo, PlayerInfo, Config, TagList, GuildConfig } from './interfac
         onlineUsers: number
     ;
     client.once('ready', async () => {
-        log(`Logged in successfully as ${client.user.tag}!`);
+        log(`Logged in as ${client.user.tag}`);
         const filePath = path.resolve(__dirname, './config.json');
         setInterval(() => {
             fetch('https://bots.moe/api/bot/848217938288967710/server_count', {
@@ -264,8 +264,7 @@ import { ServerInfo, PlayerInfo, Config, TagList, GuildConfig } from './interfac
                 }
             }
             if (message.content.startsWith(config.prefix)) {
-                log(`recieved a ${command} command from ${message.author.tag}: ${args}`);
-                debugSend(`${now.toString()}: recieved a ${command} command from ${message.author.tag}: ${args}`);
+                logCommand(message, command, args);
                 if (command === 'esim') {
                     if (!args[0]) {
                         const esimEmbed = new Discord.MessageEmbed()
@@ -872,8 +871,28 @@ function getRandomArbitrary(min: number, max: number): number {
 function getRandomInt(max: number): number {
     return Math.floor(Math.random() * max);
 }
-function log(message: string): void {
-    return console.log(`[${new Date().toUTCString()}] [index.ts] ${message}`);
+function log(text: string): void {
+    console.log(`[${new Date().toUTCString()}] [index.ts] ${text}`);
+}
+function logCommand(message: Discord.Message, command: string, args?: string[]): void {
+    if (args.length != 0) {
+        log(
+            '\n' +
+            'recieved command:\n' +
+            `"${command}" (${args})\n` +
+            `from: ${message.author.username}\n` +
+            `on server: ${message.guild.name}`
+        )
+    } else {
+        log(
+            '\n' +
+            'recieved command:\n' +
+            `"${command}"\n` +
+            `from: ${message.author.username}\n` +
+            `on server: ${message.guild.name}`
+        )
+    }
+    
 }
 function removeMCColorCodes(string: string): string {
     return string
