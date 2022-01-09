@@ -405,7 +405,7 @@ import { ServerInfo, PlayerInfo, Config, TagList, GuildConfig } from './interfac
                                 if (typeof output !== 'string') output = require('util').inspect(result);
                                 evalEmbed = evalEmbed
                                 .setColor(message.member.displayHexColor)
-                                .addField('✅ Output', limit(`\`\`\`js\n${output}\`\`\``, 512));
+                                .addField('✅ Output', `\`\`\`js\n${limit(output, 503)}\`\`\``);
                                 await message.channel.send({ embeds: [evalEmbed] });
                             } catch (error) {
                                 evalEmbed = evalEmbed
