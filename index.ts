@@ -819,6 +819,12 @@ import { ServerInfo, PlayerInfo, Config, TagList, GuildConfig } from './interfac
                             await userDMs.send(`Total amount: **${i}**`);
                         }
                     }
+                } else if (command === 'find') {
+                    const messages = (await message.channel.messages.fetch()).filter(message => message.content.includes(args.join()));
+                    await message.channel.send(
+                        `Got **${messages.size}** exact results in this channel\n` +
+                        `Last one: https://discord.com/channels/${message.guild.id}/${message.channel.id}/${messages.last().id}\n`
+                    )
                 } else if (command === 'config') {
                     await message.channel.send(`\`\`\`json\n${JSON.stringify(require('./config.json'), null, 4)}\`\`\``);
                 } else if (command === '') return;
