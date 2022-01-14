@@ -820,7 +820,7 @@ import { ServerInfo, PlayerInfo, Config, TagList, GuildConfig } from './interfac
                         }
                     }
                 } else if (command === 'find') {
-                    const messages = (await message.channel.messages.fetch()).filter(message => message.content.includes(args.join()));
+                    const messages = (await message.channel.messages.fetch({ limit: Infinity })).filter(msg => msg.content.includes(args.join()) && msg !== message);
                     await message.channel.send(
                         `Got **${messages.size}** exact results in this channel\n` +
                         `Last one: https://discord.com/channels/${message.guild.id}/${message.channel.id}/${messages.last().id}\n`
