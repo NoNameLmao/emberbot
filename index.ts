@@ -1,15 +1,15 @@
 const startTime = Date.now();
 
-require('dotenv').config();
 import path = require('path');
 import fetch from 'node-fetch';
 import mcdata = require('mcdata');
-import fsp = require('fs/promises');
 import Discord = require('discord.js');
 import DiscordVoice = require('@discordjs/voice');
 import smartestchatbot = require('smartestchatbot');
 import { ServerInfo, PlayerInfo, Config, TagList, GuildConfig } from './interfaces';
+import { limit, jsonRead, jsonWrite, getRandomInt, getRandomArbitrary } from 'emberutils';
 (async () => {
+    (await import('dotenv')).config();
     let config: Config = await jsonRead('./config.json'),
         tagList: TagList = await jsonRead('./tags.json'),
         guildConfig = await readGuildConfig(),
@@ -34,7 +34,6 @@ import { ServerInfo, PlayerInfo, Config, TagList, GuildConfig } from './interfac
         guildID = '846807940727570433',
         botchannelID = '846811100338323497',
         dateChannelID = '848247855789375508',
-        chatbotChannelID = '871507861132423168',
         nnlID = '341123308844220447',
         pingNNL = `<@${nnlID}>`
     ;
@@ -820,7 +819,7 @@ import { ServerInfo, PlayerInfo, Config, TagList, GuildConfig } from './interfac
                         }
                     }
                 } else if (command === 'find') {
-                    const messages = (await message.channel.messages.fetch({ limit: Infinity })).filter(msg => msg.content.includes(args.join()) && msg !== message);
+                    const messages = (await message.channel.messages.fetch()).filter(msg => msg.content.includes(args.join()) && msg !== message);
                     await message.channel.send(
                         `Got **${messages.size}** exact results in this channel\n` +
                         `Last one: https://discord.com/channels/${message.guild.id}/${message.channel.id}/${messages.last().id}\n`
@@ -875,12 +874,6 @@ import { ServerInfo, PlayerInfo, Config, TagList, GuildConfig } from './interfac
     client.login(process.env.DJS_TOKEN);
 })();
 
-function getRandomArbitrary(min: number, max: number): number {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-}
-function getRandomInt(max: number): number {
-    return Math.floor(Math.random() * max);
-}
 function log(text: string): void {
     console.log(`[${new Date().toUTCString()}] [index.ts] ${text}`);
 }
@@ -912,22 +905,6 @@ function removeMCColorCodes(string: string): string {
     // font
     .replace('§k', '').replace('§l', '').replace('§m', '').replace('§n', '').replace('§o', '').replace('§r', '');
 }
-async function jsonRead(filePath: string) {
-    return JSON.parse(await fsp.readFile(filePath, { encoding: 'utf8' }));
-}
-async function jsonWrite(filePath: string, data: object | object[] | string[]) {
-    return new Promise<void>(async (resolve, reject) => {
-        await fsp.writeFile(filePath, JSON.stringify(data, null, 4), { encoding: 'utf8' }).catch(reject);
-        resolve();
-    });
-}
 async function readGuildConfig() {
     return await jsonRead('./guild-config.json') as GuildConfig;
-}
-function sleep(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-function limit(string: string, limit: number) {
-    if (string.length > limit) return string.substring(0, limit - 1) + '…';
-    else return string;
 }
