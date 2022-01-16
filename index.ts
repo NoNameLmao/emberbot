@@ -484,7 +484,7 @@ import { limit, jsonRead, jsonWrite, getRandomInt, getRandomArbitrary } from 'em
                         return;
                     }
                 } else if (command === 'rcg') {
-                    const countryList = await import('./countryList.json');
+                    const countryList = await jsonRead('./countryList.json');
                     await message.channel.send(`Random country generator: \`${countryList[Math.floor(Math.random() * countryList.length)]}\``);
                     return;
                 } else if (command === 'code') {
