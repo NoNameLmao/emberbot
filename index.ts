@@ -448,22 +448,22 @@ import { limit, jsonRead, jsonWrite, getRandomInt, getRandomArbitrary } from 'em
                     await message.channel.send('Your suggestion has been sent! thanks');
                 } else if (command === 'pfp' || command === 'avatar') {
                     try {
-                        let user: Discord.User | undefined;
-                        let pfp: string | null | undefined;
+                        let user: Discord.User;
+                        let pfp: string;
                         if (args[0]) {
                             if (message.mentions.users.size > 0) {
                                 user = message.mentions.users.first();
-                                pfp = user?.displayAvatarURL({ dynamic: true });
-                                await message.channel.send(`oh man you could've just sent me an id why did you ping that poor person just for his pfp...\n${pfp}`);
+                                pfp = user?.displayAvatarURL({ dynamic: true, format: 'png' });
+                                await message.channel.send(`oh man you could've just sent me their id why did you ping that poor person just for his avatar yikes\n${pfp}`);
                             } else {
-                                user = await client.users.fetch(args[0])
-                                pfp = user.avatarURL({ dynamic: true });
-                                await message.channel.send(`got it!\n${pfp}`);
+                                user = await client.users.fetch(args[0]);
+                                pfp = user.avatarURL({ dynamic: true, format: 'png' });
+                                await message.channel.send(`there you go\n${pfp}`);
                             }
                         } else {
                             user = message.author;
-                            pfp = user.avatarURL({ dynamic: true });
-                            await message.channel.send(`you wanna look at your own pfp? alright fine\n${pfp}`);
+                            pfp = user.avatarURL({ dynamic: true, format: 'png' });
+                            await message.channel.send(`you wanna look at your own pfp? fine ig\n${pfp}`);
                         }
                     } catch (error) {
                         message.react('❌');
