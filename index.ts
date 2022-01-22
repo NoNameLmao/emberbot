@@ -124,7 +124,7 @@ import { limit, jsonRead, jsonWrite, getRandomInt, getRandomArbitrary } from 'em
                 if (response.error) log(`[bots.moe] Recieved error in response! JSON: ${JSON.stringify(response, null, 4)}`);
                 else log(`[bots.moe] Successful request.`);
             }).catch(error => log(`[bots.moe] Error! ${error}`));
-        }, 10 * 60000); // every 10 minutes
+        }, 10 * 60000);
 
         const guild = await client.guilds.fetch(guildID),
             nnl = await client.users.fetch(nnlID),

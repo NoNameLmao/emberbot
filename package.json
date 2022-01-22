@@ -1,6 +1,6 @@
 {
     "name": "emberbot",
-    "version": "3.3",
+    "version": "3.3.1",
     "description": "discord bot, does things.",
     "main": "index.ts",
     "scripts": {
@@ -10,14 +10,14 @@
         "@discordjs/voice": "^0.7.5",
         "@types/shelljs": "^0.8.11",
         "discord.js": "^13.6.0",
-        "dotenv": "^12.0.3",
-        "emberutils": "^1.0.0",
+        "dotenv": "^14.2.0",
+        "emberutils": "^1.1.0",
         "mcdata": "^1.0.9",
-        "node": "^17.3.1",
+        "node": "^17.4.0",
         "pick-one-by-weight": "^1.0.2",
         "shelljs": "^0.8.5",
         "smartestchatbot": "^2.0.1",
-        "typescript": "^4.5.4"
+        "typescript": "^4.5.5"
     },
     "keywords": [],
     "author": "emberglaze",
