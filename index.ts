@@ -110,8 +110,8 @@ import { limit, jsonRead, jsonWrite, getRandomInt, getRandomArbitrary } from 'em
     client.once('ready', async () => {
         log(`Logged in as ${client.user.tag}`);
         const filePath = path.resolve(__dirname, './config.json');
-        setInterval(() => {
-            fetch('https://bots.moe/api/bot/848217938288967710/server_count', {
+        setInterval(async () => {
+            let res = await fetch('https://bots.moe/api/bot/848217938288967710/server_count', {
                 method: 'POST',
                 body: JSON.stringify({
                     server_count: client.guilds.cache.size
@@ -120,10 +120,10 @@ import { limit, jsonRead, jsonWrite, getRandomInt, getRandomArbitrary } from 'em
                     'Authorization': process.env.BOTS_MOE_API_KEY,
                     'Content-Type': 'application/json'
                 }
-            }).then(response => response.json()).then(response => {
-                if (response.error) log(`[bots.moe] Recieved error in response! JSON: ${JSON.stringify(response, null, 4)}`);
-                else log(`[bots.moe] Successful request.`);
-            }).catch(error => log(`[bots.moe] Error! ${error}`));
+            });
+            let json = await res.json() as any;
+            if (json.error) log(`[bots.moe] Recieved error in response! JSON: ${JSON.stringify(json, null, 4)}`);
+            else log(`[bots.moe] Successful request.`);
         }, 10 * 60000);
 
         const guild = await client.guilds.fetch(guildID),
