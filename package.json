@@ -1,13 +1,12 @@
 {
     "name": "emberbot",
-    "version": "3.3.2",
+    "version": "3.3.3",
     "description": "discord bot, does things.",
     "main": "index.ts",
     "scripts": {
         "start": "ts-node ."
     },
     "dependencies": {
-        "pick-one-by-weight": "^1.0.2",
         "@discordjs/voice": "^0.7.5",
         "smartestchatbot": "^2.0.1",
         "@types/shelljs": "^0.8.11",

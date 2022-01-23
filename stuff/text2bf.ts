@@ -31,7 +31,7 @@ export function text2bf(input: string) {
     const baseTable = charArray.map((c) => Math.round(c / 10) * 10).filter((i, p, s) => s.indexOf(i) === p);
     output.append(buildBaseTable(baseTable));
     let pos = -1;
-    charArray.forEach(function(charCode) {
+    charArray.forEach(charCode => {
         const bestNum = closest(charCode, baseTable);
         const bestPos = baseTable.indexOf(bestNum);
         const moveChar = pos < bestPos ? '>' : '<';

@@ -83,3 +83,8 @@ export interface GuildConfig {
         }
     }
 }
+
+export interface MiscJSON {
+    countryList: string[];
+    technobladeQuotes: string[];
+}

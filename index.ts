@@ -6,12 +6,14 @@ import mcdata = require('mcdata');
 import Discord = require('discord.js');
 import DiscordVoice = require('@discordjs/voice');
 import smartestchatbot = require('smartestchatbot');
-import { ServerInfo, PlayerInfo, Config, TagList, GuildConfig } from './interfaces';
+import { ServerInfo, PlayerInfo, Config, TagList, GuildConfig, MiscJSON } from './interfaces';
 import { limit, jsonRead, jsonWrite, getRandomInt, getRandomArbitrary } from 'emberutils';
 (async () => {
     (await import('dotenv')).config();
     let config: Config = await jsonRead('./config.json'),
         tagList: TagList = await jsonRead('./tags.json'),
+        miscJSON: MiscJSON = await jsonRead('./misc.json'),
+        { countryList, technobladeQuotes } = miscJSON,
         guildConfig = await readGuildConfig(),
         now = new Date(),
         nowUTC = now.getUTCHours(),
@@ -38,67 +40,8 @@ import { limit, jsonRead, jsonWrite, getRandomInt, getRandomArbitrary } from 'em
         pingNNL = `<@${nnlID}>`
     ;
 
-    const TechnobladeQuote = [
-        'NOT EVEN CLOSE BABY TECHNOBLADE NEVER DIES',
-        'technoblade never dies',
-        'dude these orphans are getting destroyed',
-        'this is the second worst thing that has happened to these orphans in their lives',
-        'subscribe to technoblade',
-        'if you wish to defeat me, train for another 100 years',
-        'did you try getting good?',
-        'i told you man... i am an anime protagonist',
-        'sometimes its tough being the best',
-        'blood for the blood god',
-        'im not saying im winning this game.. but... im winning this game',
-        'all part of my master plan',
-        'this is my main game',
-        'nerd spotted',
-        'i can tryhard any game!',
-        'im so good at video games',
-        'aaaaaand not even close',
-        'what a scam',
-        'thank you hypixel',
-        'dying is for casuals, forget what i did like 3 seconds ago',
-        'i play minecraft! dont tell my parents they think i have a job',
-        'i had no expectations and i still managed to get dissapointed... welcome to bedwars',
-        'lets cyberbully some nerds',
-        'im so good at this game',
-        'off the map you all go',
-        'weeeee',
-        'he tried...',
-        'sometimes i dream about trees',
-        'tommy, just... just stop talking',
-        'i call dibs on the planet',
-        'i just threw some guy off a ledge. with my bare fist!',
-        'weapons are for casuals',
-        'the cyberbullying is off to a good start',
-        'a little known fact, im actually the best fortnite player of all time',
-        'am i wearing pants right now? you just have to take my word for it',
-        'cant run away from your problems when they have ender pearls',
-        'christmas - cancelled, halloween - cancelled! things were getting so fast, people thought it was twitter',
-        'think of how far i could dropkick a dog that small',
-        'these orphans are my toys',
-        'i aint never seen a horse go to church',
-        'just found out there are goverments irl',
-        'i wanna rod this guy but he\'s a slideshow',
-        'technoboat',
-        'technoplane',
-        'AY CARAMBA DONDE ESTA LA BIBLIOTECA',
-        'i was using an advanced technique called LYING'
-    ],
-        liechtenstein = [
-        'lichestien',
-        'lichistint',
-        'lechtenstei',
-        'lichtenstein',
-        'lechteinstei',
-        'iechtenstein',
-        'liehctenstein',
-        'liechtenstien',
-        'liechtensteing',
-    ];
     function randomTechnoQuote(): string {
-        return TechnobladeQuote[getRandomInt(TechnobladeQuote.length + 1)];
+        return technobladeQuotes[getRandomInt(technobladeQuotes.length + 1)];
     }
     
     
@@ -218,7 +161,6 @@ import { limit, jsonRead, jsonWrite, getRandomInt, getRandomArbitrary } from 'em
                 }
             } 
             if (message.content.startsWith('..')) return;
-            if (liechtenstein.includes(message.content)) message.channel.send('liechtenstein*');
             
             if (message.content.startsWith(config.tagPrefix.user_specific)) {
                 if (message.content.startsWith(config.tagPrefix.global)) {
@@ -484,7 +426,6 @@ import { limit, jsonRead, jsonWrite, getRandomInt, getRandomArbitrary } from 'em
                         return;
                     }
                 } else if (command === 'rcg') {
-                    const countryList = await jsonRead('./countryList.json');
                     await message.channel.send(`Random country generator: \`${countryList[Math.floor(Math.random() * countryList.length)]}\``);
                     return;
                 } else if (command === 'code') {
