@@ -54,19 +54,23 @@ import { limit, jsonRead, jsonWrite, getRandomInt, getRandomArbitrary } from 'em
         log(`Logged in as ${client.user.tag}`);
         const filePath = path.resolve(__dirname, './config.json');
         setInterval(async () => {
-            let res = await fetch('https://bots.moe/api/bot/848217938288967710/server_count', {
-                method: 'POST',
-                body: JSON.stringify({
-                    server_count: client.guilds.cache.size
-                }),
-                headers: {
-                    'Authorization': process.env.BOTS_MOE_API_KEY,
-                    'Content-Type': 'application/json'
-                }
-            });
-            let json = await res.json() as any;
-            if (json.error) log(`[bots.moe] Recieved error in response! JSON: ${JSON.stringify(json, null, 4)}`);
-            else log(`[bots.moe] Successful request.`);
+            try {
+                let res = await fetch('https://bots.moe/api/bot/848217938288967710/server_count', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        server_count: client.guilds.cache.size
+                    }),
+                    headers: {
+                        'Authorization': process.env.BOTS_MOE_API_KEY,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                let json = await res.json() as any;
+                if (json.error) log(`[bots.moe] Recieved error in response! JSON: ${JSON.stringify(json, null, 4)}`);
+                else log(`[bots.moe] Successful request.`);
+            } catch (error) {
+                log(`[bots.moe] Error fetching! Error: ${error}`);
+            }
         }, 10 * 60000);
 
         const guild = await client.guilds.fetch(guildID),
@@ -114,7 +118,7 @@ import { limit, jsonRead, jsonWrite, getRandomInt, getRandomArbitrary } from 'em
         }
         botChannel.send(`hi im online, i took ${(Date.now() - startTime) / 1000}s to start`);
 
-        client.on('error', (error) => log(error.stack));
+        client.on('error', error => log(error.stack));
         client.on('messageCreate', async message => {
             let args: string[] = message.content.slice(config.prefix.length).trim().split(/ +/g),
                 suscommand: string = message.content.slice(config.susprefix.length).trim().toLowerCase(),
@@ -569,6 +573,10 @@ import { limit, jsonRead, jsonWrite, getRandomInt, getRandomArbitrary } from 'em
                         {
                             name: 'Amount of guilds',
                             value: `${client.guilds.cache.size}`
+                        },
+                        {
+                            name: 'Bot uptime',
+                            value: `${Date.now() - startTime / 1000}s ()`
                         }
                     )
                     await message.channel.send({ embeds: [infoEmbed] });
