@@ -1,23 +1,23 @@
 {
     "name": "emberbot",
-    "version": "3.3.3",
+    "version": "3.3.4",
     "description": "discord bot, does things.",
     "main": "index.ts",
     "scripts": {
         "start": "ts-node ."
     },
     "dependencies": {
-        "@discordjs/voice": "^0.7.5",
-        "smartestchatbot": "^2.0.1",
+        "@discordjs/voice": "^0.8.0",
         "@types/shelljs": "^0.8.11",
         "discord.js": "^13.6.0",
+        "dotenv": "^14.3.2",
         "emberutils": "^1.2.0",
-        "node-fetch": "^2.6.7",
-        "typescript": "^4.5.5",
-        "dotenv": "^14.2.0",
-        "shelljs": "^0.8.5",
         "mcdata": "^1.0.9",
-        "node": "^17.4.0"
+        "node": "^17.4.0",
+        "node-fetch": "^2.6.7",
+        "shelljs": "^0.8.5",
+        "smartestchatbot": "^2.0.1",
+        "typescript": "^4.5.5"
     },
     "keywords": [],
     "author": "emberglaze",

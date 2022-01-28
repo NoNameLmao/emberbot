@@ -4,8 +4,8 @@ import path = require('path');
 import fetch from 'node-fetch';
 import mcdata = require('mcdata');
 import Discord = require('discord.js');
-import DiscordVoice = require('@discordjs/voice');
 import smartestchatbot = require('smartestchatbot');
+import { DiscordGatewayAdapterCreator, joinVoiceChannel } from '@discordjs/voice';
 import { ServerInfo, PlayerInfo, Config, TagList, GuildConfig, MiscJSON } from './interfaces';
 import { limit, jsonRead, jsonWrite, getRandomInt, getRandomArbitrary } from 'emberutils';
 (async () => {
@@ -107,10 +107,10 @@ import { limit, jsonRead, jsonWrite, getRandomInt, getRandomArbitrary } from 'em
             if (config.debug) botChannel.send(`\`[DEBUG]: ${message}\``);
         }
         try {
-            DiscordVoice.joinVoiceChannel({
+            joinVoiceChannel({
                 channelId: dateChannelID,
                 guildId: guildID,
-                adapterCreator: (dateChannel.guild.voiceAdapterCreator as unknown) as DiscordVoice.DiscordGatewayAdapterCreator,
+                adapterCreator: (dateChannel.guild.voiceAdapterCreator as unknown) as DiscordGatewayAdapterCreator,
             });
             debugSend('ran DiscordVoice.joinVoiceChannel({...});');
         } catch (error) {
