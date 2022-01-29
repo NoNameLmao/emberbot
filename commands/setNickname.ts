@@ -4,6 +4,7 @@ import { Command } from "./-handler";
 module.exports = {
     name: 'setNickname',
     description: 'im definetely not embers slave but i dont change my nick without his command so idk really',
+    hideFromHelp: true,
     async run(message: Message, args: string[]) {
         const me = await message.guild.members.fetch(message.client.user.id);
         await me.setNickname(args.join(' ')).catch(async error => {

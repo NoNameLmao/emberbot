@@ -4,6 +4,7 @@ import { Command } from "./-handler";
 module.exports = {
     name: 'find',
     description: 'find something in channel',
+    hideFromHelp: true,
     async run(message: Message, args: string[]) {
         const messages = (await message.channel.messages.fetch()).filter(msg => msg.content.includes(args.join()) && msg !== message);
         await message.channel.send(

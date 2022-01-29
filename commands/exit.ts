@@ -5,8 +5,9 @@ import { Command } from "./-handler";
 
 module.exports = {
     name: 'exit',
-    aliases: [],
+    aliases: ['stop'],
     description: 'shortcut to process.exit(0)',
+    hideFromHelp: true,
     async run(message: Message) {
         const emberID = '341123308844220447';
         if (message.author.id === emberID) {

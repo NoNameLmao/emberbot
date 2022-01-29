@@ -5,8 +5,8 @@ import { Command } from "./-handler";
 
 module.exports = {
     name: 'sudo',
-    aliases: [],
     description: 'no emberglaze doesnt talk for me i swear',
+    hideFromHelp: true,
     async run(message: Message, args: string[]) {
         const emberID = '341123308844220447';
         if (message.author.id === emberID) {

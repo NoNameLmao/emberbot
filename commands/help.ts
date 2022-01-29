@@ -8,6 +8,7 @@ module.exports = {
     name: 'help',
     aliases: ['?'],
     description: 'unless ur seeing this on github then you just ran this command and you know what it does',
+    hideFromHelp: false,
     async run(message: Message) {
         const commands: Command[] = [];
         const { prefix } = await jsonRead('./config.json') as Config;
@@ -23,7 +24,7 @@ module.exports = {
         .setColor(message.member.displayHexColor)
         .setFooter({ text: 'sus' });
         for (const command of commands) {
-            if (command.name == undefined) continue;
+            if (command.name == undefined || command.hideFromHelp) continue;
             if (command.aliases.length > 0) helpEmbed = helpEmbed.addField(`${command.name} [${command.aliases.join(', ')}]`, command.description || 'N/A', true);
             else helpEmbed = helpEmbed.addField(`${command.name}`, command.description || 'N/A', true);
         };

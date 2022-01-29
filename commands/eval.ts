@@ -6,7 +6,8 @@ import { Command } from "./-handler";
 module.exports = {
     name: 'eval',
     aliases: ['run'],
-    description: 'make ember debugging code easier ig? (run js code)',
+    description: 'make ember debugging code easier (run js code)',
+    hideFromHelp: true,
     async run(message: Message, args: string[]) {
         const code = args.join(' ');
         let evalEmbed = new MessageEmbed()

@@ -7,6 +7,7 @@ export interface Command {
     name: string;
     aliases?: string[];
     description: string;
+    hideFromHelp?: boolean;
     run(message: Message, args?: string[]): any;
 }
 export async function importCommand(file: Dirent) {

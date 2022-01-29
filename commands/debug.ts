@@ -6,6 +6,7 @@ import { Command } from "./-handler";
 module.exports = {
     name: 'debug',
     description: 'its like your average debugging (console.log\'ging every variable each line) but i put it in discord 💀',
+    hideFromHelp: true,
     async run(message: Message, args: string[]) {
         let config = await jsonRead('./config.json') as Config;
         if (args[0] === 'true') {

@@ -3,8 +3,8 @@ import { Command } from "./-handler";
 
 module.exports = {
     name: 'setpfp',
-    aliases: [],
     description: 'only ember can do this dont even try',
+    hideFromHelp: true,
     async run(message: Message, args: string[]) {
         const emberID = '341123308844220447';
         if (message.author.id === emberID) {
