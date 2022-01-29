@@ -9,7 +9,7 @@ export interface Command {
     description: string;
     run(message: Message, args?: string[]): any;
 }
-async function importCommand(file: Dirent) {
+export async function importCommand(file: Dirent) {
     if (file.name === 'handler.ts') return;
     return await import(`./${file.name}`) as Command;
 }
