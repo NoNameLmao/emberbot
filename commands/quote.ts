@@ -9,9 +9,13 @@ module.exports = {
     description: 'send a random technoblade quote because he never dies',
     async run(message: Message, args: string[]) {
         const { technobladeQuotes } = await jsonRead('./misc.json') as MiscJSON;
-        function randomTechnoQuote(): string {
-            return technobladeQuotes[getRandomInt(technobladeQuotes.length + 1)];
-        }
-        await message.channel.send(`"${randomTechnoQuote()}"`);
+        let number: number;
+        if (args[0]) number = parseInt(args[0]);
+        else number = getRandomInt(technobladeQuotes.length + 1);
+        technobladeQuotes[getRandomInt(technobladeQuotes.length + 1)];
+        message.channel.send(
+            `Quote number **${number}**:\n` +
+            `**${technobladeQuotes[number]}**`
+        );
     }
 } as Command;
