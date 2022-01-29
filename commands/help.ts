@@ -23,6 +23,7 @@ module.exports = {
         .setColor(message.member.displayHexColor)
         .setFooter({ text: 'sus' });
         for (const command of commands) {
+            if (command.name == undefined) continue;
             if (command.aliases.length > 0) helpEmbed = helpEmbed.addField(`${command.name} [${command.aliases.join(', ')}]`, command.description || 'N/A', true);
             else helpEmbed = helpEmbed.addField(`${command.name}`, command.description || 'N/A', true);
         };
