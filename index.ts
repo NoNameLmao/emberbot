@@ -13,9 +13,6 @@ import { handleCommand } from './commands/-handler';
     (await import('dotenv')).config();
     let config: Config = await jsonRead('./config.json'),
         tagList: TagList = await jsonRead('./tags.json'),
-        miscJSON: MiscJSON = await jsonRead('./misc.json'),
-        { countryList, technobladeQuotes } = miscJSON,
-        guildConfig = await readGuildConfig(),
         now = new Date(),
         nowUTC = now.getUTCHours(),
         europesimCurrentYear: number,
@@ -41,11 +38,6 @@ import { handleCommand } from './commands/-handler';
         pingNNL = `<@${nnlID}>`
     ;
 
-    function randomTechnoQuote(): string {
-        return technobladeQuotes[getRandomInt(technobladeQuotes.length + 1)];
-    }
-    
-    
     let userCount: number,
         memberCount: number,
         botCount: number,
@@ -53,7 +45,6 @@ import { handleCommand } from './commands/-handler';
     ;
     client.once('ready', async () => {
         log(`Logged in as ${client.user.tag}`);
-        const filePath = path.resolve(__dirname, './config.json');
         setInterval(async () => {
             try {
                 let res = await fetch('https://bots.moe/api/bot/848217938288967710/server_count', {
@@ -75,8 +66,6 @@ import { handleCommand } from './commands/-handler';
         }, 10 * 60000);
 
         const guild = await client.guilds.fetch(guildID),
-            nnl = await client.users.fetch(nnlID),
-            me = await guild.members.fetch(client.user.id),
             dateChannel = guild.channels.resolve(dateChannelID),
             botChannel = client.channels.cache.get(botchannelID) as Discord.TextChannel;
         ;
@@ -280,15 +269,4 @@ function logCommand(message: Discord.Message, command: string, args?: string[]):
         )
     }
     
-}
-function removeMCColorCodes(string: string): string {
-    return string
-    // color
-    .replace('§4', '').replace('§c', '').replace('§6', '').replace('§e', '').replace('§2', '').replace('§a', '').replace('§b', '').replace('§3', '').replace('§1', '')
-    .replace('§9', '').replace('§d', '').replace('§5', '').replace('§f', '').replace('§7', '').replace('§8', '').replace('§0', '')
-    // font
-    .replace('§k', '').replace('§l', '').replace('§m', '').replace('§n', '').replace('§o', '').replace('§r', '');
-}
-async function readGuildConfig() {
-    return await jsonRead('./guild-config.json') as GuildConfig;
 }
