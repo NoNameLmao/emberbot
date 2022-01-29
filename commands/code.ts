@@ -3,7 +3,7 @@ import { Command } from "./-handler";
 
 module.exports = {
     name: 'code',
-    aliases: [],
+    aliases: ['run'],
     description: 'regular reminder that embers memory sucks and needs me to remind him certain parts of how im made 💀',
     async run(message: Message, args: string[]) {
         if (args[0] === 'args') {

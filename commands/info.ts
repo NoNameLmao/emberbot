@@ -4,7 +4,7 @@ import { Command } from "./-handler";
 module.exports = {
     name: 'info',
     description: 'See information about the bot',
-    async run(message: Message, args: string[]) {
+    async run(message: Message) {
         const infoEmbed = new MessageEmbed()
         .setTitle('Bot information')
         .setColor(message.member.displayHexColor)
@@ -18,6 +18,6 @@ module.exports = {
                 value: `${message.client.uptime}`
             }
         )
-        await message.channel.send({ embeds: [infoEmbed] });
+        message.channel.send({ embeds: [infoEmbed] });
     }
 } as Command;

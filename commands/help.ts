@@ -5,7 +5,7 @@ import { Command } from "./-handler";
 
 module.exports = {
     name: 'help',
-    aliases: [],
+    aliases: ['?'],
     description: 'unless ur seeing this on github then you just ran this command and you know what it does',
     async run(message: Message) {
         const { prefix } = await jsonRead('./config.json') as Config;

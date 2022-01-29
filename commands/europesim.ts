@@ -4,8 +4,8 @@ import { Config } from '../interfaces';
 import { Command } from './-handler'
 
 module.exports = {
-    name: 'esim',
-    aliases: [],
+    name: 'europesim',
+    aliases: ['esim'],
     description: 'Command category for Europesim. Run this command for more information.',
     async run(message: Message, args: string[]) {
         const config = await jsonRead('./config.json') as Config,
@@ -40,8 +40,7 @@ module.exports = {
                     inline: true
                 }
             );
-            await message.channel.send({ embeds: [esimEmbed] });
-            return;
+            message.channel.send({ embeds: [esimEmbed] });
         } else if (args[0] === 'info') {
             try {
                 const infoEmbed = new MessageEmbed()
@@ -69,25 +68,24 @@ module.exports = {
                         value: `${userCount} users + ${botCount} bots = ${memberCount} overall. Online users: ${onlineUsers}`,
                     },
                 );
-                await message.channel.send({ embeds: [infoEmbed] });
+                message.channel.send({ embeds: [infoEmbed] });
             } catch (error) {
                 message.react('❌');
-                await message.channel.send(`❌ error\n\`\`\`js\n${error}\`\`\``);
-                return;
+                message.channel.send(`❌ error\n\`\`\`js\n${error}\`\`\``);
             }
         } else if (args[0] === 'roll') {
             let roll = getRandomArbitrary(1, 20);
             if (roll === 0) {
                 roll = getRandomArbitrary(1, 20);
-                await message.channel.send('got a 0 for some reason, rerolling automatically');
+                message.channel.send('got a 0 for some reason, rerolling automatically');
                 if (args[1]) {
-                    if (roll === 20) await message.channel.send(`\`${args[1]}\` rolled a \`${roll}\` :L`);
-                    else await message.channel.send(`\`${args[1]}\` rolled a \`${roll}\``);
-                } else await message.channel.send(`rolled a \`${roll}\``);
+                    if (roll === 20) message.channel.send(`\`${args[1]}\` rolled a \`${roll}\` :L`);
+                    else message.channel.send(`\`${args[1]}\` rolled a \`${roll}\``);
+                } else message.channel.send(`rolled a \`${roll}\``);
             } else if (args[1]) {
-                if (roll === 20) await message.channel.send(`\`${args[1]}\` rolled a \`${roll}\` :L`);
-                else await message.channel.send(`\`${args[1]}\` rolled a \`${roll}\``);
-            } else await message.channel.send(`rolled a \`${roll}\``);
+                if (roll === 20) message.channel.send(`\`${args[1]}\` rolled a \`${roll}\` :L`);
+                else message.channel.send(`\`${args[1]}\` rolled a \`${roll}\``);
+            } else message.channel.send(`rolled a \`${roll}\``);
         }
     }
 } as Command;

@@ -5,8 +5,8 @@ import { Command } from "./-handler";
 import mcdata = require('mcdata');
 
 module.exports = {
-    name: 'mc',
-    aliases: [],
+    name: 'minecraft',
+    aliases: ['minec', 'mcraft', 'mc'],
     description: 'Categorised minecraft commands. Run this command for more information.',
     async run(message: Message, args: string[]) {
         const { prefix } = await jsonRead('./config.json') as Config;
@@ -30,13 +30,13 @@ module.exports = {
             await message.channel.send({ embeds: [mcEmbed] });
         } else if (['serverinfo', 'server', 'sinfo'].includes(args[0])) {
             try {
-                await message.channel.send('Pinging minecraft server...');
+                message.channel.send('Pinging minecraft server...');
                 const serverinfo: ServerInfo = await mcdata.serverStatus(args[1]);
                 const serverInfoEmbed = new MessageEmbed()
                 .setTitle('Server Information')
                 .setColor(message.member.displayHexColor)
                 .setAuthor({ name: `${args[1]}` })
-                .addField('Status', serverinfo.serverStatus, true)
+                .addField('Status', `Currently ${serverinfo.serverStatus}`, true)
                 .addField('Server IP', serverinfo.serverip, true)
                 .addField('Version', serverinfo.version, true)
                 .addField('Players', `${serverinfo.players}/${serverinfo.maxplayers} online`, true)

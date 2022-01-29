@@ -7,7 +7,7 @@ module.exports = {
     name: 'exit',
     aliases: [],
     description: 'shortcut to process.exit(0)',
-    async run(message: Message, args: string[]) {
+    async run(message: Message) {
         const emberID = '341123308844220447';
         if (message.author.id === emberID) {
             await message.channel.send(':sob:');
@@ -17,7 +17,7 @@ module.exports = {
             function randomTechnoQuote(): string {
                 return technobladeQuotes[getRandomInt(technobladeQuotes.length + 1)];
             }
-            await message.channel.send(`❌ ${randomTechnoQuote()}`);
+            message.channel.send(`❌ ${randomTechnoQuote()}`);
         }
     }
 } as Command;
