@@ -20,7 +20,11 @@ module.exports = {
         }
         if (message.author.id === emberID) {
             try {
-                const result = eval(code);
+                const result = eval(
+                    '(async () => {\n' +
+                    code +
+                    '})();'
+                );
                 let output = result;
                 if (typeof output !== 'string') output = require('util').inspect(result);
                 evalEmbed = evalEmbed
