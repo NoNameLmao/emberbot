@@ -27,6 +27,8 @@ export async function handleCommand(message: Message) {
         const args = message.content.slice(prefix.length).trim().split(/ +/g);
         const commandInMessage = args.shift().toLowerCase();
         const matchingCommand = commands.filter(command => command.name === commandInMessage || command.aliases.includes(commandInMessage));
-        matchingCommand[0].run(message, args);
+        if (matchingCommand[0]) {
+            matchingCommand[0].run(message, args);
+        }
     };
 }
