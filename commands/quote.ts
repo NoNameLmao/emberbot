@@ -1,7 +1,6 @@
 import { Message } from "discord.js";
 import { jsonRead, getRandomInt } from "emberutils";
-import { MiscJSON } from "../interfaces";
-import { Command } from "./-handler";
+import { MiscJSON, Command } from "../interfaces";
 
 module.exports = {
     name: 'quote',

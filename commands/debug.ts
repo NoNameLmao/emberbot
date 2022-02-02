@@ -1,7 +1,7 @@
 import { Message } from "discord.js";
 import { jsonRead, jsonWrite } from "emberutils";
 import { Config } from "../interfaces";
-import { Command } from "./-handler";
+import { Command } from "../interfaces";
 
 module.exports = {
     name: 'debug',

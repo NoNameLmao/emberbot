@@ -1,6 +1,6 @@
 import { Message, MessageEmbed } from "discord.js";
 import { jsonRead, jsonWrite } from "emberutils";
-import { Config, TagList } from "../interfaces";
+import { Config, TagList, Command } from "../interfaces";
 
 module.exports = {
     name: 'tag',
@@ -195,4 +195,4 @@ module.exports = {
             }
         }
     }
-}
+} as Command;

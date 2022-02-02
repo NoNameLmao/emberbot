@@ -1,7 +1,6 @@
 import { Message, MessageEmbed } from "discord.js";
 import { getRandomInt, jsonRead, limit } from "emberutils";
-import { MiscJSON } from "../interfaces";
-import { Command } from "./-handler";
+import { MiscJSON, Command } from "../interfaces";
 
 module.exports = {
     name: 'eval',

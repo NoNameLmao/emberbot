@@ -1,7 +1,6 @@
 import { Message, MessageEmbed } from "discord.js";
 import { jsonRead } from "emberutils";
-import { Config } from "../interfaces";
-import { Command } from "./-handler";
+import { Config, Command } from "../interfaces";
 
 module.exports = {
     name: 'convert',

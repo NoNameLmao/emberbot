@@ -1,9 +1,8 @@
 import { Message, MessageEmbed } from "discord.js";
 import { jsonRead } from "emberutils";
 import { readdir } from "fs/promises";
-import { Config } from "../interfaces";
+import { Config, Command } from "../interfaces";
 import { importCommand } from "./-handler";
-import { Command } from '../interfaces';
 
 module.exports = {
     name: 'help',

@@ -1,7 +1,7 @@
 import { Message, MessageEmbed } from "discord.js";
 import { getRandomInt, jsonRead } from "emberutils";
 import { Config, MiscJSON, PlayerInfo, ServerInfo } from "../interfaces";
-import { Command } from "./-handler";
+import { Command } from "../interfaces";
 import mcdata = require('mcdata');
 
 module.exports = {

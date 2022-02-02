@@ -1,7 +1,6 @@
 import { Message } from "discord.js";
 import { getRandomInt, getRandomArbitrary, jsonRead } from "emberutils";
-import { Config } from "../interfaces";
-import { Command } from "./-handler";
+import { Config, Command } from "../interfaces";
 
 module.exports = {
     name: 'rng',

@@ -1,5 +1,5 @@
 import { Message } from "discord.js";
-import { Command } from "./-handler";
+import { Command } from "../interfaces";
 
 module.exports = {
     name: 'suggest',
