@@ -2,7 +2,8 @@ import { Message, MessageEmbed } from "discord.js";
 import { jsonRead } from "emberutils";
 import { readdir } from "fs/promises";
 import { Config } from "../interfaces";
-import { Command, importCommand } from "./-handler";
+import { importCommand } from "./-handler";
+import { Command } from '../interfaces';
 
 module.exports = {
     name: 'help',
@@ -12,7 +13,7 @@ module.exports = {
     async run(message: Message) {
         const commands: Command[] = [];
         const { prefix } = await jsonRead('./config.json') as Config;
-        const files = await readdir('./commands/', { withFileTypes: true });
+        const files = await readdir('./commands/');
         for await (let file of files) {
             const command = await importCommand(file);
             if (command.aliases === undefined) command.aliases = [];

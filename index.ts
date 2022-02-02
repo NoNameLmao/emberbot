@@ -1,13 +1,11 @@
 const startTime = Date.now();
 
-import path = require('path');
 import fetch from 'node-fetch';
-import mcdata = require('mcdata');
 import Discord = require('discord.js');
 import smartestchatbot = require('smartestchatbot');
 import { DiscordGatewayAdapterCreator, joinVoiceChannel } from '@discordjs/voice';
-import { ServerInfo, PlayerInfo, Config, TagList, GuildConfig, MiscJSON } from './interfaces';
-import { limit, jsonRead, jsonWrite, getRandomInt, getRandomArbitrary } from 'emberutils';
+import { Config, TagList } from './interfaces';
+import { limit, jsonRead, jsonWrite } from 'emberutils';
 import { handleCommand } from './commands/-handler';
 (async () => {
     (await import('dotenv')).config();

@@ -1,3 +1,6 @@
+import { Message, ApplicationCommandOptionType } from "discord.js";
+import { ChannelType } from 'discord-api-types';
+
 export interface ServerInfo {
     serverStatus: 'online' | 'offline',
     serverip: string,
@@ -87,4 +90,32 @@ export interface GuildConfig {
 export interface MiscJSON {
     countryList: string[];
     technobladeQuotes: string[];
+}
+
+export interface Command {
+    name: string;
+    aliases?: string[];
+    description: string;
+    hideFromHelp?: boolean;
+    run(message: Message, args?: string[]): any;
+}
+export interface SlashCommand extends Command {
+    slashCommand: {
+        options: SlashCommandOptions;
+    };
+}
+export interface SlashCommandOptions {
+    type: ApplicationCommandOptionType;
+    name: string;
+    description: string;
+    autocomplete?: boolean;
+    required?: boolean;
+    choices?: {
+        name: string;
+        value: string | number;
+    }[];
+    options?: SlashCommandOptions;
+    channelTypes?: ChannelType[] | number[];
+    minValue?: number;
+    maxValue?: number;
 }

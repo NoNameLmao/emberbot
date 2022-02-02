@@ -1,23 +1,16 @@
 import fs = require('fs/promises');
 import { jsonRead } from 'emberutils';
-import { Config } from '../interfaces';
+import { Command, Config } from '../interfaces';
 import { Message } from 'discord.js';
-import { Dirent } from 'fs';
-export interface Command {
-    name: string;
-    aliases?: string[];
-    description: string;
-    hideFromHelp?: boolean;
-    run(message: Message, args?: string[]): any;
-}
-export async function importCommand(file: Dirent) {
-    if (file.name === 'handler.ts') return;
-    return await import(`./${file.name}`) as Command;
+
+export async function importCommand(fileName: string) {
+    return await import(`./${fileName}`) as Command;
 }
 const commands: Command[] = [];
 export async function handleCommand(message: Message) {
-    const files = await fs.readdir('./commands/', { withFileTypes: true });
+    const files = await fs.readdir('./commands/');
     for await (let file of files) {
+        if (file === '-handler.ts') continue;
         const command = await importCommand(file);
         if (command.aliases === undefined) command.aliases = [];
         commands.push(command);
@@ -27,8 +20,7 @@ export async function handleCommand(message: Message) {
         const args = message.content.slice(prefix.length).trim().split(/ +/g);
         const commandInMessage = args.shift().toLowerCase();
         const matchingCommand = commands.filter(command => command.name === commandInMessage || command.aliases.includes(commandInMessage));
-        if (matchingCommand[0]) {
-            matchingCommand[0].run(message, args);
-        }
+        if (!matchingCommand[0]) return;
+        matchingCommand[0].run(message, args);
     };
 }
