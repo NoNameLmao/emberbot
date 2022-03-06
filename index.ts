@@ -37,6 +37,7 @@ export const commandHandler = new CommandHandler();
 
         log('info', `Discord bot is ready after ${(Date.now() - startTime) / 1000}s`)
         client.on('messageCreate', async message => {
+            if (message.content === `<@${client.user.id}>`) message.channel.send(`my prefix: ${config.prefix}`)
             if (message.channel.type === 'DM') {
                 if (message.author.id !== client.user.id) {
                     log('info', 'Recieved a direct message!')
