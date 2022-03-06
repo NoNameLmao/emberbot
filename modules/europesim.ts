@@ -57,6 +57,20 @@ export class Europesim {
             resolve()
         })
     }
+    async guildResetSlashCommands(client: DiscordClient) {
+        return new Promise<void>(async (resolve, reject) => {
+            log('info', 'Started resetting europesim guild slash commands')
+            await client.europesim.guild.commands.set([]).catch(error => {
+                if (error instanceof Error) {
+                    log('error', 'Europesim guild slash command reset failed!')
+                    log('error', `  · Error message: ${error.message}`)
+                    reject(error)
+                }
+            })
+            log('info', 'Finished resetting europesim guild slash commands')
+            resolve()
+        })
+    }
     get currentDate() {
         if (!this.initialized) throw new Error(this.notInitializedError)
         return {

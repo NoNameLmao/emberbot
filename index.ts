@@ -130,7 +130,7 @@ export const commandHandler = new CommandHandler();
             }
         })
         await commandHandler.updateSlashCommands(client)
-        await europesim.guildUpdateSlashCommands(client)
+        await europesim.guildResetSlashCommands(client)
         client.on('interactionCreate', interaction => {
             if (interaction.isCommand()) commandHandler.handleCommand(interaction)
         })
