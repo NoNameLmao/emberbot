@@ -1,13 +1,14 @@
-import { Message } from "discord.js";
-import { jsonRead } from "emberutils";
-import { MiscJSON, Command } from "../interfaces";
+import { jsonRead } from "emberutils"
+import { MiscJSON, SlashCommand } from "../modules/interfaces"
+import { CommandHandler } from './-handler'
+const { replyToCommand } = CommandHandler
 
 module.exports = {
     name: 'rcg',
-    aliases: [],
-    description: 'random country generator, dont kill me',
-    async run(message: Message) {
-        const { countryList } = await jsonRead('./misc.json') as MiscJSON;
-        await message.channel.send(`Random country generator: \`${countryList[Math.floor(Math.random() * countryList.length)]}\``);
+    description: 'Random country generator. (dont kill me)',
+    async run({ interaction }) {
+        const { countryList } = await jsonRead('./misc.json') as MiscJSON
+        const msg = `Random country generator: \`${countryList[Math.floor(Math.random() * countryList.length)]}\``
+        replyToCommand({ interaction, options: { content: msg } })
     }
-} as Command;
+} as SlashCommand

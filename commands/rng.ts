@@ -1,24 +1,27 @@
-import { Message } from "discord.js";
-import { getRandomInt, getRandomArbitrary, jsonRead } from "emberutils";
-import { Config, Command } from "../interfaces";
+import { getRandomInt, getRandomArbitrary, jsonRead } from "emberutils"
+import { Config, SlashCommand } from "../modules/interfaces"
+import { CommandHandler } from './-handler'
+const { replyToCommand } = CommandHandler
 
 module.exports = {
     name: 'rng',
-    aliases: [],
     description: 'random number generator',
-    async run(message: Message, args: string[]) {
-        const { prefix } = await jsonRead('./config.json') as Config;
-        const max = (!isNaN(parseInt(args[1])) ? parseInt(args[1]) : parseInt(args[0]));
-        const min = (max === parseInt(args[1]) ? parseInt(args[0]) : undefined);
-        if (args.filter(arg => !isNaN(parseInt(arg))).length === 0) await message.channel.send(`you didnt provide any numbers :gun:\nactual usage: \`${prefix}rng (number) <number>\``);
-        else if (max === parseInt(args[0])) {
-            const result = getRandomInt(max);
-            await message.channel.send(`random integer generator: ${result}`);
-            return;
-        } else if (max === parseInt(args[1])) {
-            const result = getRandomArbitrary(min, max);
-            await message.channel.send(`random arbitrary generator: ${result}`);
-            return;
+    async run({ interaction, args }) {
+        const { prefix } = await jsonRead('./config.json') as Config
+        const max = (!isNaN(parseInt(args[1] as string)) ? parseInt(args[1] as string) : parseInt(args[0] as string))
+        const min = (max === parseInt(args[1] as string) ? parseInt(args[0] as string) : undefined)
+        if (args.filter(arg => !isNaN(parseInt(arg as string))).length === 0) {
+            const msg = `you didnt provide any numbers :gun:\nactual usage: \`${prefix}rng (number) <number>\``
+            replyToCommand({ interaction, options: { content: msg } })
+        }
+        else if (max === parseInt(args[0] as string)) {
+            const result = getRandomInt(max)
+            const msg = `random integer generator: ${result}`
+            replyToCommand({ interaction, options: { content: msg } })
+        } else if (max === parseInt(args[1] as string)) {
+            const result = getRandomArbitrary(min, max)
+            const msg = `random arbitrary generator: ${result}`
+            replyToCommand({ interaction, options: { content: msg } })
         }
     }
-} as Command;
+} as SlashCommand

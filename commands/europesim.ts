@@ -1,12 +1,13 @@
-import { Message, MessageEmbed } from 'discord.js';
-import { getRandomArbitrary, jsonRead } from 'emberutils';
-import { Config, Command } from '../interfaces';
+import { GuildMember, MessageEmbed } from 'discord.js'
+import { getRandomArbitrary, jsonRead } from 'emberutils'
+import { Config, SlashCommand } from '../modules/interfaces'
+import { CommandHandler } from './-handler'
+const { replyToCommand } = CommandHandler
 
 module.exports = {
     name: 'europesim',
-    aliases: ['esim'],
     description: 'Command category for Europesim. Run this command for more information.',
-    async run(message: Message, args: string[]) {
+    async run({ interaction, args }) {
         const config = await jsonRead('./config.json') as Config,
             nowUTC = new Date().getUTCHours(),
             europesimStartDate = Date.parse(config.europesimStartDate),
@@ -16,16 +17,16 @@ module.exports = {
             months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
             europesimCurrentMonth = months[Math.floor(nowUTC / 2)],
             guildID = '846807940727570433',
-            guild = await message.client.guilds.fetch(guildID),
+            guild = await interaction.client.guilds.fetch(guildID),
             userCount = guild.members.cache.filter(member => !member.user.bot).size,
             memberCount = guild.memberCount,
             botCount = memberCount - userCount,
-            onlineUsers = guild.members.cache.filter(member => member.presence?.status !== 'offline' && !member.user.bot).size;
+            onlineUsers = guild.members.cache.filter(member => member.presence?.status !== 'offline' && !member.user.bot).size
         if (!args[0]) {
             const esimEmbed = new MessageEmbed()
             .setTitle('Command category: Europesim')
             .setDescription(`Usage: ${config.prefix}esim (command)\n<> = Optional argument(s)`)
-            .setColor(message.member.displayHexColor)
+            .setColor((interaction.member as GuildMember).displayHexColor)
             .setFooter({ text: 'https://ourworldofpixels.com/europesim' })
             .addFields(
                 {
@@ -38,8 +39,8 @@ module.exports = {
                     value: 'Literally rng but for europesim (1-20)',
                     inline: true
                 }
-            );
-            message.channel.send({ embeds: [esimEmbed] });
+            )
+            replyToCommand({ interaction, options: { embeds: [esimEmbed] } })
         } else if (args[0] === 'info') {
             try {
                 const infoEmbed = new MessageEmbed()
@@ -49,7 +50,7 @@ module.exports = {
                     name: 'Bot information',
                     iconURL: 'https://cdn.discordapp.com/icons/846807940727570433/4bbf13c1ce8bfb351fc7eafdc898e7d1.png'
                 })
-                .setColor(message.member.displayHexColor)
+                .setColor((interaction.member as GuildMember).displayHexColor)
                 .setFooter({ text: 'https://ourworldofpixels.com/europesim' })
                 .addFields(
                     {
@@ -66,25 +67,35 @@ module.exports = {
                         name: 'Europesim\'s server member count',
                         value: `${userCount} users + ${botCount} bots = ${memberCount} overall. Online users: ${onlineUsers}`,
                     },
-                );
-                message.channel.send({ embeds: [infoEmbed] });
+                )
+                replyToCommand({ interaction, options: { embeds: [infoEmbed] } })
             } catch (error) {
-                message.react('❌');
-                message.channel.send(`❌ error\n\`\`\`js\n${error}\`\`\``);
+                if (error instanceof Error) {
+                    const errorMessage = `❌ Error!\n\`\`\`js\n${error}\`\`\``
+                    replyToCommand({ interaction, options: { content: errorMessage } })
+                }
             }
         } else if (args[0] === 'roll') {
-            let roll = getRandomArbitrary(1, 20);
+            let roll = getRandomArbitrary(1, 20)
+            const messages = {
+                country: {
+                    20: `\`${args[1]}\` rolled a \`${roll}\` :L`,
+                    other: `\`${args[1]}\` rolled a \`${roll}\``
+                },
+                other: `rolled a \`${roll}\``
+            }
             if (roll === 0) {
-                roll = getRandomArbitrary(1, 20);
-                message.channel.send('got a 0 for some reason, rerolling automatically');
+                roll = getRandomArbitrary(1, 20)
+                const msg = 'got a 0 for some reason, rerolling automatically'
+                replyToCommand({ interaction, options: { content: msg } })
                 if (args[1]) {
-                    if (roll === 20) message.channel.send(`\`${args[1]}\` rolled a \`${roll}\` :L`);
-                    else message.channel.send(`\`${args[1]}\` rolled a \`${roll}\``);
-                } else message.channel.send(`rolled a \`${roll}\``);
+                    if (roll === 20) replyToCommand({ interaction, options: { content: messages.country['20'] } })
+                    else replyToCommand({ interaction, options: { content: messages.country.other } })
+                } else replyToCommand({ interaction, options: { content: messages.other } })
             } else if (args[1]) {
-                if (roll === 20) message.channel.send(`\`${args[1]}\` rolled a \`${roll}\` :L`);
-                else message.channel.send(`\`${args[1]}\` rolled a \`${roll}\``);
-            } else message.channel.send(`rolled a \`${roll}\``);
+                if (roll === 20) replyToCommand({ interaction, options: { content: messages.country['20'] } })
+                else replyToCommand({ interaction, options: { content: messages.country.other } })
+            } else replyToCommand({ interaction, options: { content: messages.other } })
         }
     }
-} as Command;
+} as SlashCommand

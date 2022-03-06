@@ -1,15 +1,18 @@
-import { Message } from "discord.js";
-import { Command } from "../interfaces";
+import { client } from ".."
+import { SlashCommand } from "../modules/interfaces"
+import { CommandHandler } from './-handler'
+const { replyToCommand } = CommandHandler
 
 module.exports = {
     name: 'suggest',
-    aliases: [],
     description: 'send an idea on how to improve the bot (or a bug to fix)',
-    async run(message: Message, args: string[]) {
-        const suggestion = args.join(' ');
-        const emberID = '341123308844220447';
-        const ember = await message.client.users.fetch(emberID);
-        ember.send(`Bot suggestion by ${message.author.tag}:\n\`${suggestion}\`\nSent at ${message.createdAt} in <#${message.channel.id}>`);
-        await message.channel.send('Your suggestion has been sent! thanks');
+    async run({ interaction, args }) {
+        const suggestion = args.join(' ')
+
+        const ember = await interaction.client.users.fetch(client.emberglazeID)
+        ember.send(`Bot suggestion by ${interaction.user.tag}:\n\`${suggestion}\`\nSent at ${interaction.createdAt} in <#${interaction.channel.id}>`)
+
+        const msg = 'Your suggestion has been sent! thanks'
+        replyToCommand({ interaction, options: { content: msg } })
     }
-} as Command
+} as SlashCommand

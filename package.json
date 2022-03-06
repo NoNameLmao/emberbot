@@ -1,25 +1,32 @@
 {
     "name": "emberbot",
-    "version": "3.3.4",
+    "version": "4.0.0",
     "description": "discord bot, does things.",
     "main": "index.ts",
     "scripts": {
-        "start": "ts-node ."
+        "start": "node -r ts-node/register ."
     },
     "dependencies": {
+        "@discordjs/rest": "^0.3.0",
         "@discordjs/voice": "^0.8.0",
         "@types/shelljs": "^0.8.11",
+        "discord-api-types": "^0.27.3",
         "discord.js": "^13.6.0",
         "dotenv": "^14.3.2",
-        "emberutils": "^1.2.0",
+        "emberutils": "^1.3.0",
         "mcdata": "^1.0.9",
-        "node": "^17.4.0",
+        "node": "^17.5.0",
         "node-fetch": "^2.6.7",
         "shelljs": "^0.8.5",
         "smartestchatbot": "^2.0.1",
-        "typescript": "^4.5.5"
+        "ts-node": "^10.6.0",
+        "typescript": "^4.6.2",
+        "winston": "^2.4.4"
     },
     "keywords": [],
     "author": "emberglaze",
-    "license": "ISC"
+    "license": "ISC",
+    "devDependencies": {
+        "@types/superagent": "^4.1.15"
+    }
 }

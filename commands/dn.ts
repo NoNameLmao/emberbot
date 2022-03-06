@@ -1,11 +1,13 @@
-import { Message } from "discord.js";
-import { Command } from "../interfaces";
+import { SlashCommand } from "../modules/interfaces"
+import { CommandHandler } from './-handler'
+const { replyToCommand } = CommandHandler
 
 module.exports = {
     name: 'dn',
     description: 'whats dn?',
     hideFromHelp: true,
-    run(message: Message) {
-        message.channel.send('deez nuts');
+    run({ interaction }) {
+        const msg = 'deez nuts'
+        replyToCommand({ interaction, options: { content: msg } })
     }
-} as Command;
+} as SlashCommand

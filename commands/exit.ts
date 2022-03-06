@@ -1,23 +1,31 @@
-import { Message } from "discord.js";
-import { jsonRead, getRandomInt } from "emberutils";
-import { MiscJSON, Command } from "../interfaces";
+import { jsonRead, getRandomInt } from "emberutils"
+import { client } from ".."
+import { MiscJSON, SlashCommand } from "../modules/interfaces"
+import { CommandHandler } from './-handler'
+const { replyToCommand } = CommandHandler
 
 module.exports = {
     name: 'exit',
-    aliases: ['stop'],
     description: 'shortcut to process.exit(0)',
     hideFromHelp: true,
-    async run(message: Message) {
-        const emberID = '341123308844220447';
-        if (message.author.id === emberID) {
-            await message.channel.send(':sob:');
-            process.exit(0);
+    async run({ interaction }) {
+        const msg = ':sob:'
+        if (interaction.user.id === client.emberglazeID) {
+            replyToCommand({
+                interaction,
+                options: { content: msg }
+            })
+            process.exit(0)
         } else {
-            const { technobladeQuotes } = await jsonRead('./misc.json') as MiscJSON;
+            const { technobladeQuotes } = await jsonRead('./misc.json') as MiscJSON
             function randomTechnoQuote(): string {
-                return technobladeQuotes[getRandomInt(technobladeQuotes.length + 1)];
+                return technobladeQuotes[getRandomInt(technobladeQuotes.length + 1)]
             }
-            message.channel.send(`❌ ${randomTechnoQuote()}`);
+            const msg = `❌ ${randomTechnoQuote()}`
+            replyToCommand({
+                interaction,
+                options: { content: msg }
+            })
         }
     }
-} as Command;
+} as SlashCommand

@@ -1,11 +1,16 @@
-import { Message } from "discord.js";
-import { Command } from "../interfaces";
+import { SlashCommand } from "../modules/interfaces"
+import { CommandHandler } from './-handler'
+const { replyToCommand } = CommandHandler
 
 module.exports = {
     name: 'hi',
-    aliases: ['hello'],
     description: 'Usually used to check if I\'m responding or not, but other than that - useless',
-    async run(message: Message, args: string[]) {
-        await message.channel.send('hi im online what do u want (main branch)');
+    async run({ interaction }) {
+        replyToCommand({
+            interaction,
+            options: {
+                content: 'hi im online what do you want'
+            }
+        })
     }
-} as Command;
+} as SlashCommand

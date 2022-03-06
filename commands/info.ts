@@ -1,23 +1,30 @@
-import { Message, MessageEmbed } from "discord.js";
-import { Command } from "../interfaces";
+import { GuildMember, MessageEmbed } from "discord.js"
+import { SlashCommand } from "../modules/interfaces"
+import { CommandHandler } from './-handler'
+const { replyToCommand } = CommandHandler
 
 module.exports = {
     name: 'info',
     description: 'See information about the bot',
-    async run(message: Message) {
+    async run({ interaction }) {
         const infoEmbed = new MessageEmbed()
         .setTitle('Bot information')
-        .setColor(message.member.displayHexColor)
+        .setColor((interaction.member as GuildMember).displayHexColor)
         .setFields(
             {
                 name: 'Amount of guilds',
-                value: `${message.client.guilds.cache.size}`
+                value: `${interaction.client.guilds.cache.size}`
             },
             {
                 name: 'Bot uptime',
-                value: `${message.client.uptime}`
+                value: `${interaction.client.uptime}`
             }
         )
-        message.channel.send({ embeds: [infoEmbed] });
+        replyToCommand({
+            interaction,
+            options: {
+                embeds: [infoEmbed]
+            }
+        })
     }
-} as Command;
+} as SlashCommand
