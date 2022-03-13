@@ -31,7 +31,9 @@ export class DiscordClient extends Client {
                     }
                 ],
             },
-            allowedMentions: { parse: ['roles', 'users'] }
+            allowedMentions: {
+                parse: ['roles', 'users']
+            }
         })
     }
 

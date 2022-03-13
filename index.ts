@@ -74,15 +74,14 @@ export const commandHandler = new CommandHandler();
                         allowedMentions: { repliedUser: true }
                     })
                     return
-                } catch (error) {
-                    if (error instanceof Error) {
-                        if (error.stack.includes('Message content must be a non-empty string.')) {
-                            message.channel.send('❌ <message content must be a non-empty string>')
-                            return
-                        } else {
-                            message.channel.send(`❌ epic fail \`\`\`js\n${error.stack}\`\`\``)
-                            return
-                        }
+                } catch (e) {
+                    const error = <Error>e
+                    if (error.stack.includes('Message content must be a non-empty string.')) {
+                        message.channel.send('❌ <message content must be a non-empty string>')
+                        return
+                    } else {
+                        message.channel.send(`❌ epic fail \`\`\`js\n${error.stack}\`\`\``)
+                        return
                     }
                 }
             }
@@ -102,7 +101,8 @@ export const commandHandler = new CommandHandler();
                         message.channel.send(tag.text)
                         tag.info.used++
                         await jsonWrite('./tags.json', tagList)
-                    } catch (error) {
+                    } catch (e) {
+                        const error = <Error>e
                         if (error instanceof Error) log('error', `Error accessing a global tag! "${error.message}" (by "${message.author.tag}" in "${message.guild.name}")`)
                     }
                 } else {
@@ -118,8 +118,9 @@ export const commandHandler = new CommandHandler();
                         message.channel.send(tag.text)
                         tag.info.used++
                         await jsonWrite('./tags.json', tagList)
-                    } catch (error) {
-                        if (error instanceof Error) log('info', `Error accessing a user specific tag! "${error.message}" (by "${message.author.tag} in "${message.guild.name})`)
+                    } catch (e) {
+                        const error = <Error>e
+                        log('info', `Error accessing a user specific tag! "${error.message}" (by "${message.author.tag} in "${message.guild.name})`)
                     }
                 }
             }
@@ -133,10 +134,22 @@ export const commandHandler = new CommandHandler();
                 })
             }
         })
-        await commandHandler.updateSlashCommands(client)
-        await europesim.guildResetSlashCommands(client)
+        // await commandHandler.updateSlashCommands(client)
+        // await europesim.guildResetSlashCommands(client)
+        const guilds = client.guilds.cache
+        for await (const guildCacheCollectionEntry of guilds) {
+            const guild = guildCacheCollectionEntry[1]
+            await commandHandler.updateGuildSlashCommands(client, guild.id)
+        }
         client.on('interactionCreate', interaction => {
             if (interaction.isCommand()) commandHandler.handleCommand(interaction)
+        })
+        client.on('guildCreate', guild => {
+            commandHandler.updateGuildSlashCommands(client, guild.id).then(() => {
+                log('info', 'Successfully updated slash commands for a guild:')
+                log('info', `  · Guild name: ${guild.name}`)
+                log('info', `  · Guild id: ${guild.id}`)
+            })
         })
         async function updateDate() {
             europesim.updateDate()

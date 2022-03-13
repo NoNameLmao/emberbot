@@ -11,7 +11,7 @@ const slashCommandOptions = new SlashCommandBuilder()
 .setDescription(description)
 .addNumberOption(
     new SlashCommandNumberOption()
-    .setName('quoteNumber')
+    .setName('quote_number')
     .setDescription('You can specify the number of the quote you want')
     .setRequired(false)
 )
@@ -22,9 +22,8 @@ module.exports = {
     async run(interaction, args) {
         const { technobladeQuotes } = await jsonRead('./misc.json') as MiscJSON
         let number: number
-        if (args[0]) number = parseInt(args[0] as string, 10)
+        if (args.getNumber('quote_number')) number = args.getNumber('quote_number')
         else number = getRandomInt(technobladeQuotes.length + 1)
-        technobladeQuotes[getRandomInt(technobladeQuotes.length + 1)]
         const msg = (
             `Quote number **${number}**:\n` +
             `**${technobladeQuotes[number]}**`

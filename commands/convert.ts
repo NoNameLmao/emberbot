@@ -12,7 +12,7 @@ const slashCommandOptions = new SlashCommandBuilder()
 .setDescription(description)
 .addSubcommandGroup(
     new SlashCommandSubcommandGroupBuilder()
-    .setName('convertOption')
+    .setName('convert_option')
     .setDescription('Convert * to *')
     .addSubcommand(
         new SlashCommandSubcommandBuilder()

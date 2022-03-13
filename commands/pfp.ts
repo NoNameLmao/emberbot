@@ -11,7 +11,7 @@ const slashCommandOptions = new SlashCommandBuilder()
 .setDescription(description)
 .addUserOption(
     new SlashCommandUserOption()
-    .setName('guildMember')
+    .setName('guild_member')
     .setDescription('The guild member you want to display the profile picture of.')
     .setRequired(false)
 )
@@ -20,7 +20,7 @@ module.exports = {
     name, description,
     slashCommandOptions,
     async run(interaction, args) {
-        if (args.getUser('guildMember')) {
+        if (args.getUser('guild_member')) {
             const user = args.getUser('guildMember', false)
             const pfp = user.displayAvatarURL({ dynamic: true, format: 'png' })
             const msg = pfp
