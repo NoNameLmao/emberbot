@@ -112,7 +112,14 @@ export const commandHandler = new CommandHandler();
             })
         }
         client.on('interactionCreate', interaction => {
-            if (interaction.isCommand()) commandHandler.handleCommand(interaction)
+            if (interaction.isCommand()) {
+                log('info', 'Recieved interaction:')
+                log('info', `  · Command: true`)
+                log('info', `    - Name: ${interaction.commandName}`)
+                log('info', `    - Author: ${interaction.user.tag}`)
+                log('info', `    - Guild: ${interaction.guild.name}`)
+                commandHandler.handleCommand(interaction)
+            }
         })
         client.on('guildCreate', guild => {
             commandHandler.updateGuildSlashCommands(client, guild.id).then(() => {
