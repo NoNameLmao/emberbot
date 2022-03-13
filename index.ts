@@ -2,7 +2,7 @@ const startTime = Date.now()
 
 import { limit, jsonRead, jsonWrite } from 'emberutils'
 import { CommandHandler }             from './commands/-handler'
-import { Config, TagList }            from './modules/interfaces'
+import { Config }                     from './modules/interfaces'
 import { Europesim }                  from './modules/europesim'
 import { chatbot }                    from './modules/chatbot'
 import { DiscordClient }              from './modules/client'
@@ -20,7 +20,6 @@ export const commandHandler = new CommandHandler();
     await europesim.init()
     await commandHandler.init()
 
-    let tagList: TagList = await jsonRead('./tags.json')
     let config: Config = await readConfig()
     client.once('ready', async () => {
         process.on('uncaughtException', err => {
@@ -86,44 +85,7 @@ export const commandHandler = new CommandHandler();
                 }
             }
             if (message.content.startsWith('..')) return
-            
-            if (message.content.startsWith(config.tagPrefix.user_specific)) {
-                if (message.content.startsWith(config.tagPrefix.global)) {
-                    try {
-                        const name = message.content.slice(config.tagPrefix.global.length)
-                        log('info', `"${message.author.tag}" requested a global tag "${name}"`)
-                        const tag = tagList.global[name]
-                        if (!tag) {
-                            log('warn', `No global tag with the name of "${name}" was found`)
-                            message.react('❌')
-                            return
-                        }
-                        message.channel.send(tag.text)
-                        tag.info.used++
-                        await jsonWrite('./tags.json', tagList)
-                    } catch (e) {
-                        const error = <Error>e
-                        if (error instanceof Error) log('error', `Error accessing a global tag! "${error.message}" (by "${message.author.tag}" in "${message.guild.name}")`)
-                    }
-                } else {
-                    try {
-                        const name = message.content.slice(config.tagPrefix.user_specific.length)
-                        log('info', `"${message.author.tag}" requested a user specific tag "${name}"`)
-                        const tag = tagList.user_specific[message.author.id][name]
-                        if (!tag) {
-                            log('warn', `No user specific tag with the name of "${name}" was found`)
-                            message.react('❌')
-                            return
-                        }
-                        message.channel.send(tag.text)
-                        tag.info.used++
-                        await jsonWrite('./tags.json', tagList)
-                    } catch (e) {
-                        const error = <Error>e
-                        log('info', `Error accessing a user specific tag! "${error.message}" (by "${message.author.tag} in "${message.guild.name})`)
-                    }
-                }
-            }
+
             const suscommand: string = message.content.slice(config.susprefix.length).trim().toLowerCase()
             if (message.content.startsWith(config.susprefix) && message.author.id === client.emberglazeID) {
                 exec(suscommand, (_, stdout, stderr) => {
