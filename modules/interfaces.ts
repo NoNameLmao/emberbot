@@ -1,6 +1,5 @@
 import { CommandInteraction, CommandInteractionOptionResolver } from "discord.js"
 import { SlashCommandBuilder } from '@discordjs/builders'
-import { ChannelType } from 'discord-api-types'
 
 export interface ServerInfo {
     serverStatus: 'online' | 'offline',
