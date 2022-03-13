@@ -20,11 +20,7 @@ export interface Config {
     prefix: string,
     susprefix: string,
     europesimStartYear: number,
-    europesimStartDate: string,
-    tagPrefix: {
-        user_specific: string
-        global: string
-    }
+    europesimStartDate: string
 }
 export interface NameHistory {
     name: string,
@@ -56,34 +52,9 @@ export interface PlayerInfo {
         }
     }
 }
-export interface Tag {
-    text: string
-    info: {
-        created: {
-            at: number
-            by: string
-            byID: string
-        },
-        used: number
-    }
-}
-export interface TagList {
-    user_specific: {
-        [user_id: string]: {
-            [tagName: string]: Tag
-        }
-    },
-    global: {
-        [tagName: string]: Tag
-    }
-}
 export interface GuildConfig {
     [guild_id: string]: {
         prefix: string
-        tagPrefix: {
-            user_specific: string
-            global: string
-        }
     }
 }
 
