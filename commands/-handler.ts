@@ -7,8 +7,7 @@ import fs = require('fs/promises')
 export class CommandHandler {
     commands: SlashCommand[] = []
     files: string[]
-    private initialized = false
-
+    initialized = false
     async init() {
         log('info', 'Reading "commands" folder...')
         this.files = await fs.readdir('./commands/')
@@ -19,7 +18,6 @@ export class CommandHandler {
             if (!command.name) continue
             this.commands.push(command)
         }
-
         this.initialized = true
     }
     static async importCommand(fileName: string) {
@@ -37,43 +35,30 @@ export class CommandHandler {
     }
     updateSlashCommands(client: Client) {
         if (!this.initialized) throw new ErrorNotInitialized()
-
         return new Promise<void>(async (resolve, reject) => {
             log('info', 'Started refreshing global slash commands')
-            await client.application.commands.set(this.commands).catch(error => {
-                if (error instanceof Error) {
-                    log('error', 'Global slash command update failed!')
-                    log('error', `  · Error message: ${error.message}`)
-                    this.commands.forEach(command => console.log(command))
-                    reject(error)
-                }
+            await client.application.commands.set(this.commands).catch(e => {
+                const error = <Error>e
+                log('error', 'Global slash command update failed!')
+                log('error', `  · Error message: ${error.message}`)
+                this.commands.forEach(command => console.log(command))
+                reject(error)
             })
             log('info', 'Finished refreshing global slash commands')
             resolve()
         })
     }
-    async updateGuildSlashCommands(client: Client, guildID: string) {
+    updateGuildSlashCommands(client: Client, guildID: string) {
         if (!this.initialized) throw new ErrorNotInitialized()
-
-        return new Promise<void>(async (resolve, reject) => {
+        return new Promise<void>(async resolve => {
             log('info', 'Started updating guild slash commands')
             const guild = client.guilds.cache.get(guildID)
-            await guild.commands.set(this.commands).catch(error => {
-                if (error instanceof Error) {
-                    log('error', 'Guild slash command update failed!')
-                    log('error', '  · Guild information:')
-                    log('error', `    - Name: ${guild.name}`)
-                    log('error', `    - ID: ${guild.id}`)
-                    log('error', '  · Error:')
-                    log('error', `    - Message: ${error.message}`)
-                    reject(error)
-                }
-            })
+            await guild.commands.set(this.commands)
             log('info', 'Finished refreshing guild slash commands')
             resolve()
         })
     }
-    async handleCommand(interaction: CommandInteraction) {
+    handleCommand(interaction: CommandInteraction) {
         if (!this.initialized) throw new ErrorNotInitialized()
         const args = interaction.options
         const commandInMessage = interaction.commandName

@@ -101,7 +101,15 @@ export const commandHandler = new CommandHandler();
         const guilds = client.guilds.cache
         for await (const guildCacheCollectionEntry of guilds) {
             const guild = guildCacheCollectionEntry[1]
-            await commandHandler.updateGuildSlashCommands(client, guild.id)
+            await commandHandler.updateGuildSlashCommands(client, guild.id).catch(e => {
+                const error = <Error>e
+                log('error', 'Guild slash command update failed!')
+                log('error', '  · Guild information:')
+                log('error', `    - Name: ${guild.name}`)
+                log('error', `    - ID: ${guild.id}`)
+                log('error', '  · Error:')
+                log('error', `    - Message: ${error.message}`)
+            })
         }
         client.on('interactionCreate', interaction => {
             if (interaction.isCommand()) commandHandler.handleCommand(interaction)
@@ -111,6 +119,14 @@ export const commandHandler = new CommandHandler();
                 log('info', 'Successfully updated slash commands for a guild:')
                 log('info', `  · Guild name: ${guild.name}`)
                 log('info', `  · Guild id: ${guild.id}`)
+            }).catch(e => {
+                const error = <Error>e
+                log('error', 'Guild slash command update failed!')
+                log('error', '  · Guild information:')
+                log('error', `    - Name: ${guild.name}`)
+                log('error', `    - ID: ${guild.id}`)
+                log('error', '  · Error:')
+                log('error', `    - Message: ${error.message}`)
             })
         })
         async function updateDate() {
