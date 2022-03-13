@@ -45,12 +45,12 @@ module.exports = {
     slashCommandOptions,
     async run(interaction, args) {
         const subcommand = args.getSubcommand()
-        if (subcommand == 'maxOnly') {
+        if (subcommand == 'max_only') {
             const max = args.getNumber('maxValue', true)
             const randomNumber = getRandomInt(max)
             const msg = `The number is: ${randomNumber}`
             replyToCommand({ interaction, options: { content: msg } })
-        } else if (subcommand == 'minAndMax') {
+        } else if (subcommand == 'min_and_max') {
             const min = args.getNumber('minValue', true)
             const max = args.getNumber('maxValue', true)
             const randomNumber = getRandomArbitrary(min, max)
