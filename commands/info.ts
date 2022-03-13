@@ -6,7 +6,7 @@ const { replyToCommand } = CommandHandler
 module.exports = {
     name: 'info',
     description: 'See information about the bot',
-    async run({ interaction }) {
+    async run(interaction) {
         const infoEmbed = new MessageEmbed()
         .setTitle('Bot information')
         .setColor((interaction.member as GuildMember).displayHexColor)

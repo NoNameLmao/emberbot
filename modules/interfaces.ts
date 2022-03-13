@@ -1,4 +1,5 @@
-import { CommandInteraction } from "discord.js"
+import { CommandInteraction, CommandInteractionOptionResolver } from "discord.js"
+import { SlashCommandBuilder } from '@discordjs/builders'
 import { ChannelType } from 'discord-api-types'
 
 export interface ServerInfo {
@@ -96,25 +97,9 @@ export interface SlashCommand {
     name: string
     description: string
     hideFromHelp?: boolean
-    run({ args, interaction }: { args: (string | number | boolean)[], interaction?: CommandInteraction }): any
-    slashCommandOptions?: SlashCommandOptions[]
+    run(interaction: CommandInteraction, args?: Omit<CommandInteractionOptionResolver, "getMessage" | "getFocused">): any
+    slashCommandOptions?: SlashCommandBuilder
 }
-export interface SlashCommandOptions {
-    type: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11
-    name: string
-    description: string
-    autocomplete?: boolean
-    required?: boolean
-    choices?: {
-        name: string
-        value: string | number
-    }[]
-    options?: SlashCommandOptions
-    channelTypes?: ChannelType[] | number[]
-    minValue?: number
-    maxValue?: number
-}
-
 export interface ChatBotApiResponse {
     message: string
     error?: boolean

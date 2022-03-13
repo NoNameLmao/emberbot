@@ -1,31 +1,35 @@
 import { User } from "discord.js"
 import { SlashCommand } from "../modules/interfaces"
+import { SlashCommandBuilder, SlashCommandUserOption } from '@discordjs/builders'
 import { CommandHandler } from './-handler'
 const { replyToCommand } = CommandHandler
 
+const name = 'pfp'
+const description = 'Display someone\'s (or yours) profile picture.'
+const slashCommandOptions = new SlashCommandBuilder()
+.setName(name)
+.setDescription(description)
+.addUserOption(
+    new SlashCommandUserOption()
+    .setName('guildMember')
+    .setDescription('The guild member you want to display the profile picture of.')
+    .setRequired(false)
+)
+
 module.exports = {
-    name: 'pfp',
-    description: 'doesnt every discord bot on the planet have this feature? 🤣',
-    slashCommandOptions: [
-        {
-            name: 'guild_member',
-            description: 'The guild member you want to get the profile picture of (Ignore for your own profile picture)',
-            type: 6,
-            required: false
-        }
-    ],
-    async run({ interaction }) {
-        try {
-            let user: User
-            let pfp: string
-            if (interaction) {
-                user = interaction.options.getMentionable('Guild member') as User
-                pfp = user.displayAvatarURL({ dynamic: true, format: 'png' })
-                const msg = `there you go\n${pfp}`
-                replyToCommand({ interaction, options: { content: msg } })
-            }
-        } catch (error) {
-            replyToCommand({ interaction, options: { content: `❌ Error!\n\`\`\`${error}\`\`\`` } })
+    name, description,
+    slashCommandOptions,
+    async run(interaction, args) {
+        if (args.getUser('guildMember')) {
+            const user = args.getUser('guildMember', false)
+            const pfp = user.displayAvatarURL({ dynamic: true, format: 'png' })
+            const msg = pfp
+            replyToCommand({ interaction, options: { content: msg } })
+        } else {
+            const user = interaction.user
+            const pfp = user.displayAvatarURL({ dynamic: true, format: 'png' })
+            const msg = pfp
+            replyToCommand({ interaction, options: { content: msg } })
         }
     }
 } as SlashCommand

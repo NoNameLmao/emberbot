@@ -2,7 +2,10 @@ import fetch from 'node-fetch'
 import { client } from '../index'
 import { log } from './logger'
 
-export function botsmoeFetchGuildCount() {
+/**
+ * Send the bot's server count to bots.moe
+ */
+export function botsmoeFetchGuildCount(): Promise<any> {
     log('info', 'Fetching bots.moe...')
     return new Promise(async (resolve, reject) => {
         try {

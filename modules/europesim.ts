@@ -27,9 +27,10 @@ export class Europesim {
                 this.initialized = true
                 log('info', 'Initialized Europesim successfully')
                 resolve()
-            } catch (err) {
+            } catch (e) {
+                const error = <Error>e
                 log('error', 'Initializing Europesim failed')
-                reject(err as Error)
+                reject(error)
             }
         })
     }
@@ -38,8 +39,9 @@ export class Europesim {
         try {
             this.currentYear = Math.floor(this.startYear + (Date.now() - this.startDate) / (1000 * 3600 * 24))
             this.currentMonth = this.months[Math.floor(new Date().getUTCHours() / 2)]
-        } catch (err) {
-            throw err as Error
+        } catch (e) {
+            const error = <Error>e
+            throw error
         }
     }
     async guildUpdateSlashCommands(client: DiscordClient) {

@@ -47,7 +47,7 @@ export class DiscordClient extends Client {
                 this.europesim = {
                     ...this.europesimIds,
                     guild, dateChannel,
-                    joinDateChannel: () => {
+                    joinDateChannel() {
                         return this._voice.joinVoiceChannel({
                             guildId: this.europesimIds.guildID,
                             channelId: this.europesimIds.dateChannelID,

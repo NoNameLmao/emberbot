@@ -5,7 +5,7 @@ const { replyToCommand } = CommandHandler
 module.exports = {
     name: 'hi',
     description: 'Usually used to check if I\'m responding or not, but other than that - useless',
-    async run({ interaction }) {
+    async run(interaction) {
         replyToCommand({
             interaction,
             options: {

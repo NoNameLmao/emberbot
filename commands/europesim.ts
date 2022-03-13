@@ -2,12 +2,33 @@ import { GuildMember, MessageEmbed } from 'discord.js'
 import { getRandomArbitrary, jsonRead } from 'emberutils'
 import { Config, SlashCommand } from '../modules/interfaces'
 import { CommandHandler } from './-handler'
+import { SlashCommandBuilder, SlashCommandSubcommandGroupBuilder, SlashCommandSubcommandBuilder } from '@discordjs/builders'
 const { replyToCommand } = CommandHandler
+
+const slashCommandOptions = new SlashCommandBuilder()
+.setName('europesim')
+.setDescription('Command category for Europesim. Run this command for more information.')
+.addSubcommandGroup(
+    new SlashCommandSubcommandGroupBuilder()
+    .setName('command')
+    .setDescription('Europesim category command')
+    .addSubcommand(
+        new SlashCommandSubcommandBuilder()
+        .setName('info')
+        .setDescription('Display information')
+    )
+    .addSubcommand(
+        new SlashCommandSubcommandBuilder()
+        .setName('roll')
+        .setDescription('rng but for wars (1-20)')
+    )
+)
 
 module.exports = {
     name: 'europesim',
     description: 'Command category for Europesim. Run this command for more information.',
-    async run({ interaction, args }) {
+    slashCommandOptions,
+    async run(interaction, args) {
         const config = await jsonRead('./config.json') as Config,
             nowUTC = new Date().getUTCHours(),
             europesimStartDate = Date.parse(config.europesimStartDate),
@@ -21,30 +42,12 @@ module.exports = {
             userCount = guild.members.cache.filter(member => !member.user.bot).size,
             memberCount = guild.memberCount,
             botCount = memberCount - userCount,
-            onlineUsers = guild.members.cache.filter(member => member.presence?.status !== 'offline' && !member.user.bot).size
-        if (!args[0]) {
-            const esimEmbed = new MessageEmbed()
-            .setTitle('Command category: Europesim')
-            .setDescription(`Usage: ${config.prefix}esim (command)\n<> = Optional argument(s)`)
-            .setColor((interaction.member as GuildMember).displayHexColor)
-            .setFooter({ text: 'https://ourworldofpixels.com/europesim' })
-            .addFields(
-                {
-                    name: 'info',
-                    value: 'Shows information, duh',
-                    inline: true
-                },
-                {
-                    name: 'roll <country>',
-                    value: 'Literally rng but for europesim (1-20)',
-                    inline: true
-                }
-            )
-            replyToCommand({ interaction, options: { embeds: [esimEmbed] } })
-        } else if (args[0] === 'info') {
+            onlineUsers = guild.members.cache.filter(member => member.presence?.status !== 'offline' && !member.user.bot).size,
+            subcommand = args.getSubcommand(true)
+        if (subcommand == 'info') {
             try {
                 const infoEmbed = new MessageEmbed()
-                .setTitle('esim info')
+                .setTitle('europesim info')
                 .setDescription('Europesim information')
                 .setAuthor({
                     name: 'Bot information',
@@ -75,7 +78,7 @@ module.exports = {
                     replyToCommand({ interaction, options: { content: errorMessage } })
                 }
             }
-        } else if (args[0] === 'roll') {
+        } else if (subcommand == 'roll') {
             let roll = getRandomArbitrary(1, 20)
             const messages = {
                 country: {

@@ -1,21 +1,25 @@
 import { jsonRead, getRandomInt } from "emberutils"
 import { MiscJSON, SlashCommand } from "../modules/interfaces"
+import { SlashCommandBuilder, SlashCommandNumberOption } from '@discordjs/builders'
 import { CommandHandler } from './-handler'
 const { replyToCommand } = CommandHandler
 
+const name = 'quote'
+const description = 'send a random technoblade quote because he never dies'
+const slashCommandOptions = new SlashCommandBuilder()
+.setName(name)
+.setDescription(description)
+.addNumberOption(
+    new SlashCommandNumberOption()
+    .setName('quoteNumber')
+    .setDescription('You can specify the number of the quote you want')
+    .setRequired(false)
+)
+
 module.exports = {
-    name: 'quote',
-    description: 'send a random technoblade quote because he never dies',
-    slashCommandOptions: [
-        {
-            name: 'quote_number',
-            description: 'If you wanna look at a specific quote, you can specify which quote you want',
-            type: 10,
-            autocomplete: false,
-            required: false
-        }
-    ],
-    async run({ interaction, args }) {
+    name, description,
+    slashCommandOptions,
+    async run(interaction, args) {
         const { technobladeQuotes } = await jsonRead('./misc.json') as MiscJSON
         let number: number
         if (args[0]) number = parseInt(args[0] as string, 10)

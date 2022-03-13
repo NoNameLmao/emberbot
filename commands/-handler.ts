@@ -3,7 +3,6 @@ import { CommandInteraction, Client, InteractionReplyOptions } from 'discord.js'
 import { SlashCommand } from '../modules/interfaces'
 import { log } from '../modules/logger'
 import fs = require('fs/promises')
-import { client } from '..'
 
 export class CommandHandler {
     commands: SlashCommand[] = []
@@ -11,9 +10,9 @@ export class CommandHandler {
     private initialized = false
 
     async init() {
-        log('info', 'Reading "commands" folder')
+        log('info', 'Reading "commands" folder...')
         this.files = await fs.readdir('./commands/')
-        log('info', 'Starting to import all commands...')
+        log('info', 'Importing all commands...')
         for await (const file of this.files) {
             const command = await CommandHandler.importCommand(file)
             if (typeof command === 'undefined') continue
@@ -76,8 +75,7 @@ export class CommandHandler {
     }
     async handleCommand(interaction: CommandInteraction) {
         if (!this.initialized) throw new ErrorNotInitialized()
-
-        const args = interaction.options.data.map(option => option.value)
+        const args = interaction.options
         const commandInMessage = interaction.commandName
         const matchingSlashCommand = this.commands.filter(command => command.name == commandInMessage)[0]
         if (!matchingSlashCommand) {
@@ -86,7 +84,7 @@ export class CommandHandler {
             return
         }
         try {
-            matchingSlashCommand.run({ interaction, args })
+            matchingSlashCommand.run(interaction, args)
         } catch (error) {
             const msg = `❌ oh... an error occured while running this command. please contact emberglaze for help and a poop code fix`
             CommandHandler.replyToCommand({ interaction, options: { content: msg } })

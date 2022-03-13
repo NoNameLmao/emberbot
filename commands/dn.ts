@@ -6,7 +6,7 @@ module.exports = {
     name: 'dn',
     description: 'whats dn?',
     hideFromHelp: true,
-    run({ interaction }) {
+    run(interaction) {
         const msg = 'deez nuts'
         replyToCommand({ interaction, options: { content: msg } })
     }

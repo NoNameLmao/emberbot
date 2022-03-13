@@ -2,23 +2,27 @@ import { GuildMember, MessageEmbed } from "discord.js"
 import { getRandomInt, jsonRead, limit, sleep } from "emberutils"
 import { client } from ".."
 import { MiscJSON, SlashCommand } from "../modules/interfaces"
+import { SlashCommandBuilder, SlashCommandStringOption } from '@discordjs/builders'
 import { CommandHandler } from './-handler'
 const { replyToCommand } = CommandHandler
 
+const name = 'eval'
+const description = 'make ember debugging code easier (run js code)'
+const slashCommandOptions = new SlashCommandBuilder()
+.setName(name)
+.setDescription(description)
+.addStringOption(
+    new SlashCommandStringOption()
+    .setName('code')
+    .setDescription('Valid javascript code')
+)
+
 module.exports = {
-    name: 'eval',
-    description: 'make ember debugging code easier (run js code)',
-    slashCommandOptions: [
-        {
-            name: 'code',
-            description: 'Valid JavaScript code',
-            type: 3,
-            required: true
-        }
-    ],
+    name, description,
+    slashCommandOptions,
     hideFromHelp: true,
-    async run({ interaction, args }) {
-        const code = args.join(' ')
+    async run(interaction, args) {
+        const code = args.getString('code')
         let evalEmbed = new MessageEmbed()
         .setTitle('eval result')
         .addField('Input', `\`\`\`js\n${code}\`\`\``)

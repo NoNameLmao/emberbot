@@ -1,26 +1,60 @@
 import { getRandomInt, getRandomArbitrary, jsonRead } from "emberutils"
 import { Config, SlashCommand } from "../modules/interfaces"
+import { SlashCommandBuilder, SlashCommandSubcommandGroupBuilder, SlashCommandSubcommandBuilder, SlashCommandNumberOption } from '@discordjs/builders'
 import { CommandHandler } from './-handler'
 const { replyToCommand } = CommandHandler
 
+const name = 'rng'
+const description = 'Random number generator'
+const slashCommandOptions = new SlashCommandBuilder()
+.setName(name)
+.setDescription(description)
+.addSubcommandGroup(
+    new SlashCommandSubcommandGroupBuilder()
+    .setName('values')
+    .setDescription('Values you want to provide to the generator')
+    .addSubcommand(
+        new SlashCommandSubcommandBuilder()
+        .setName('maxOnly')
+        .setDescription('Will generate a value between 0 and "max"')
+        .addNumberOption(
+            new SlashCommandNumberOption()
+            .setName('maxValue')
+            .setDescription('Maximal value to generate')
+        )
+    )
+    .addSubcommand(
+        new SlashCommandSubcommandBuilder()
+        .setName('minAndMax')
+        .setDescription('Specify minimal and maximal values')
+        .addNumberOption(
+            new SlashCommandNumberOption()
+            .setName('minValue')
+            .setDescription('Minimal value to generate')
+        )
+        .addNumberOption(
+            new SlashCommandNumberOption()
+            .setName('maxValue')
+            .setDescription('Maximal value to generate')
+        )
+    )
+)
+
 module.exports = {
-    name: 'rng',
-    description: 'random number generator',
-    async run({ interaction, args }) {
-        const { prefix } = await jsonRead('./config.json') as Config
-        const max = (!isNaN(parseInt(args[1] as string)) ? parseInt(args[1] as string) : parseInt(args[0] as string))
-        const min = (max === parseInt(args[1] as string) ? parseInt(args[0] as string) : undefined)
-        if (args.filter(arg => !isNaN(parseInt(arg as string))).length === 0) {
-            const msg = `you didnt provide any numbers :gun:\nactual usage: \`${prefix}rng (number) <number>\``
+    name, description,
+    slashCommandOptions,
+    async run(interaction, args) {
+        const subcommand = args.getSubcommand()
+        if (subcommand == 'maxOnly') {
+            const max = args.getNumber('maxValue', true)
+            const randomNumber = getRandomInt(max)
+            const msg = `The number is: ${randomNumber}`
             replyToCommand({ interaction, options: { content: msg } })
-        }
-        else if (max === parseInt(args[0] as string)) {
-            const result = getRandomInt(max)
-            const msg = `random integer generator: ${result}`
-            replyToCommand({ interaction, options: { content: msg } })
-        } else if (max === parseInt(args[1] as string)) {
-            const result = getRandomArbitrary(min, max)
-            const msg = `random arbitrary generator: ${result}`
+        } else if (subcommand == 'minAndMax') {
+            const min = args.getNumber('minValue', true)
+            const max = args.getNumber('maxValue', true)
+            const randomNumber = getRandomArbitrary(min, max)
+            const msg = `The number is: ${randomNumber}`
             replyToCommand({ interaction, options: { content: msg } })
         }
     }

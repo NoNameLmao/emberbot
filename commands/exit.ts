@@ -8,7 +8,7 @@ module.exports = {
     name: 'exit',
     description: 'shortcut to process.exit(0)',
     hideFromHelp: true,
-    async run({ interaction }) {
+    async run(interaction) {
         const msg = ':sob:'
         if (interaction.user.id === client.emberglazeID) {
             replyToCommand({

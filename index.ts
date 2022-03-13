@@ -59,15 +59,18 @@ export const commandHandler = new CommandHandler();
                         return
                     }
                     message.channel.sendTyping()
-                    let msg = await chatbot.chat({
-                        message: message.content,
-                        name: message.author.username,
-                        user: message.author.username,
-                        language: 'auto'
-                    })
+
+                    let msg = (
+                        await chatbot.chat({
+                            message: message.content,
+                            name: message.author.username,
+                            user: message.author.username,
+                            language: 'auto'
+                        })
+                    ).toLowerCase().replace(/\\/gm, '')
+
                     message.reply({
-                        content: msg.toLowerCase()
-                        .replace('\'', ''),
+                        content: msg,
                         allowedMentions: { repliedUser: true }
                     })
                     return
@@ -136,16 +139,16 @@ export const commandHandler = new CommandHandler();
             if (interaction.isCommand()) commandHandler.handleCommand(interaction)
         })
         async function updateDate() {
-            try {
-                europesim.updateDate()
-                if (client.europesim.dateChannel.name !== europesim.currentDate.formatted) {
-                    log('warn', `Current europesim date doesn't match with the date channel name, updating it to "${europesim.currentDate.formatted}"`)
-                    await client.europesim.dateChannel.setName(europesim.currentDate.formatted)
-                    log('info', 'Successfully updated date channel name')
-                } else return
-            } catch (error) {
-                log('error', `Error updating date channel name!\n${(error as Error).message}`)
-            }
+            europesim.updateDate()
+            if (client.europesim.dateChannel.name !== europesim.currentDate.formatted) {
+                log('warn', `Current europesim (${europesim.currentDate.formatted}) date doesn't match with the current date channel name (${client.europesim.dateChannel.name}), updating it...`)
+                await client.europesim.dateChannel.setName(europesim.currentDate.formatted).catch(e => {
+                    const error = <Error>e
+                    log('error', 'There was an error updating the date channel name!')
+                    log('error', `  · Error message: ${error.message}`)
+                })
+                log('info', 'Successfully updated date channel name')
+            } else return
         }
         setInterval(updateDate, 10000)
     })

@@ -1,39 +1,38 @@
 import { GuildMember, MessageEmbed } from "discord.js"
 import { getRandomInt, jsonRead } from "emberutils"
 import { Config, MiscJSON, PlayerInfo, ServerInfo, SlashCommand } from "../modules/interfaces"
+import { SlashCommandBuilder, SlashCommandSubcommandGroupBuilder, SlashCommandSubcommandBuilder } from '@discordjs/builders'
 import mcdata = require('mcdata')
 import { CommandHandler } from './-handler'
 const { replyToCommand } = CommandHandler
 
+const name = 'minecraft'
+const description = 'Categorised minecraft commands.'
+const slashCommandOptions = new SlashCommandBuilder()
+.setName(name)
+.setDescription(description)
+.addSubcommandGroup(
+    new SlashCommandSubcommandGroupBuilder()
+    .setName('command')
+    .setDescription('Minecraft category commands')
+    .addSubcommand(
+        new SlashCommandSubcommandBuilder()
+        .setName('serverinfo')
+        .setDescription('Ping a Minecraft Java Edition server for it\'s information')
+    )
+    .addSubcommand(
+        new SlashCommandSubcommandBuilder()
+        .setName('playerinfo')
+        .setDescription('Display information about a Minecraft Java Edition player')
+    )
+)
+
 module.exports = {
-    name: 'minecraft',
-    description: 'Categorised minecraft commands. Run this command for more information.',
-    async run({ interaction, args }) {
-        const { prefix } = await jsonRead('./config.json') as Config
-        const { technobladeQuotes } = await jsonRead('./misc.json') as MiscJSON
-        function randomTechnoQuote(): string {
-            return technobladeQuotes[getRandomInt(technobladeQuotes.length + 1)]
-        }
-        if (!args[0]) {
-            const mcEmbed = new MessageEmbed()
-            .setTitle('Command category: Minecraft')
-            .setDescription(`Usage: ${prefix}mc (command)`)
-            .setColor((interaction.member as GuildMember).displayHexColor)
-            .setFooter({ text: `${randomTechnoQuote()}\n- Technoblade` })
-            .addFields(
-                {
-                    name: 'serverinfo OR server OR sinfo (Minecraft Server IP)',
-                    value: 'Ping a minecraft server and return information about the server',
-                    inline: true,
-                }
-            )
-            replyToCommand({
-                interaction,
-                options: {
-                    embeds: [mcEmbed]
-                }
-            })
-        } else if (['serverinfo', 'server', 'sinfo'].includes(args[0] as string)) {
+    name, description,
+    slashCommandOptions,
+    async run(interaction, args) {
+        const subcommand = args.getSubcommand(true)
+        if (subcommand == 'serverinfo') {
             try {
                 replyToCommand({ interaction, options: { content: 'Pinging minecraft server...' } })
                 const serverinfo: ServerInfo = await mcdata.serverStatus(args[1])
@@ -52,7 +51,7 @@ module.exports = {
                 const errorMessage = `❌ Error while running this command:\n\`${error}\``
                 replyToCommand({ interaction, options: { content: errorMessage } })
             }
-        } else if (['playerinfo', 'pinfo', 'playerstatus', 'pstatus'].includes(args[0] as string)) {
+        } else if (subcommand == 'playerinfo') {
             try {
                 const playerInfo: PlayerInfo = await mcdata.playerStatus(args[1])
                 const playerInfoEmbed = new MessageEmbed()
