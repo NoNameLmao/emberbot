@@ -3,13 +3,9 @@
 pub struct Snowflake {
     /// Unix timestamp
     pub timestamp: u64,
-    /// Worker that created this Snowflake, internal
     pub worker_id: u64,
-    /// Process that created this Snowflake, internal
     pub process_id: u64,
-    /// Increment of this Snowflake, internal
     pub increment: u64,
-    /// Raw snowflake
     pub flake: u64,
 }
 impl Snowflake {

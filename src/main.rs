@@ -205,27 +205,18 @@ impl EventHandler for Handler {
                     })
             })
         })
-        .await;
-
-        println!("I created the following global slash command: {:#?}", global_commands);
+        .await.expect("Error with global commands");
+        println!("{} global commands have been registered", global_commands.len())
     }
 }
 
 #[tokio::main]
 async fn main() {
-    // Configure the client with your Discord bot token in the environment.
     let token: String = env::var("DISCORD_TOKEN").expect("Expected `DISCORD_TOKEN` as an environment variable. Bot token missing.");
-
-    // Build our client.
     let mut client = Client::builder(token, GatewayIntents::empty())
         .event_handler(Handler)
         .await
         .expect("Error creating client");
-
-    // Finally, start a single shard, and start listening to events.
-    //
-    // Shards will automatically attempt to reconnect, and will perform
-    // exponential backoff until it reconnects.
     if let Err(why) = client.start().await {
         println!("Client error: {:?}", why);
     }
