@@ -132,13 +132,11 @@ impl EventHandler for Handler {
                     .name("welcome")
                     .name_localized("de", "begrüßen")
                     .description("Welcome a user")
-                    .description_localized("de", "Einen Nutzer begrüßen")
                     .create_option(|option| {
                         option
                             .name("user")
                             .name_localized("de", "nutzer")
                             .description("The user to welcome")
-                            .description_localized("de", "Der zu begrüßende Nutzer")
                             .kind(CommandOptionType::User)
                             .required(true)
                     })
@@ -147,7 +145,6 @@ impl EventHandler for Handler {
                             .name("message")
                             .name_localized("de", "nachricht")
                             .description("The message to send")
-                            .description_localized("de", "Die versendete Nachricht")
                             .kind(CommandOptionType::String)
                             .required(true)
                             .add_string_choice_localized(
