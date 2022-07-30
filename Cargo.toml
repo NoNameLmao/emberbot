@@ -1,6 +1,6 @@
 [package]
 name = "emberbot"
-version = "5.0.0-b.531"
+version = "5.0.0-b.532"
 edition = "2021"
 
 [dependencies]

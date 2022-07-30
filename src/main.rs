@@ -1,5 +1,5 @@
 use std::env;
-use std::time::{SystemTime, UNIX_EPOCH};
+use std::time::{SystemTime, UNIX_EPOCH, Instant};
 
 use serenity::async_trait;
 use serenity::model::application::command::{Command, CommandOptionType};
@@ -15,7 +15,7 @@ use snowflake::Snowflake;
 impl EventHandler for Handler {
     async fn interaction_create(&self, ctx: Context, interaction: Interaction) {
         if let Interaction::ApplicationCommand(command) = interaction {
-            println!("Received command interaction: {:#?}", command);
+            println!("📘 Received command interaction: {:#?}", command);
             let content: String = match command.data.name.as_str() {
                 "dn" => "deez nuts".to_string(),
                 "hi" => "hi im online what do you want".to_string(),
@@ -90,13 +90,13 @@ impl EventHandler for Handler {
                 })
                 .await
             {
-                println!("Cannot respond to slash command: {}", why);
+                println!("📙 Cannot respond to slash command: {}", why);
             }
         }
     }
 
     async fn ready(&self, ctx: Context, ready: Ready) {
-        println!("{} is connected!", ready.user.name);
+        println!("📗 Logged in as {}!", ready.user.tag());
 
         let global_commands = Command::set_global_application_commands(&ctx.http, |commands| {
             commands
@@ -205,19 +205,22 @@ impl EventHandler for Handler {
                     })
             })
         })
-        .await.expect("Error with global commands");
-        println!("{} global commands have been registered", global_commands.len())
+            .await
+            .expect("Error with global commands");
+        println!("📗 {} global commands have been registered", global_commands.len())
     }
 }
 
 #[tokio::main]
 async fn main() {
+    let start: Instant = Instant::now();
     let token: String = env::var("DISCORD_TOKEN").expect("Expected `DISCORD_TOKEN` as an environment variable. Bot token missing.");
     let mut client = Client::builder(token, GatewayIntents::empty())
         .event_handler(Handler)
         .await
-        .expect("Error creating client");
+        .expect("📕 Error creating client");
+    println!("📗 Client started in {:?}", start.elapsed());
     if let Err(why) = client.start().await {
-        println!("Client error: {:?}", why);
+        println!("📕 Client error: {:?}", why);
     }
 }
