@@ -145,7 +145,7 @@ dependencies = [
 
 [[package]]
 name = "emberbot"
-version = "5.0.0-b.532"
+version = "5.0.0-r.533"
 dependencies = [
  "serenity",
  "tokio",
