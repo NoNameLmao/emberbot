@@ -1,4 +1,5 @@
 use std::env;
+use dotenv::dotenv;
 use std::time::{SystemTime, UNIX_EPOCH, Instant};
 
 use serenity::async_trait;
@@ -15,6 +16,7 @@ use snowflake::Snowflake;
 
 #[tokio::main]
 async fn main() {
+    dotenv().ok();
     #[async_trait]
     impl EventHandler for Handler {
         async fn interaction_create(&self, ctx: Context, interaction: Interaction) {

@@ -1,10 +1,11 @@
 [package]
 name = "emberbot"
-version = "5.0.0-r.533"
+version = "5.0.1-r.534"
 edition = "2021"
 
 [dependencies]
 tokio = { version = "1.20.1", features = ["full"] }
+dotenv = "0.15.0"
 
 [dependencies.serenity]
 default-features = false
