@@ -16,13 +16,11 @@ cargo build --release
 
 ## Run
 
-> Set a `DISCORD_TOKEN` enviroment variable containing your bot's token:
+> Create a `.env` file inside the bot directory, then write the following line in it:
 
-Windows CMD: `set DISCORD_TOKEN=token_here`
+`DISCORD_TOKEN=<discord bot token here>`
 
-Windows PowerShell: `$Env:DISCORD_TOKEN=token_here`
-
-Linux: `export DISCORD_TOKEN=token_here`
+Do not forget to replace `<discord token bot here>` with your discord bot's token
 
 > After that's done, run the executable through your terminal/command prompt:
 
