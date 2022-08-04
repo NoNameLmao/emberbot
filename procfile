@@ -1,1 +1,1 @@
-bot: ./target/release/emberbot
+web: ./target/release/emberbot
