@@ -1,12 +1,10 @@
 # emberbot
 
-Yet another completely useless but open source discord bot.
-
-First created on 2nd of June 2021 in JavaScript,
-then recoded in TypeScript in October 2021,
-then recoded again but in Rust on 30th of July 2022.
+Rust version of emberbot, written using Serenity.
 
 ## Clone & build
+
+Make sure you have Rust installed, if you don't - [install it](https://www.rust-lang.org/tools/install).
 
 ```bash
 git clone https://github.com/NoNameLmao/emberbot
