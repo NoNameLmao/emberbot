@@ -9,7 +9,11 @@ logger.add(Console, {
     timestamp() { return `${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}` },
     colorize: true
 })
-export function log(level: 'info' | 'warn' | 'error', text: string): void {
+/**
+ * @param {'info' | 'warn' | 'error'} level
+ * @param {string} text
+ */
+export function log(level, text) {
     logger.log(level, text)
 }
 log('info', 'Loaded logger')

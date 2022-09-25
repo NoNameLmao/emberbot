@@ -3,18 +3,11 @@ import * as voice from '@discordjs/voice'
 import { log } from './logger'
 
 export class DiscordClient extends Client {
-    token: string
+    /** @type {string} */
+    token
     europesimIds = {
         guildID: '846807940727570433',
         dateChannelID: '848247855789375508'
-    }
-    // type, not the actual object yet
-    europesim: {
-        guildID: string,
-        dateChannelID: string,
-        guild: Guild,
-        dateChannel: VoiceChannel,
-        joinDateChannel(): voice.VoiceConnection
     }
     emberglazeID = '341123308844220447'
     _voice = voice
@@ -39,7 +32,7 @@ export class DiscordClient extends Client {
 
     init() {
         log('info', 'Initializing discord client...')
-        return new Promise<void>(async (resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             try {
                 (await import('dotenv')).config()
                 this.token = process.env.DJS_TOKEN

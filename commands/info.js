@@ -1,7 +1,5 @@
-import { GuildMember, MessageEmbed } from "discord.js"
-import { SlashCommand } from "../modules/interfaces"
-import { CommandHandler } from './-handler'
-const { replyToCommand } = CommandHandler
+import { MessageEmbed } from "discord.js"
+import { CommandHandler } from './handler'
 
 module.exports = {
     name: 'info',
@@ -9,7 +7,7 @@ module.exports = {
     async run(interaction) {
         const infoEmbed = new MessageEmbed()
         .setTitle('Bot information')
-        .setColor((interaction.member as GuildMember).displayHexColor)
+        .setColor(interaction.member.displayHexColor)
         .setFields(
             {
                 name: 'Amount of guilds',
@@ -20,11 +18,11 @@ module.exports = {
                 value: `${interaction.client.uptime}`
             }
         )
-        replyToCommand({
+        CommandHandler.replyToCommand({
             interaction,
             options: {
                 embeds: [infoEmbed]
             }
         })
     }
-} as SlashCommand
+}

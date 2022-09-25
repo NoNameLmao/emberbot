@@ -5,16 +5,24 @@ import { log } from './logger'
 class ChatBotClient {
     base = "https://api.affiliateplus.xyz/api"
     translateBase = "https://translate-api.ml"
-    async fetchResponse(options: ChatBotMessageOptions) {
+    /**
+     * @param {ChatBotMessageOptions} options
+     * @returns {ChatBotApiResponse}
+     */
+    async fetchResponse(options) {
         const { language, message, name, owner, user } = options
         if (language.toLowerCase() === "en" || language.toLowerCase() === "english") {
             const res = await superagent.get(
                 `${this.base}/chatbot?message=${encodeURIComponent(message)}&botname=${encodeURIComponent(name)}&ownername=${encodeURIComponent(owner)}&user=${encodeURIComponent(user)}`
             ).type("json").accept("json")
-            return res.body as ChatBotApiResponse
+            return res.body
         }
     }
-    async chat(options: ChatBotMessageOptions) {
+    /**
+     * @param {ChatBotMessageOptions} options 
+     * @returns {string}
+     */
+    async chat(options) {
         if (!options.message || options.message.length == 0) throw new Error('No message was provided')
         if (!options.language || options.language.length == 0) options.language = 'en'
         if (!options.user || options.user.length == 0) throw new Error('No user was provided')
@@ -22,9 +30,7 @@ class ChatBotClient {
         if (!options.owner || options.owner.length == 0) options.owner = 'emberglaze'
         if (options.message.length > 5000) throw new Error('Message too long! (over 5000 characters)')
 
-        const response = await this.fetchResponse(options).catch(error => {
-            throw error as Error
-        })
+        const response = await this.fetchResponse(options).catch(error => { throw error })
         return response.message
     }
 }

@@ -1,8 +1,7 @@
 import { jsonRead, getRandomInt } from "emberutils"
 import { client } from ".."
-import { MiscJSON, SlashCommand } from "../modules/interfaces"
-import { CommandHandler } from './-handler'
-const { replyToCommand } = CommandHandler
+import { MiscJSON } from "../modules/interfaces"
+import { CommandHandler } from './handler'
 
 module.exports = {
     name: 'exit',
@@ -11,21 +10,22 @@ module.exports = {
     async run(interaction) {
         const msg = ':sob:'
         if (interaction.user.id === client.emberglazeID) {
-            replyToCommand({
+            CommandHandler.replyToCommand({
                 interaction,
                 options: { content: msg }
             })
             process.exit(0)
         } else {
-            const { technobladeQuotes } = await jsonRead('./misc.json') as MiscJSON
-            function randomTechnoQuote(): string {
+            /** @type {MiscJSON} */
+            const { technobladeQuotes } = await jsonRead('./misc.json')
+            function randomTechnoQuote() {
                 return technobladeQuotes[getRandomInt(technobladeQuotes.length + 1)]
             }
             const msg = `❌ ${randomTechnoQuote()}`
-            replyToCommand({
+            CommandHandler.replyToCommand({
                 interaction,
                 options: { content: msg }
             })
         }
     }
-} as SlashCommand
+}

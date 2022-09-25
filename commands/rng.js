@@ -1,8 +1,6 @@
-import { getRandomInt, getRandomArbitrary, jsonRead } from "emberutils"
-import { Config, SlashCommand } from "../modules/interfaces"
+import { getRandomInt, getRandomArbitrary } from "emberutils"
 import { SlashCommandBuilder, SlashCommandSubcommandGroupBuilder, SlashCommandSubcommandBuilder, SlashCommandNumberOption } from '@discordjs/builders'
-import { CommandHandler } from './-handler'
-const { replyToCommand } = CommandHandler
+import { CommandHandler } from './handler'
 
 const name = 'rng'
 const description = 'Random number generator'
@@ -49,13 +47,13 @@ module.exports = {
             const max = args.getNumber('maxValue', true)
             const randomNumber = getRandomInt(max)
             const msg = `The number is: ${randomNumber}`
-            replyToCommand({ interaction, options: { content: msg } })
+            CommandHandler.replyToCommand({ interaction, options: { content: msg } })
         } else if (subcommand == 'min_and_max') {
             const min = args.getNumber('minValue', true)
             const max = args.getNumber('maxValue', true)
             const randomNumber = getRandomArbitrary(min, max)
             const msg = `The number is: ${randomNumber}`
-            replyToCommand({ interaction, options: { content: msg } })
+            CommandHandler.replyToCommand({ interaction, options: { content: msg } })
         }
     }
-} as SlashCommand
+}

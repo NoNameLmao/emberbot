@@ -1,8 +1,6 @@
 import { MessageEmbed } from "discord.js"
-import { SlashCommand } from "../modules/interfaces"
 import { SlashCommandBuilder, SlashCommandStringOption } from '@discordjs/builders'
-import { CommandHandler } from './-handler'
-const { replyToCommand } = CommandHandler
+import { CommandHandler } from './handler'
 
 const name = 'poll'
 const description = 'Create a mini poll. Can have up to 5 answer options.'
@@ -52,7 +50,8 @@ module.exports = {
         const answerOptions = args.data.filter(answerOptionArg => {
             return answerOptionArg.name.includes('answerOption')
         })
-        let embedOptionsString: string
+        /** @type {string} */
+        let embedOptionsString
         answerOptions.forEach((option, optionIndex) => {
             embedOptionsString += `:${numbers[optionIndex]}: ${option}\n`
         })
@@ -63,6 +62,6 @@ module.exports = {
             text: `Poll by ${interaction.user.tag} at ${new Date().toUTCString().slice(5)}`,
             iconURL: interaction.user.avatarURL({ dynamic: true, format: 'png' })
         })
-        replyToCommand({ interaction, options: { embeds: [pollEmbed] } })
+        CommandHandler.replyToCommand({ interaction, options: { embeds: [pollEmbed] } })
     }
-} as SlashCommand
+}

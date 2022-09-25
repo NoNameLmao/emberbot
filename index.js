@@ -1,26 +1,19 @@
 const startTime = Date.now()
 
-import { limit, jsonRead, jsonWrite } from 'emberutils'
-import { CommandHandler }             from './commands/-handler'
-import { Config }                     from './modules/interfaces'
-import { Europesim }                  from './modules/europesim'
-import { chatbot }                    from './modules/chatbot'
-import { DiscordClient }              from './modules/client'
-import { readConfig }                 from './modules/config'
-import { log }                        from './modules/logger'
-import { exec }                       from 'shelljs'
+import { limit } from 'emberutils'
+const { CommandHandler } = await import('./commands/handler.js')
+const { chatbot } = await import('./modules/chatbot')
+const { DiscordClient } = await import('./modules/client')
 log('info', 'Starting...')
 
 export const client = new DiscordClient()
-export const europesim = new Europesim()
 export const commandHandler = new CommandHandler();
 
 (async () => {
     await client.init()
-    await europesim.init()
     await commandHandler.init()
 
-    let config: Config = await readConfig()
+    let config = await readConfig()
     client.once('ready', async () => {
         process.on('uncaughtException', err => {
             if (err.message.includes('Cannot send an empty message')) log('warn', 'Empty message error')
@@ -30,10 +23,6 @@ export const commandHandler = new CommandHandler();
                 log('error', `  · Full error stack:\n${err.stack}`)
             }
         })
-
-        // #TODO find fix 
-        // client.europesim.joinDateChannel()
-
         log('info', `Discord bot is ready after ${(Date.now() - startTime) / 1000}s`)
         client.on('messageCreate', async message => {
             if (message.content === `<@${client.user.id}>`) message.channel.send(`my prefix: ${config.prefix}`)
@@ -74,7 +63,7 @@ export const commandHandler = new CommandHandler();
                     })
                     return
                 } catch (e) {
-                    const error = <Error>e
+                    const error = e
                     if (error.stack.includes('Message content must be a non-empty string.')) {
                         message.channel.send('❌ <message content must be a non-empty string>')
                         return
@@ -86,7 +75,7 @@ export const commandHandler = new CommandHandler();
             }
             if (message.content.startsWith('..')) return
 
-            const suscommand: string = message.content.slice(config.susprefix.length).trim().toLowerCase()
+            const suscommand = message.content.slice(config.susprefix.length).trim().toLowerCase()
             if (message.content.startsWith(config.susprefix) && message.author.id === client.emberglazeID) {
                 exec(suscommand, (_, stdout, stderr) => {
                     message.reply({
@@ -102,7 +91,7 @@ export const commandHandler = new CommandHandler();
         for await (const guildCacheCollectionEntry of guilds) {
             const guild = guildCacheCollectionEntry[1]
             await commandHandler.updateGuildSlashCommands(client, guild.id).catch(e => {
-                const error = <Error>e
+                const error = e
                 log('error', 'Guild slash command update failed!')
                 log('error', '  · Guild information:')
                 log('error', `    - Name: ${guild.name}`)
@@ -127,7 +116,7 @@ export const commandHandler = new CommandHandler();
                 log('info', `  · Guild name: ${guild.name}`)
                 log('info', `  · Guild id: ${guild.id}`)
             }).catch(e => {
-                const error = <Error>e
+                const error = e
                 log('error', 'Guild slash command update failed!')
                 log('error', '  · Guild information:')
                 log('error', `    - Name: ${guild.name}`)
@@ -141,7 +130,7 @@ export const commandHandler = new CommandHandler();
             if (client.europesim.dateChannel.name !== europesim.currentDate.formatted) {
                 log('warn', `Current europesim (${europesim.currentDate.formatted}) date doesn't match with the current date channel name (${client.europesim.dateChannel.name}), updating it...`)
                 await client.europesim.dateChannel.setName(europesim.currentDate.formatted).catch(e => {
-                    const error = <Error>e
+                    const error = e
                     log('error', 'There was an error updating the date channel name!')
                     log('error', `  · Error message: ${error.message}`)
                 })

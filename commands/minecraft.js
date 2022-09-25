@@ -1,9 +1,8 @@
-import { GuildMember, MessageEmbed } from "discord.js"
-import { getRandomInt, jsonRead } from "emberutils"
-import { Config, MiscJSON, PlayerInfo, ServerInfo, SlashCommand } from "../modules/interfaces"
+import { MessageEmbed } from "discord.js"
+import { PlayerInfo, ServerInfo } from "../modules/interfaces"
 import { SlashCommandBuilder, SlashCommandSubcommandGroupBuilder, SlashCommandSubcommandBuilder } from '@discordjs/builders'
-import mcdata = require('mcdata')
-import { CommandHandler } from './-handler'
+const mcdata = require('mcdata')
+import { CommandHandler } from './handler'
 const { replyToCommand } = CommandHandler
 
 const name = 'minecraft'
@@ -35,10 +34,11 @@ module.exports = {
         if (subcommand == 'serverinfo') {
             try {
                 replyToCommand({ interaction, options: { content: 'Pinging minecraft server...' } })
-                const serverinfo: ServerInfo = await mcdata.serverStatus(args[1])
+                /** @type {ServerInfo} */
+                const serverinfo = await mcdata.serverStatus(args[1])
                 const serverInfoEmbed = new MessageEmbed()
                 .setTitle('Server Information')
-                .setColor((interaction.member as GuildMember).displayHexColor)
+                .setColor(interaction.member.displayHexColor)
                 .setAuthor({ name: `${args[1]}` })
                 .addField('Status', `Currently ${serverinfo.serverStatus}`, true)
                 .addField('Server IP', serverinfo.serverip, true)
@@ -53,10 +53,11 @@ module.exports = {
             }
         } else if (subcommand == 'playerinfo') {
             try {
-                const playerInfo: PlayerInfo = await mcdata.playerStatus(args[1])
+                /** @type {PlayerInfo} */
+                const playerInfo = await mcdata.playerStatus(args[1])
                 const playerInfoEmbed = new MessageEmbed()
                 .setTitle('Player information')
-                .setColor((interaction.member as GuildMember).displayHexColor)
+                .setColor(interaction.member.displayHexColor)
                 .setAuthor({ name: `${args[1]}` })
                 .addFields(
                     {
@@ -73,7 +74,8 @@ module.exports = {
                 replyToCommand({ interaction, options: { content: `There was an error!\n${error}` } })
             }
         }
-        function removeMCColorCodes(string: string): string {
+        /** @param {string} string */
+        function removeMCColorCodes(string) {
             return string
             // color
             .replace('§4', '').replace('§c', '').replace('§6', '').replace('§e', '').replace('§2', '').replace('§a', '').replace('§b', '').replace('§3', '').replace('§1', '')
@@ -82,4 +84,4 @@ module.exports = {
             .replace('§k', '').replace('§l', '').replace('§m', '').replace('§n', '').replace('§o', '').replace('§r', '')
         }
     }
-} as SlashCommand
+}

@@ -5,7 +5,7 @@ import { log } from './logger'
 /**
  * Send the bot's server count to bots.moe
  */
-export function botsmoeFetchGuildCount(): Promise<any> {
+export function botsmoeFetchGuildCount() {
     log('info', 'Fetching bots.moe...')
     return new Promise(async (resolve, reject) => {
         try {
@@ -19,11 +19,11 @@ export function botsmoeFetchGuildCount(): Promise<any> {
                     'Content-Type': 'application/json'
                 }
             })
-            resolve(await res.json() as any)
+            resolve(await res.json())
             log('info', 'Fetched bots.moe successfully')
         } catch (err) {
             log('warn', 'Failed to fetch bots.moe')
-            reject(err as Error)
+            reject(err)
         }
     })
 }

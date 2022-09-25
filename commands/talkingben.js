@@ -1,7 +1,5 @@
 import { Ben } from "../modules/ben"
-import { SlashCommand } from "../modules/interfaces"
-import { CommandHandler } from './-handler'
-const { replyToCommand } = CommandHandler
+import { CommandHandler } from './handler'
 
 module.exports = {
     name: 'ben',
@@ -9,7 +7,7 @@ module.exports = {
     async run(interaction) {
         const ben = new Ben(interaction)
         const msg = 'summoning ben...'
-        await replyToCommand({ interaction, options: { content: msg } })
+        await CommandHandler.replyToCommand({ interaction, options: { content: msg } })
         await ben.newCall()
     }
-} as SlashCommand
+}

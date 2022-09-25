@@ -1,6 +1,4 @@
-import { SlashCommand } from "../modules/interfaces"
-import { CommandHandler } from './-handler'
-const { replyToCommand } = CommandHandler
+import { CommandHandler } from './handler'
 
 module.exports = {
     name: 'config',
@@ -8,6 +6,6 @@ module.exports = {
     hideFromHelp: true,
     async run(interaction) {
         const msg = `\`\`\`json\n${JSON.stringify(await import('../config.json'), null, 4)}\`\`\``
-        replyToCommand({ interaction, options: { content: msg } })
+        CommandHandler.replyToCommand({ interaction, options: { content: msg } })
     }
-} as SlashCommand
+}

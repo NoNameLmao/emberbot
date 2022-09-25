@@ -1,8 +1,5 @@
-import { client } from ".."
-import { SlashCommand } from "../modules/interfaces"
 import { SlashCommandBuilder, SlashCommandStringOption } from '@discordjs/builders'
-import { CommandHandler } from './-handler'
-const { replyToCommand } = CommandHandler
+import { CommandHandler } from './handler'
 
 const name = 'suggest'
 const description = 'Send an idea on how to improve the bot (or a bug to fix)'
@@ -23,7 +20,7 @@ module.exports = {
         const suggestion = args.getString('suggestion')
         const emberglaze = await interaction.client.users.fetch(client.emberglazeID)
         emberglaze.send(`Bot suggestion by ${interaction.user.tag}:\n\`${suggestion}\`\nSent at ${interaction.createdAt} in <#${interaction.channel.id}>`)
-        const msg = 'Your suggestion has been sent! thanks'
-        replyToCommand({ interaction, options: { content: msg } })
+        const msg = 'Your suggestion has been sent and will be reviewed'
+        CommandHandler.replyToCommand({ interaction, options: { content: msg } })
     }
-} as SlashCommand
+}

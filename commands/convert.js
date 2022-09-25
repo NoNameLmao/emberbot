@@ -1,8 +1,7 @@
-import { GuildMember, MessageEmbed } from "discord.js"
-import { jsonRead } from "emberutils"
-import { Config, SlashCommand } from "../modules/interfaces"
+import { MessageEmbed } from "discord.js"
+import { Config } from "../modules/interfaces"
 import { SlashCommandBuilder, SlashCommandSubcommandGroupBuilder, SlashCommandSubcommandBuilder, SlashCommandStringOption } from '@discordjs/builders'
-import { CommandHandler } from './-handler'
+import { CommandHandler } from './handler'
 const { replyToCommand } = CommandHandler
 
 const name = 'convert'
@@ -31,7 +30,7 @@ module.exports = {
     name, description,
     slashCommandOptions,
     async run(interaction, args) {
-        const config = await jsonRead('./config.json') as Config
+        /** @type {Config} */
         const subcommand = args.getSubcommand(true)
         if (subcommand == 'text2bf') {
             if (!args.getString('text', true)) {
@@ -45,7 +44,7 @@ module.exports = {
                 const text2bfEmbed = new MessageEmbed()
                 .setTitle('convert text2bf')
                 .setDescription('Converted text to brainfuck')
-                .setColor((interaction.member as GuildMember).displayHexColor)
+                .setColor(interaction.member.displayHexColor)
                 .setFields(
                     {
                         name: 'Original text',
@@ -60,4 +59,4 @@ module.exports = {
             }
         }
     }
-} as SlashCommand
+}

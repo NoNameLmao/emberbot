@@ -1,9 +1,9 @@
-import { GuildMember, MessageEmbed } from "discord.js"
+import { MessageEmbed } from "discord.js"
 import { getRandomInt, jsonRead, limit, sleep } from "emberutils"
 import { client } from ".."
-import { MiscJSON, SlashCommand } from "../modules/interfaces"
+import { MiscJSON } from "../modules/interfaces"
 import { SlashCommandBuilder, SlashCommandStringOption } from '@discordjs/builders'
-import { CommandHandler } from './-handler'
+import { CommandHandler } from './handler'
 const { replyToCommand } = CommandHandler
 
 const name = 'eval'
@@ -26,8 +26,9 @@ module.exports = {
         let evalEmbed = new MessageEmbed()
         .setTitle('eval result')
         .addField('Input', `\`\`\`js\n${code}\`\`\``)
-        const { technobladeQuotes } = await jsonRead('./misc.json') as MiscJSON
-        function randomTechnoQuote(): string {
+        /** @type {MiscJSON} */
+        const { technobladeQuotes } = await jsonRead('./misc.json')
+        function randomTechnoQuote() {
             return technobladeQuotes[getRandomInt(technobladeQuotes.length + 1)]
         }
         if (interaction.member.user.id === client.emberglazeID) {
@@ -41,7 +42,7 @@ module.exports = {
                 let output = result
                 if (typeof output !== 'string') output = require('util').inspect(result)
                 evalEmbed = evalEmbed
-                .setColor((interaction.member as GuildMember).displayHexColor)
+                .setColor(interaction.member.displayHexColor)
                 .addField('✅ Output', `\`\`\`js\n${limit(output, 503)}\`\`\``)
                 replyToCommand({ interaction, options: { embeds: [evalEmbed] } })
             } catch (error) {
@@ -58,4 +59,4 @@ module.exports = {
             replyToCommand({ interaction, options: { embeds: [evalEmbed] } })
         }
     }
-} as SlashCommand
+}

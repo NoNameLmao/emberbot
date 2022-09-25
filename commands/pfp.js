@@ -1,8 +1,5 @@
-import { User } from "discord.js"
-import { SlashCommand } from "../modules/interfaces"
 import { SlashCommandBuilder, SlashCommandUserOption } from '@discordjs/builders'
-import { CommandHandler } from './-handler'
-const { replyToCommand } = CommandHandler
+import { CommandHandler } from './handler'
 
 const name = 'pfp'
 const description = 'Display someone\'s (or yours) profile picture.'
@@ -24,12 +21,12 @@ module.exports = {
             const user = args.getUser('guildMember', false)
             const pfp = user.displayAvatarURL({ dynamic: true, format: 'png' })
             const msg = pfp
-            replyToCommand({ interaction, options: { content: msg } })
+            CommandHandler.replyToCommand({ interaction, options: { content: msg } })
         } else {
             const user = interaction.user
             const pfp = user.displayAvatarURL({ dynamic: true, format: 'png' })
             const msg = pfp
-            replyToCommand({ interaction, options: { content: msg } })
+            CommandHandler.replyToCommand({ interaction, options: { content: msg } })
         }
     }
-} as SlashCommand
+}

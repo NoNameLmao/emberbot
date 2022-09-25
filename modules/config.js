@@ -4,7 +4,8 @@ import { log } from "./logger"
 
 export async function readConfig() {
     log('info', 'Reading config file...')
-    const config = await jsonRead('./config.json') as Config
+    /** @type {Config} */
+    const config = await jsonRead('./config.json')
     log('info', 'Reading config file successful')
     return config
 }

@@ -1,7 +1,7 @@
 import { jsonRead, getRandomInt } from "emberutils"
-import { MiscJSON, SlashCommand } from "../modules/interfaces"
+import { MiscJSON } from "../modules/interfaces"
 import { SlashCommandBuilder, SlashCommandNumberOption } from '@discordjs/builders'
-import { CommandHandler } from './-handler'
+import { CommandHandler } from './handler'
 const { replyToCommand } = CommandHandler
 
 const name = 'quote'
@@ -20,8 +20,10 @@ module.exports = {
     name, description,
     slashCommandOptions,
     async run(interaction, args) {
-        const { technobladeQuotes } = await jsonRead('./misc.json') as MiscJSON
-        let number: number
+        /** @type {MiscJSON} */
+        const { technobladeQuotes } = await jsonRead('./misc.json')
+        /** @type {number} */
+        let number
         if (args.getNumber('quote_number')) number = args.getNumber('quote_number')
         else number = getRandomInt(technobladeQuotes.length + 1)
         const msg = (
@@ -30,4 +32,4 @@ module.exports = {
         )
         replyToCommand({ interaction, options: { content: msg } })
     }
-} as SlashCommand
+}

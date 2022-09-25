@@ -1,12 +1,9 @@
-// · = U+00B7 (middle dot)
-import { CommandInteraction, Client, InteractionReplyOptions } from 'discord.js'
-import { SlashCommand } from '../modules/interfaces'
 import { log } from '../modules/logger'
-import fs = require('fs/promises')
+import fs from 'fs/promises'
 
 export class CommandHandler {
-    commands: SlashCommand[] = []
-    files: string[]
+    commands = []
+    files
     initialized = false
     async init() {
         log('info', 'Reading "commands" folder...')
@@ -20,25 +17,25 @@ export class CommandHandler {
         }
         this.initialized = true
     }
-    static async importCommand(fileName: string) {
-        if (fileName.startsWith('-') || !fileName.endsWith('.ts')) {
+    static async importCommand(fileName) {
+        if (!fileName.endsWith('.js') || fileName == 'handler.js') {
             log('warn', `Ignoring file ${fileName}...`)
             return
         }
-        log('info', `  · Importing command file ${fileName}...`)
+        log('info', `  · Importing file ${fileName}...`)
         const startTime = Date.now()
-        const command = await import(`./${fileName}`) as SlashCommand
-        log('info', `  · Finished importing command file ${fileName}:`)
+        const command = await import(`./${fileName}`)
+        log('info', `  · Finished importing file ${fileName}:`)
         log('info', `    - Command name: ${command.name}`)
         log('info', `    - Time taken: ${(Date.now() - startTime) / 1000}s`)
         return command
     }
-    updateSlashCommands(client: Client) {
+    updateSlashCommands(client) {
         if (!this.initialized) throw new ErrorNotInitialized()
-        return new Promise<void>(async (resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             log('info', 'Started refreshing global slash commands')
             await client.application.commands.set(this.commands).catch(e => {
-                const error = <Error>e
+                const error = e
                 log('error', 'Global slash command update failed!')
                 log('error', `  · Error message: ${error.message}`)
                 this.commands.forEach(command => console.log(command))
@@ -48,9 +45,9 @@ export class CommandHandler {
             resolve()
         })
     }
-    updateGuildSlashCommands(client: Client, guildID: string) {
+    updateGuildSlashCommands(client, guildID) {
         if (!this.initialized) throw new ErrorNotInitialized()
-        return new Promise<void>(async resolve => {
+        return new Promise(async resolve => {
             log('info', 'Started updating guild slash commands')
             const guild = client.guilds.cache.get(guildID)
             await guild.commands.set(this.commands)
@@ -58,7 +55,7 @@ export class CommandHandler {
             resolve()
         })
     }
-    handleCommand(interaction: CommandInteraction) {
+    handleCommand(interaction) {
         if (!this.initialized) throw new ErrorNotInitialized()
         const args = interaction.options
         const commandInMessage = interaction.commandName
@@ -75,10 +72,10 @@ export class CommandHandler {
             CommandHandler.replyToCommand({ interaction, options: { content: msg } })
         }
     }
-    static replyToCommand({ interaction, options }: { options: InteractionReplyOptions, interaction: CommandInteraction }) {
+    static replyToCommand({ interaction, options }) {
         return interaction.reply(options)
     }
 }
 class ErrorNotInitialized extends Error {
-    message: 'Command handler has not been initialized! Run init() first'
+    message = 'Command handler has not been initialized! Run init() first'
 }

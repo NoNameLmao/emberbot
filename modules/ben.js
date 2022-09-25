@@ -4,15 +4,17 @@ import { chance, sleep } from "emberutils"
 export class Ben {
     onPhone = false
     responses = ['no', 'yes', 'ho ho ho ho', 'eugh']
-    interaction: CommandInteraction
-    channel: TextChannel
+    /** @type {CommandInteraction} */
+    interaction
+    /** @type {TextChannel} */
+    channel
     /**
      * Create a Ben instance.
-     * @param interaction Discord slash command interaction to reply to.
+     * @param {CommandInteraction} interaction Discord slash command interaction to reply to.
      */
-    constructor(interaction: CommandInteraction) {
+    constructor(interaction) {
         this.interaction = interaction
-        this.channel = interaction.channel as TextChannel
+        this.channel = interaction.channel
     }
 
     /**
@@ -29,8 +31,9 @@ export class Ben {
     // discord
     /**
      * Wait for a message that isn't sent by the bot
+     * @return {Promise<Message>}
      */
-    waitForMessage(): Promise<Message> { 
+    waitForMessage() { 
         return new Promise(async (resolve, reject) => {
             setTimeout(reject, 5000)
             this.interaction.client.on('messageCreate', message => {
@@ -45,7 +48,8 @@ export class Ben {
      * Handle an answer after waiting for message
      */
     async handleAnswer() {
-        let response: string;
+        /** @type {string} */
+        let response;
         await this.waitForMessage().catch(async () => {
             await this.channel.send('*hangs up*')
             response = 'hang up'
