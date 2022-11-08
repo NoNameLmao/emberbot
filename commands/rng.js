@@ -1,6 +1,6 @@
-import { getRandomInt, getRandomArbitrary } from "emberutils"
-import { SlashCommandBuilder, SlashCommandSubcommandGroupBuilder, SlashCommandSubcommandBuilder, SlashCommandNumberOption } from '@discordjs/builders'
-import { CommandHandler } from './handler'
+const { getRandomInt, getRandomArbitrary } = require("emberutils")
+const { SlashCommandBuilder, SlashCommandSubcommandGroupBuilder, SlashCommandSubcommandBuilder, SlashCommandNumberOption } = require('@discordjs/builders')
+const CommandHandler = require('./handler.js')
 
 const name = 'rng'
 const description = 'Random number generator'

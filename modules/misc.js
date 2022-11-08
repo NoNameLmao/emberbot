@@ -1,7 +1,9 @@
-import { jsonRead } from "emberutils";
-import { MiscJSON } from "./interfaces";
+const { jsonRead } = require("emberutils")
 
-export async function readMisc() {
-    /** @type {MiscJSON} */
+/**
+ * @returns {Promise<import('./interfaces').MiscJSON>}
+ */
+async function readMisc() {
     return await jsonRead('../misc.json')
 }
+module.exports = readMisc

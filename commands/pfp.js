@@ -1,5 +1,5 @@
-import { SlashCommandBuilder, SlashCommandUserOption } from '@discordjs/builders'
-import { CommandHandler } from './handler'
+const { SlashCommandBuilder, SlashCommandUserOption } = require('@discordjs/builders')
+const CommandHandler = require('./handler.js')
 
 const name = 'pfp'
 const description = 'Display someone\'s (or yours) profile picture.'

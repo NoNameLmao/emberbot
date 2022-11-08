@@ -1,9 +1,9 @@
-import { MessageEmbed } from "discord.js"
-import { getRandomInt, jsonRead, limit, sleep } from "emberutils"
-import { client } from ".."
-import { MiscJSON } from "../modules/interfaces"
-import { SlashCommandBuilder, SlashCommandStringOption } from '@discordjs/builders'
-import { CommandHandler } from './handler'
+const { MessageEmbed } = require('discord.js')
+const { getRandomInt, jsonRead, limit, sleep } = require('emberutils')
+const { client } = require('..')
+const { SlashCommandBuilder, SlashCommandStringOption } = require('@discordjs/builders')
+
+const CommandHandler = require('./handler.js')
 const { replyToCommand } = CommandHandler
 
 const name = 'eval'

@@ -1,5 +1,4 @@
-import winston from 'winston'
-const logger = winston
+const logger = require('winston')
 const { transports: { File, Console } } = logger
 logger.remove(Console)
 logger.add(File, {
@@ -13,7 +12,8 @@ logger.add(Console, {
  * @param {'info' | 'warn' | 'error'} level
  * @param {string} text
  */
-export function log(level, text) {
+function log(level, text) {
     logger.log(level, text)
 }
+module.exports = { log }
 log('info', 'Loaded logger')

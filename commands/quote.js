@@ -1,7 +1,6 @@
-import { jsonRead, getRandomInt } from "emberutils"
-import { MiscJSON } from "../modules/interfaces"
-import { SlashCommandBuilder, SlashCommandNumberOption } from '@discordjs/builders'
-import { CommandHandler } from './handler'
+const { jsonRead, getRandomInt } = require("emberutils")
+const { SlashCommandBuilder, SlashCommandNumberOption } = require('@discordjs/builders')
+const CommandHandler = require('./handler.js')
 const { replyToCommand } = CommandHandler
 
 const name = 'quote'

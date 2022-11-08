@@ -1,20 +1,21 @@
 const startTime = Date.now()
 
-import { limit } from 'emberutils'
-const { CommandHandler } = await import('./commands/handler.js')
-const { chatbot } = await import('./modules/chatbot')
-const { DiscordClient } = await import('./modules/client')
+const { limit } = require('emberutils')
+const CommandHandler = require('./commands/handler.js')
+const { chatbot } = require('./modules/chatbot.js')
+const { log } = require('./modules/logger.js')
+const { DiscordClient } = require('./modules/client.js')
 log('info', 'Starting...')
 
-export const client = new DiscordClient()
-export const commandHandler = new CommandHandler();
+const dcClient = new DiscordClient()
+const commandHandler = new CommandHandler()
+module.exports = { dcClient, commandHandler };
 
 (async () => {
-    await client.init()
+    await dcClient.init()
     await commandHandler.init()
 
-    let config = await readConfig()
-    client.once('ready', async () => {
+    dcClient.once('ready', async () => {
         process.on('uncaughtException', err => {
             if (err.message.includes('Cannot send an empty message')) log('warn', 'Empty message error')
             else {
@@ -24,10 +25,10 @@ export const commandHandler = new CommandHandler();
             }
         })
         log('info', `Discord bot is ready after ${(Date.now() - startTime) / 1000}s`)
-        client.on('messageCreate', async message => {
-            if (message.content === `<@${client.user.id}>`) message.channel.send(`my prefix: ${config.prefix}`)
+        dcClient.on('messageCreate', async message => {
+            if (message.content === `<@${dcClient.user.id}>`) message.channel.send(`use slash commands 🥺🥺🥺🙏🙏🙏`)
             if (message.channel.type === 'DM') {
-                if (message.author.id !== client.user.id) {
+                if (message.author.id !== dcClient.user.id) {
                     log('info', 'Recieved a direct message!')
                     log('info', `  · Author: ${message.author.tag}`)
                     log('info', `  · Content:\n${message.content}`)
@@ -75,8 +76,8 @@ export const commandHandler = new CommandHandler();
             }
             if (message.content.startsWith('..')) return
 
-            const suscommand = message.content.slice(config.susprefix.length).trim().toLowerCase()
-            if (message.content.startsWith(config.susprefix) && message.author.id === client.emberglazeID) {
+            const suscommand = message.content.slice(1).trim().toLowerCase()
+            if (message.content.startsWith('$') && message.author.id === dcClient.emberglazeID) {
                 exec(suscommand, (_, stdout, stderr) => {
                     message.reply({
                         content: stderr.length > 0 ? `stderr:\n\`\`\`${limit(stderr, 498)}\`\`\`` : `stdout:\n\`\`\`${limit(stdout, 498)}\`\`\``,
@@ -86,12 +87,10 @@ export const commandHandler = new CommandHandler();
             }
         })
         // await commandHandler.updateSlashCommands(client)
-        // await europesim.guildResetSlashCommands(client)
-        const guilds = client.guilds.cache
+        const guilds = dcClient.guilds.cache
         for await (const guildCacheCollectionEntry of guilds) {
             const guild = guildCacheCollectionEntry[1]
-            await commandHandler.updateGuildSlashCommands(client, guild.id).catch(e => {
-                const error = e
+            await commandHandler.updateGuildSlashCommands(dcClient, guild.id).catch(error => {
                 log('error', 'Guild slash command update failed!')
                 log('error', '  · Guild information:')
                 log('error', `    - Name: ${guild.name}`)
@@ -100,7 +99,7 @@ export const commandHandler = new CommandHandler();
                 log('error', `    - Message: ${error.message}`)
             })
         }
-        client.on('interactionCreate', interaction => {
+        dcClient.on('interactionCreate', interaction => {
             if (interaction.isCommand()) {
                 log('info', 'Recieved interaction:')
                 log('info', `  · Command: true`)
@@ -110,8 +109,8 @@ export const commandHandler = new CommandHandler();
                 commandHandler.handleCommand(interaction)
             }
         })
-        client.on('guildCreate', guild => {
-            commandHandler.updateGuildSlashCommands(client, guild.id).then(() => {
+        dcClient.on('guildCreate', guild => {
+            commandHandler.updateGuildSlashCommands(dcClient, guild.id).then(() => {
                 log('info', 'Successfully updated slash commands for a guild:')
                 log('info', `  · Guild name: ${guild.name}`)
                 log('info', `  · Guild id: ${guild.id}`)
@@ -125,18 +124,5 @@ export const commandHandler = new CommandHandler();
                 log('error', `    - Message: ${error.message}`)
             })
         })
-        async function updateDate() {
-            europesim.updateDate()
-            if (client.europesim.dateChannel.name !== europesim.currentDate.formatted) {
-                log('warn', `Current europesim (${europesim.currentDate.formatted}) date doesn't match with the current date channel name (${client.europesim.dateChannel.name}), updating it...`)
-                await client.europesim.dateChannel.setName(europesim.currentDate.formatted).catch(e => {
-                    const error = e
-                    log('error', 'There was an error updating the date channel name!')
-                    log('error', `  · Error message: ${error.message}`)
-                })
-                log('info', 'Successfully updated date channel name')
-            } else return
-        }
-        setInterval(updateDate, 10000)
     })
 })()

@@ -1,5 +1,5 @@
-import { SlashCommandBuilder, SlashCommandStringOption } from '@discordjs/builders'
-import { CommandHandler } from './handler'
+const { SlashCommandBuilder, SlashCommandStringOption } = require('@discordjs/builders')
+const CommandHandler = require('./handler.js')
 
 const name = 'suggest'
 const description = 'Send an idea on how to improve the bot (or a bug to fix)'

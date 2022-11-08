@@ -1,9 +1,15 @@
-import { Ben } from "../modules/ben"
-import { CommandHandler } from './handler'
+const Ben = require("../modules/ben.js")
+const CommandHandler = require('./handler.js')
+const { SlashCommandBuilder } = require('@discordjs/builders')
+
+const name = 'ben'
+const description = 'A replica of Talking Ben\'s phone thing'
+const slashCommandOptions = new SlashCommandBuilder()
+.setName(name)
+.setDescription(description)
 
 module.exports = {
-    name: 'ben',
-    description: 'A replica of Talking Ben\'s phone thing',
+    name, description,
     async run(interaction) {
         const ben = new Ben(interaction)
         const msg = 'summoning ben...'

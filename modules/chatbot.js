@@ -1,13 +1,12 @@
-import { ChatBotMessageOptions, ChatBotApiResponse } from './interfaces'
-import superagent from 'superagent'
-import { log } from './logger'
+const superagent = require('superagent')
+const { log } = require('./logger.js')
 
 class ChatBotClient {
     base = "https://api.affiliateplus.xyz/api"
     translateBase = "https://translate-api.ml"
     /**
-     * @param {ChatBotMessageOptions} options
-     * @returns {ChatBotApiResponse}
+     * @param {import('./interfaces').ChatBotMessageOptions} options
+     * @returns {import('./interfaces').ChatBotApiResponse}
      */
     async fetchResponse(options) {
         const { language, message, name, owner, user } = options
@@ -19,7 +18,7 @@ class ChatBotClient {
         }
     }
     /**
-     * @param {ChatBotMessageOptions} options 
+     * @param {import('./interfaces').ChatBotMessageOptions} options 
      * @returns {string}
      */
     async chat(options) {
@@ -34,5 +33,6 @@ class ChatBotClient {
         return response.message
     }
 }
-export const chatbot = new ChatBotClient()
+const chatbot = new ChatBotClient()
+module.exports = { chatbot }
 log('info', 'Created chatbot client')

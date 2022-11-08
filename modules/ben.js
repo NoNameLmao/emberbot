@@ -1,7 +1,7 @@
-import { TextChannel, CommandInteraction, Message } from "discord.js"
-import { chance, sleep } from "emberutils"
+const { TextChannel, CommandInteraction, Message } = require("discord.js")
+const { chance, sleep } = require("emberutils")
 
-export class Ben {
+module.exports = class Ben {
     onPhone = false
     responses = ['no', 'yes', 'ho ho ho ho', 'eugh']
     /** @type {CommandInteraction} */

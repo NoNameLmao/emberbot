@@ -1,8 +1,7 @@
-import { MessageEmbed } from "discord.js"
-import { PlayerInfo, ServerInfo } from "../modules/interfaces"
-import { SlashCommandBuilder, SlashCommandSubcommandGroupBuilder, SlashCommandSubcommandBuilder } from '@discordjs/builders'
+const { MessageEmbed } = require('discord.js')
+const { SlashCommandBuilder, SlashCommandSubcommandGroupBuilder, SlashCommandSubcommandBuilder } = require('@discordjs/builders')
 const mcdata = require('mcdata')
-import { CommandHandler } from './handler'
+const CommandHandler = require('./handler.js')
 const { replyToCommand } = CommandHandler
 
 const name = 'minecraft'
@@ -34,7 +33,7 @@ module.exports = {
         if (subcommand == 'serverinfo') {
             try {
                 replyToCommand({ interaction, options: { content: 'Pinging minecraft server...' } })
-                /** @type {ServerInfo} */
+                /** @type {import('../modules/interfaces').ServerInfo} */
                 const serverinfo = await mcdata.serverStatus(args[1])
                 const serverInfoEmbed = new MessageEmbed()
                 .setTitle('Server Information')
@@ -53,7 +52,7 @@ module.exports = {
             }
         } else if (subcommand == 'playerinfo') {
             try {
-                /** @type {PlayerInfo} */
+                /** @type {import('../modules/interfaces').PlayerInfo} */
                 const playerInfo = await mcdata.playerStatus(args[1])
                 const playerInfoEmbed = new MessageEmbed()
                 .setTitle('Player information')

@@ -3,7 +3,6 @@
     "version": "4.0.0",
     "description": "discord bot, does things.",
     "main": "index.js",
-    "type": "module",
     "scripts": {
         "start": "node ."
     },
@@ -19,8 +18,10 @@
         "mcdata": "^1.0.9",
         "node": "^17.5.0",
         "node-fetch": "^2.6.7",
+        "serverline": "^1.6.0",
         "shelljs": "^0.8.5",
-        "smartestchatbot": "^2.0.1"
+        "smartestchatbot": "^2.0.1",
+        "winston": "^2.4.6"
     },
     "keywords": [],
     "author": "emberglaze",

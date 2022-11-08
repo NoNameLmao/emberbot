@@ -1,9 +1,15 @@
-import { CommandHandler } from './handler'
+const CommandHandler = require('./handler.js')
+const { SlashCommandBuilder } = require('@discordjs/builders')
+
+const name = 'dn'
+const description = 'whats dn?'
+const slashCommandOptions = new SlashCommandBuilder()
+.setName(name)
+.setDescription(description)
 
 module.exports = {
-    name: 'dn',
-    description: 'whats dn?',
-    hideFromHelp: true,
+    name, description,
+    slashCommandOptions,
     run(interaction) {
         const msg = 'deez nuts'
         CommandHandler.replyToCommand({ interaction, options: { content: msg } })

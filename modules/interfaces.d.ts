@@ -15,12 +15,6 @@ export interface ServerInfo {
     ping: number,
     icon: string
 }
-export interface Config {
-    prefix: string,
-    susprefix: string,
-    europesimStartYear: number,
-    europesimStartDate: string
-}
 export interface NameHistory {
     name: string,
     changedToAt?: number
@@ -51,12 +45,6 @@ export interface PlayerInfo {
         }
     }
 }
-export interface GuildConfig {
-    [guild_id: string]: {
-        prefix: string
-    }
-}
-
 export interface MiscJSON {
     countryList: string[]
     technobladeQuotes: string[]

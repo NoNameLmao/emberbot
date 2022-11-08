@@ -1,7 +1,8 @@
-import { log } from '../modules/logger'
-import fs from 'fs/promises'
+const { log } = require('../modules/logger.js')
+const fs = require('fs').promises
 
-export class CommandHandler {
+module.exports = class CommandHandler {
+    /** @type {import('../modules/interfaces').SlashCommand[]} */
     commands = []
     files
     initialized = false
@@ -17,6 +18,10 @@ export class CommandHandler {
         }
         this.initialized = true
     }
+    /**
+     * @param {string} fileName 
+     * @returns {Promise<import('../modules/interfaces').SlashCommand>}
+     */
     static async importCommand(fileName) {
         if (!fileName.endsWith('.js') || fileName == 'handler.js') {
             log('warn', `Ignoring file ${fileName}...`)
@@ -34,42 +39,46 @@ export class CommandHandler {
         if (!this.initialized) throw new ErrorNotInitialized()
         return new Promise(async (resolve, reject) => {
             log('info', 'Started refreshing global slash commands')
-            await client.application.commands.set(this.commands).catch(e => {
-                const error = e
+            await client.application.commands.set(this.commands).catch(error => {
                 log('error', 'Global slash command update failed!')
                 log('error', `  · Error message: ${error.message}`)
-                this.commands.forEach(command => console.log(command))
                 reject(error)
             })
             log('info', 'Finished refreshing global slash commands')
             resolve()
         })
     }
+    /**
+     * @param {import('../modules/client.js').DiscordClient} client 
+     * @param {string} guildID 
+     * @returns {Promise<void>}
+     */
     updateGuildSlashCommands(client, guildID) {
         if (!this.initialized) throw new ErrorNotInitialized()
-        return new Promise(async resolve => {
-            log('info', 'Started updating guild slash commands')
+        return new Promise(async (resolve, reject) => {
             const guild = client.guilds.cache.get(guildID)
-            await guild.commands.set(this.commands)
-            log('info', 'Finished refreshing guild slash commands')
+            await guild.commands.set(this.commands).catch(error => {
+                reject(error)
+            })
             resolve()
         })
     }
+    /** @param {import('discord.js').CommandInteraction} interaction */
     handleCommand(interaction) {
         if (!this.initialized) throw new ErrorNotInitialized()
         const args = interaction.options
-        const commandInMessage = interaction.commandName
-        const matchingSlashCommand = this.commands.filter(command => command.name == commandInMessage)[0]
+        const matchingSlashCommand = this.commands.filter(command => command.name == interaction.commandName)[0]
         if (!matchingSlashCommand) {
-            const msg = 'what a mystery, that command was not found. wait until discord updates my global slash commands or something'
+            const msg = 'the command you just tried to ran wasn\'t found by me, time to panic'
             CommandHandler.replyToCommand({ interaction, options: { content: msg } })
             return
         }
         try {
-            matchingSlashCommand.run(interaction, args)
+            matchingSlashCommand.default.run(interaction, args)
         } catch (error) {
-            const msg = `❌ oh... an error occured while running this command. please contact emberglaze for help and a poop code fix`
+            const msg = `❌ some error happened while running this command, contact emberglaze`
             CommandHandler.replyToCommand({ interaction, options: { content: msg } })
+            throw error
         }
     }
     static replyToCommand({ interaction, options }) {

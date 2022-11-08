@@ -1,6 +1,6 @@
-import { MessageEmbed } from "discord.js"
-import { SlashCommandBuilder, SlashCommandStringOption } from '@discordjs/builders'
-import { CommandHandler } from './handler'
+const { MessageEmbed } = require('discord.js')
+const { SlashCommandBuilder, SlashCommandStringOption } = require('@discordjs/builders')
+const CommandHandler = require('./handler.js')
 
 const name = 'poll'
 const description = 'Create a mini poll. Can have up to 5 answer options.'
