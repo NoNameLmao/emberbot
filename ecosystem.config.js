@@ -1,5 +1,5 @@
 module.exports = {
-  apps : [{
+  apps: [{
     name: 'esbot',
     script: 'ts-node index.ts',
     watch: 'true',

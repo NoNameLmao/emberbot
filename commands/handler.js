@@ -49,7 +49,7 @@ module.exports = class CommandHandler {
         })
     }
     /**
-     * @param {import('../modules/client.js').DiscordClient} client 
+     * @param {import('../modules/client.js')} client 
      * @param {string} guildID 
      * @returns {Promise<void>}
      */

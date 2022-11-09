@@ -2,7 +2,7 @@ const { Client } = require('discord.js')
 const voice = require('@discordjs/voice')
 const { log } = require('./logger.js')
 
-class DiscordClient extends Client {
+module.exports = class DiscordClient extends Client {
     emberglazeID = '341123308844220447'
     _voice = voice
     initialized = false
@@ -38,10 +38,14 @@ class DiscordClient extends Client {
                 log('error', 'Failed to initialize discord client')
                 reject(err)
             }
-            this
-            .once('ready', () =>  log('info', `Discord client successfully logged in as ${this.user.tag}`))
-            .on('rateLimit', rateLimitData => log('warn', `Rate limit! Global: ${rateLimitData.global}, ${rateLimitData.limit}, ${rateLimitData.method}, ${rateLimitData.timeout}`))
-            .on('warn', warning => log('warn', `${warning}`))
+            this.once('ready', () => log('info', `Discord client successfully logged in as ${this.user.tag}`))
+            .on('rateLimit', rateLimitData => {
+                log('warn', `Discord client has been rate limited`)
+                log('warn', `  · Global: ${rateLimitData.global}`)
+                log('warn', `  · Limit: ${rateLimitData.limit}`)
+                log('warn', `  · Method: ${rateLimitData.method}`)
+                log('warn', `  · Timeout: ${rateLimitData.timeout}ms`)
+            }).on('warn', warning => log('warn', `${warning}`))
             .on('error', error => log('error', `${error}`))
             .on('invalidated', () => log('error', `Discord session invalidated`))
             .on('guildCreate', guild => log('info', `➕ Joined "${guild.name}" (${guild.memberCount} members)`))
@@ -53,4 +57,3 @@ class DiscordClient extends Client {
         return this.guilds.cache.size
     }
 }
-module.exports = { DiscordClient }
