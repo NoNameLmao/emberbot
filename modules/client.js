@@ -8,16 +8,7 @@ module.exports = class DiscordClient extends Client {
     initialized = false
     constructor() {
         super({
-            intents: 32767,
-            presence: {
-                status: 'online',
-                activities: [
-                    {
-                        name: '.help',
-                        type: 'PLAYING',
-                    }
-                ],
-            },
+            intents: 3276799,
             allowedMentions: {
                 parse: ['roles', 'users']
             }

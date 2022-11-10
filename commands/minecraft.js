@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js')
 const { SlashCommandBuilder, SlashCommandSubcommandGroupBuilder, SlashCommandSubcommandBuilder } = require('@discordjs/builders')
-const mcdata = require('mcdata')
+const mcdata = require('../modules/mcdata')
 const CommandHandler = require('./handler.js')
 const { replyToCommand } = CommandHandler
 

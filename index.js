@@ -3,7 +3,6 @@ const startTime = Date.now()
 const { limit } = require('emberutils')
 const serverline = require('serverline')
 const CommandHandler = require('./commands/handler.js')
-const { chatbot } = require('./modules/chatbot.js')
 const { log } = require('./modules/logger.js')
 const DiscordClient = require('./modules/client.js')
 const CandyVan = require('./modules/candy-van.js')
@@ -33,7 +32,7 @@ module.exports = { dcClient, commandHandler };
         })
         log('info', `Discord bot is ready after ${(Date.now() - startTime) / 1000}s`)
         dcClient.on('messageCreate', async message => {
-            if (message.content === `<@${dcClient.user.id}>`) message.channel.send(`use slash commands 🥺🥺🥺🙏🙏🙏`)
+            if (message.content === `<@${dcClient.user.id}>`) message.channel.send(`use slash commands im too lazy to remake it with classic commands`)
             if (message.channel.type === 'DM') {
                 if (message.author.id !== dcClient.user.id) {
                     log('info', 'Recieved a direct message!')
@@ -45,43 +44,6 @@ module.exports = { dcClient, commandHandler };
                     log('info', `  · Content:\n${message.content}`)
                 }
             }
-            if (message.channel.type === 'GUILD_TEXT' && message.channel.name === 'es-chatbot') {
-                try {
-                    if (message.author.bot) return
-                    if (!message.content) {
-                        log('warn', `Chat bot recieved a message without any text content.`)
-                        log('warn', `  · Author: ${message.author.tag}`)
-                        message.react('❌')
-                        return
-                    }
-                    message.channel.sendTyping()
-
-                    let msg = (
-                        await chatbot.chat({
-                            message: message.content,
-                            name: message.author.username,
-                            user: message.author.username,
-                            language: 'auto'
-                        })
-                    ).toLowerCase().replace(/\\/gm, '')
-
-                    message.reply({
-                        content: msg,
-                        allowedMentions: { repliedUser: true }
-                    })
-                    return
-                } catch (e) {
-                    const error = e
-                    if (error.stack.includes('Message content must be a non-empty string.')) {
-                        message.channel.send('❌ <message content must be a non-empty string>')
-                        return
-                    } else {
-                        message.channel.send(`❌ epic fail \`\`\`js\n${error.stack}\`\`\``)
-                        return
-                    }
-                }
-            }
-            if (message.content.startsWith('..')) return
 
             const suscommand = message.content.slice(1).trim().toLowerCase()
             if (message.content.startsWith('$') && message.author.id === dcClient.emberglazeID) {
