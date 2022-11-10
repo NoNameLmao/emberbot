@@ -31,6 +31,7 @@ module.exports = { dcClient, commandHandler };
             }
         })
         log('info', `Discord bot is ready after ${(Date.now() - startTime) / 1000}s`)
+        candyVan.monitorJoinsAndLeaves()
         dcClient.on('messageCreate', async message => {
             if (message.content === `<@${dcClient.user.id}>`) message.channel.send(`use slash commands im too lazy to remake it with classic commands`)
             if (message.channel.type === 'DM') {

@@ -23,17 +23,22 @@ module.exports = class CandyVan {
         }
     }
     /**
+     * Welcome members when they join the server
      * @param {GuildMember} member 
      */
     welcomeMember(member) {
         this.discord.welcomeGoodbyeChannel.send(`<@${member.id}> has joined this server. 👋`)
     }
     /**
-     * @param {GuildMember} member 
+     * Send goodbye message when members leave the server
+     * @param {GuildMember} member
      */
     farewellMember(member) {
         this.discord.welcomeGoodbyeChannel.send(`<@${member.id}> has left the server. 🪦`)
     }
+    /**
+     * Monitor for all joins and leaves in the guild
+     */
     monitorJoinsAndLeaves() {
         this.discord.client.on('guildMemberAdd', member => {
             if (!member.guild.id !== this.discord.server.id) return

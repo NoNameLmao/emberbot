@@ -1,6 +1,5 @@
-const { MessageEmbed } = require('discord.js')
+const { EmbedBuilder, SlashCommandBuilder, CommandInteraction } = require('discord.js')
 const CommandHandler = require('./handler.js')
-const { SlashCommandBuilder } = require('@discordjs/builders')
 
 const name = 'info'
 const description = 'See information about the bot'
@@ -11,8 +10,16 @@ const slashCommandOptions = new SlashCommandBuilder()
 module.exports = {
     name, description,
     slashCommandOptions,
+    /** @param {CommandInteraction} interaction */
     async run(interaction) {
-        const infoEmbed = new MessageEmbed()
+        let totalSeconds = interaction.client.uptime / 1000
+        let days = Math.floor(totalSeconds / 86400)
+        totalSeconds %= 86400
+        let hours = Math.floor(totalSeconds / 3600)
+        totalSeconds %= 3600
+        let minutes = Math.floor(totalSeconds / 60)
+        let seconds = Math.floor(totalSeconds % 60)
+        const infoEmbed = new EmbedBuilder()
         .setTitle('Bot information')
         .setColor(interaction.member.displayHexColor)
         .setFields(
@@ -22,7 +29,7 @@ module.exports = {
             },
             {
                 name: 'Bot uptime',
-                value: `${interaction.client.uptime}`
+                value: `${days}d ${hours}h ${minutes}m ${seconds}s`
             }
         )
         CommandHandler.replyToCommand({
