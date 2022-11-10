@@ -1,5 +1,4 @@
-const { MessageEmbed } = require('discord.js')
-const { SlashCommandBuilder, SlashCommandSubcommandGroupBuilder, SlashCommandSubcommandBuilder } = require('@discordjs/builders')
+const { EmbedBuilder, SlashCommandBuilder, SlashCommandSubcommandGroupBuilder, SlashCommandSubcommandBuilder } = require('discord.js')
 const mcdata = require('../modules/mcdata')
 const CommandHandler = require('./handler.js')
 const { replyToCommand } = CommandHandler
@@ -9,8 +8,8 @@ const description = 'Categorised minecraft commands.'
 const slashCommandOptions = new SlashCommandBuilder()
 .setName(name)
 .setDescription(description)
-.addSubcommandGroup(
-    new SlashCommandSubcommandGroupBuilder()
+.addSubcommandGroup(group =>
+    group
     .setName('command')
     .setDescription('Minecraft category commands')
     .addSubcommand(
@@ -35,7 +34,7 @@ module.exports = {
                 replyToCommand({ interaction, options: { content: 'Pinging minecraft server...' } })
                 /** @type {import('../modules/interfaces').ServerInfo} */
                 const serverinfo = await mcdata.serverStatus(args[1])
-                const serverInfoEmbed = new MessageEmbed()
+                const serverInfoEmbed = new EmbedBuilder()
                 .setTitle('Server Information')
                 .setColor(interaction.member.displayHexColor)
                 .setAuthor({ name: `${args[1]}` })
@@ -54,7 +53,7 @@ module.exports = {
             try {
                 /** @type {import('../modules/interfaces').PlayerInfo} */
                 const playerInfo = await mcdata.playerStatus(args[1])
-                const playerInfoEmbed = new MessageEmbed()
+                const playerInfoEmbed = new EmbedBuilder()
                 .setTitle('Player information')
                 .setColor(interaction.member.displayHexColor)
                 .setAuthor({ name: `${args[1]}` })

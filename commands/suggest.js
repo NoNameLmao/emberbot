@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, SlashCommandStringOption } = require('@discordjs/builders')
+const { SlashCommandBuilder, SlashCommandStringOption } = require('discord.js')
 const CommandHandler = require('./handler.js')
 
 const name = 'suggest'
@@ -6,8 +6,8 @@ const description = 'Send an idea on how to improve the bot (or a bug to fix)'
 const slashCommandOptions = new SlashCommandBuilder()
 .setName(name)
 .setDescription(description)
-.addStringOption(
-    new SlashCommandStringOption()
+.addStringOption(option =>
+    option
     .setName('suggestion')
     .setDescription('Text that you want to send as a suggestion')
     .setRequired(true)

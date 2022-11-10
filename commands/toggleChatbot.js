@@ -1,9 +1,7 @@
 const CommandHandler = require('./handler.js')
-const { SlashCommandBuilder } = require('discord.js')
+const { SlashCommandBuilder, CommandInteraction } = require('discord.js')
 const ChatbotClient = require('../modules/chatbot.js').Client
-const { CommandInteraction } = require('discord.js')
-require('dotenv').config()
-
+require('dotenv').config
 const name = 'togglechatbot'
 const description = 'Used to toggle chatbot in the channel where you used this command (gets reset every bot restart)'
 const slashCommandOptions = new SlashCommandBuilder()

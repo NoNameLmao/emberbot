@@ -1,5 +1,5 @@
 const CommandHandler = require('./handler.js')
-const { SlashCommandBuilder } = require('@discordjs/builders')
+const { SlashCommandBuilder } = require('discord.js')
 
 const name = 'dn'
 const description = 'whats dn?'

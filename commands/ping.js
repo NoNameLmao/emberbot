@@ -1,5 +1,5 @@
 const CommandHandler = require('./handler.js')
-const { SlashCommandBuilder } = require('@discordjs/builders')
+const { SlashCommandBuilder } = require('discord.js')
 
 const name = 'ping'
 const description = 'Get bot\'s latency on discord (includes measuring with message timestamps and WebSocket ping)'

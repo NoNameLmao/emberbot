@@ -1,6 +1,6 @@
 const Ben = require("../modules/ben.js")
 const CommandHandler = require('./handler.js')
-const { SlashCommandBuilder } = require('@discordjs/builders')
+const { SlashCommandBuilder } = require('discord.js')
 
 const name = 'ben'
 const description = 'A replica of Talking Ben\'s phone thing'
@@ -10,6 +10,7 @@ const slashCommandOptions = new SlashCommandBuilder()
 
 module.exports = {
     name, description,
+    slashCommandOptions,
     async run(interaction) {
         const ben = new Ben(interaction)
         const msg = 'summoning ben...'

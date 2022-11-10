@@ -1,5 +1,5 @@
 const CommandHandler = require('./handler.js')
-const { SlashCommandBuilder } = require('@discordjs/builders')
+const { SlashCommandBuilder } = require('discord.js')
 
 const name = 'hi'
 const description = 'Usually used to check if I\'m responding or not, but other than that - useless'

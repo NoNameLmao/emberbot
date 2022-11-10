@@ -1,6 +1,6 @@
 const { jsonRead } = require("emberutils")
 const CommandHandler = require('./handler.js')
-const { SlashCommandBuilder } = require('@discordjs/builders')
+const { SlashCommandBuilder } = require('discord.js')
 
 const name = 'rcg'
 const description = 'Random country generator. (dont kill me)'

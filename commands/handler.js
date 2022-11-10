@@ -1,9 +1,12 @@
 const { log } = require('../modules/logger.js')
 const fs = require('fs').promises
+const { REST } = require('@discordjs/rest')
+const { Routes, SlashCommandBuilder } = require('discord.js')
 
 module.exports = class CommandHandler {
-    /** @type {import('../modules/interfaces').SlashCommand[]} */
+    /** @type {import('../modules/interfaces.js').SlashCommand[]} */
     commands = []
+    restCommands = []
     files
     initialized = false
     async init() {
@@ -16,11 +19,13 @@ module.exports = class CommandHandler {
             if (!command.name) continue
             this.commands.push(command)
         }
+        log('info', 'Setting up REST')
+        this.rest = new REST({ version: '10' }).setToken(process.env.DJS_TOKEN)
         this.initialized = true
     }
     /**
      * @param {string} fileName 
-     * @returns {Promise<import('../modules/interfaces').SlashCommand>}
+     * @returns {Promise<SlashCommand>}
      */
     static async importCommand(fileName) {
         if (!fileName.endsWith('.js') || fileName == 'handler.js') {
@@ -48,6 +53,19 @@ module.exports = class CommandHandler {
             resolve()
         })
     }
+    resetSlashCommands(client) {
+        if (!this.initialized) throw new ErrorNotInitialized()
+        return new Promise(async (resolve, reject) => {
+            log('info', 'Resetting global slash commands')
+            await client.application.commands.set({}).catch(error => {
+                log('error', 'Global slash command reset failed!')
+                log('error', `  · Error message: ${error.message}`)
+                reject(error)
+            })
+            log('info', 'Global slash commands have been reset')
+            resolve()
+        })
+    }
     /**
      * @param {import('../modules/client.js')} client 
      * @param {string} guildID 
@@ -56,6 +74,12 @@ module.exports = class CommandHandler {
     updateGuildSlashCommands(client, guildID) {
         if (!this.initialized) throw new ErrorNotInitialized()
         return new Promise(async (resolve, reject) => {
+            // await (await client.guilds.fetch(guildID).catch(reject)).commands.set(this.commands.filter(command => command.slashCommandOptions()))
+            
+            // await this.rest.put(Routes.applicationGuildCommands(client.application.id, guildID), {
+            //     body: this.commands.filter(command => command.slashCommandOptions)
+            // }).catch(reject)
+
             const guild = client.guilds.cache.get(guildID)
             await guild.commands.set(this.commands).catch(error => {
                 reject(error)

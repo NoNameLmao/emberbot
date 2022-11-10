@@ -1,6 +1,6 @@
 const { jsonRead, getRandomInt, sleep } = require('emberutils')
 const CommandHandler = require('./handler.js')
-const { SlashCommandBuilder } = require('@discordjs/builders')
+const { SlashCommandBuilder } = require('discord.js')
 
 const name = 'exit'
 const description = 'shortcut to process.exit(0)'

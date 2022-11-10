@@ -1,5 +1,5 @@
 const { jsonRead, getRandomInt } = require("emberutils")
-const { SlashCommandBuilder, SlashCommandNumberOption } = require('@discordjs/builders')
+const { SlashCommandBuilder, SlashCommandNumberOption } = require('discord.js')
 const CommandHandler = require('./handler.js')
 const { replyToCommand } = CommandHandler
 
@@ -8,8 +8,8 @@ const description = 'send a random technoblade quote because he never dies'
 const slashCommandOptions = new SlashCommandBuilder()
 .setName(name)
 .setDescription(description)
-.addNumberOption(
-    new SlashCommandNumberOption()
+.addNumberOption(option =>
+    option
     .setName('quote_number')
     .setDescription('You can specify the number of the quote you want')
     .setRequired(false)
