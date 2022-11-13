@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, Message } = require('discord.js');
 const { chatbot } = require('../index.js')
 
 /** @type {import('../modules/interfaces').Command} */
@@ -9,7 +9,7 @@ module.exports = {
     async run(interaction) {
         /** @param {Message} message */
         function messageListener(message) {
-            if (!chatbot.enabledForChannels.has(message.channel.id) || message.author.bot || !message.content) return
+            if (!chatbot.enabledForChannels.has(message.channel.id) || message.author.bot || !message.content || message.content.toLowerCase() == 'you') return
             message.channel.sendTyping()
             chatbot.chat({
                 message: message.content,
