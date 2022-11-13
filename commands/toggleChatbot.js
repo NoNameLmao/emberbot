@@ -9,7 +9,7 @@ module.exports = {
     async run(interaction) {
         /** @param {Message} message */
         function messageListener(message) {
-            if (!chatbot.enabledForChannels.has(message.channel.id) || message.author.bot || !message.content || message.content.toLowerCase() == 'you') return
+            if (!chatbot.enabledForChannels.has(message.channel.id) || message.author.bot || !message.content || message.content.toLowerCase().replace('?', '').replace('!', '') == 'you') return
             message.channel.sendTyping()
             chatbot.chat({
                 message: message.content,
