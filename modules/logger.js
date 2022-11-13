@@ -24,5 +24,5 @@ logger.addColors({
 function log(level, text) {
     logger.log(level, text)
 }
-module.exports = { log }
 log('info', 'Loaded logger')
+module.exports = log

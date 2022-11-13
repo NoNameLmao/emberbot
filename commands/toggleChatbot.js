@@ -1,44 +1,33 @@
-const CommandHandler = require('./handler.js')
-const { SlashCommandBuilder, CommandInteraction } = require('discord.js')
-const ChatbotClient = require('../modules/chatbot.js').Client
-require('dotenv').config
-const name = 'togglechatbot'
-const description = 'Used to toggle chatbot in the channel where you used this command (gets reset every bot restart)'
-const slashCommandOptions = new SlashCommandBuilder()
-.setName(name)
-.setDescription(description)
+const { SlashCommandBuilder } = require('discord.js');
+const { chatbot } = require('../index.js')
 
-const chatbot = new ChatbotClient(process.env.LEBYY_CHATBOT_API_KEY)
-
+/** @type {import('../modules/interfaces').Command} */
 module.exports = {
-    name, description,
-    slashCommandOptions,
-    /** 
-     * @param {CommandInteraction} interaction
-     * @param {ChatbotClient} chatbot
-     * */
+    data: new SlashCommandBuilder()
+        .setName('togglechatbot')
+        .setDescription('Used to toggle chatbot in the channel where you used this command (gets reset every bot restart)'),
     async run(interaction) {
+        /** @param {Message} message */
+        function messageListener(message) {
+            if (!chatbot.enabledForChannels.has(message.channel.id) || message.author.bot || !message.content) return
+            message.channel.sendTyping()
+            chatbot.chat({
+                message: message.content,
+                name: message.author.username,
+                user: message.author.username,
+                language: 'auto'
+            }).then(msg => message.reply(msg))
+        }
         if (!chatbot.enabledForChannels.has(interaction.channel.id)) {
             chatbot.enabledForChannels.add(interaction.channel.id)
             const msg = `🥱😀 good morning`
-            CommandHandler.replyToCommand({ interaction, options: { content: msg } })
-            interaction.client.on('messageCreate', async message => {
-                if (!chatbot.enabledForChannels.has(message.channel.id) || message.author.bot || !message.content) return
-                message.channel.sendTyping()
-                const msg = (
-                    await chatbot.chat({
-                        message: message.content,
-                        name: message.author.username,
-                        user: message.author.username,
-                        language: 'auto'
-                    })
-                )
-                message.reply(msg)
-            })
+            interaction.reply(msg)
+            interaction.client.on('messageCreate', messageListener)
         } else {
             chatbot.enabledForChannels.delete(interaction.channel.id)
             const msg = `😴💤💤💤`
-            CommandHandler.replyToCommand({ interaction, options: { content: msg } })
+            interaction.reply(msg)
+            interaction.client.removeAllListeners('messageCreate')
         }
     }
 }

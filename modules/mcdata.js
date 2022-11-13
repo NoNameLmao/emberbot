@@ -1,6 +1,6 @@
 /**
 * @name MCData
-* @version 1.0.9
+* @version 1.1.0
 * @file Get minecraft player and server info
 * @author kallelganewk
 * @copyright KallelGaNewk 2021
@@ -26,7 +26,6 @@ module.exports = {
         return {
             uuid: res.data.id,
             username: res.data.name,
-            nameHistory: res.data.name_history,
             skin: {
                 avatar: `https://mc-heads.net/avatar/${res.data.id}/${options.skinSize ? options.skinSize : '512'}`,
                 renders: {

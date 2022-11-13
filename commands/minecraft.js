@@ -1,62 +1,88 @@
-const { EmbedBuilder, SlashCommandBuilder, SlashCommandSubcommandGroupBuilder, SlashCommandSubcommandBuilder } = require('discord.js')
-const mcdata = require('../modules/mcdata')
-const CommandHandler = require('./handler.js')
-const { replyToCommand } = CommandHandler
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const mcdata = require('../modules/mcdata.js');
 
-const name = 'minecraft'
-const description = 'Categorised minecraft commands.'
-const slashCommandOptions = new SlashCommandBuilder()
-.setName(name)
-.setDescription(description)
-.addSubcommandGroup(group =>
-    group
-    .setName('command')
-    .setDescription('Minecraft category commands')
-    .addSubcommand(
-        new SlashCommandSubcommandBuilder()
-        .setName('serverinfo')
-        .setDescription('Ping a Minecraft Java Edition server for it\'s information')
-    )
-    .addSubcommand(
-        new SlashCommandSubcommandBuilder()
-        .setName('playerinfo')
-        .setDescription('Display information about a Minecraft Java Edition player')
-    )
-)
-
+/** @type {import('../modules/interfaces').Command} */
 module.exports = {
-    name, description,
-    slashCommandOptions,
-    async run(interaction, args) {
-        const subcommand = args.getSubcommand(true)
+    data: new SlashCommandBuilder()
+        .setName('minecraft')
+        .setDescription('Categorised minecraft commands.')
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('serverinfo')
+                .setDescription(`Ping a Minecraft Java Edition server for it's information`)
+                .addStringOption(option =>
+                    option
+                        .setName('server_ip')
+                        .setDescription('The server IP address or domain')
+                        .setRequired(true)
+                )
+        )
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('playerinfo')
+                .setDescription('Display information about a Minecraft Java Edition player')
+                .addStringOption(option =>
+                    option
+                        .setName('playername')
+                        .setDescription(`The player's in-game name`)
+                        .setRequired(true)
+                )
+        ),
+    async run(interaction) {
+        const subcommand = interaction.options.getSubcommand(true)
         if (subcommand == 'serverinfo') {
             try {
-                replyToCommand({ interaction, options: { content: 'Pinging minecraft server...' } })
-                /** @type {import('../modules/interfaces').ServerInfo} */
-                const serverinfo = await mcdata.serverStatus(args[1])
+                const serverip = `${interaction.options.getString('server_ip')}`
+                const serverInfo = await mcdata.serverStatus(serverip)
                 const serverInfoEmbed = new EmbedBuilder()
-                .setTitle('Server Information')
-                .setColor(interaction.member.displayHexColor)
-                .setAuthor({ name: `${args[1]}` })
-                .addField('Status', `Currently ${serverinfo.serverStatus}`, true)
-                .addField('Server IP', serverinfo.serverip, true)
-                .addField('Version', serverinfo.version, true)
-                .addField('Players', `${serverinfo.players}/${serverinfo.maxplayers} online`, true)
-                .addField('MOTD', removeMCColorCodes(serverinfo.motd.text), true)
-                .addField('Ping', `${serverinfo.ping}ms`, true)
-                replyToCommand({ interaction, options: { embeds: [serverInfoEmbed] } })
+                    .setTitle('Server Information')
+                    .setColor(interaction.member.displayHexColor)
+                    .setAuthor({ name: serverip })
+                    .addFields(
+                        {
+                            name: 'Status',
+                            value: `Currently ${serverInfo.serverStatus}`,
+                            inline: true
+                        },
+                        {
+                            name: 'Server IP',
+                            value: serverInfo.serverip,
+                            inline: true
+                        },
+                        {
+                            name: 'Version',
+                            value: serverInfo.version,
+                            inline: true
+                        },
+                        {
+                            name: 'Players',
+                            value: `${serverInfo.players}/${serverInfo.maxplayers} online`,
+                            inline: true
+                        },
+                        {
+                            name: 'MOTD',
+                            value: removeMCColorCodes(serverInfo.motd.text),
+                            inline: true
+                        },
+                        {
+                            name: 'Ping',
+                            value: `${serverInfo.ping}ms`,
+                            inline: true
+                        }
+                    )
+                interaction.reply({ embeds: [serverInfoEmbed] })
             } catch (error) {
-                const errorMessage = `❌ Error while running this command:\n\`${error}\``
-                replyToCommand({ interaction, options: { content: errorMessage } })
+                interaction.reply(`❌ Error while pinging:\n\`${error}\``)
             }
         } else if (subcommand == 'playerinfo') {
             try {
+                const playerName = interaction.options.getString('playername')
                 /** @type {import('../modules/interfaces').PlayerInfo} */
-                const playerInfo = await mcdata.playerStatus(args[1])
+                const playerInfo = await mcdata.playerStatus(playerName)
                 const playerInfoEmbed = new EmbedBuilder()
                 .setTitle('Player information')
                 .setColor(interaction.member.displayHexColor)
-                .setAuthor({ name: `${args[1]}` })
+                .setAuthor({ name: `${playerName}` })
                 .addFields(
                     {
                         name: 'UUID',
@@ -67,9 +93,9 @@ module.exports = {
                         value: `${playerInfo.nameHistory}`
                     }
                 )
-                replyToCommand({ interaction, options: { embeds: [playerInfoEmbed] } })
+                interaction.reply({ embeds: [playerInfoEmbed] })
             } catch (error) {
-                replyToCommand({ interaction, options: { content: `There was an error!\n${error}` } })
+                interaction.reply(`There was an error!\n${error}`)
             }
         }
         /** @param {string} string */

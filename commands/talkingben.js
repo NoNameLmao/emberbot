@@ -1,20 +1,12 @@
-const Ben = require("../modules/ben.js")
-const CommandHandler = require('./handler.js')
-const { SlashCommandBuilder } = require('discord.js')
+const { SlashCommandBuilder } = require('discord.js');
+const Ben = require('../modules/ben.js')
 
-const name = 'ben'
-const description = 'A replica of Talking Ben\'s phone thing'
-const slashCommandOptions = new SlashCommandBuilder()
-.setName(name)
-.setDescription(description)
-
+/** @type {import('../modules/interfaces').Command} */
 module.exports = {
-    name, description,
-    slashCommandOptions,
+    data: new SlashCommandBuilder()
+        .setName('ben')
+        .setDescription('you still remember talking ben? you know, the "yes" and "hohohoho" guy'),
     async run(interaction) {
-        const ben = new Ben(interaction)
-        const msg = 'summoning ben...'
-        await CommandHandler.replyToCommand({ interaction, options: { content: msg } })
-        await ben.newCall()
+        await new Ben(interaction).newCall()
     }
 }

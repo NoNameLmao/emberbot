@@ -1,36 +1,20 @@
-const { jsonRead, getRandomInt, sleep } = require('emberutils')
-const CommandHandler = require('./handler.js')
-const { SlashCommandBuilder } = require('discord.js')
+const { SlashCommandBuilder } = require("discord.js");
+const { sleep, jsonRead, getRandomInt } = require("emberutils");
 
-const name = 'exit'
-const description = 'shortcut to process.exit(0)'
-const slashCommandOptions = new SlashCommandBuilder()
-.setName(name)
-.setDescription(description)
-
+/** @type {import('../modules/interfaces').Command} */
 module.exports = {
-    name, description,
-    slashCommandOptions,
+    data: new SlashCommandBuilder()
+        .setName('exit')
+        .setDescription('shortcut to process.exit(0)'),
     async run(interaction) {
-        const msg = ':sob:'
         if (interaction.user.id === '341123308844220447') {
-            CommandHandler.replyToCommand({
-                interaction,
-                options: { content: msg }
-            })
-            await sleep(1000)
+            interaction.reply('im not gonna go offline forever, am i?')
+            await sleep(500)
             process.exit(0)
         } else {
             /** @type {import('../modules/interfaces').MiscJSON} */
             const { technobladeQuotes } = await jsonRead('./misc.json')
-            function randomTechnoQuote() {
-                return technobladeQuotes[getRandomInt(technobladeQuotes.length + 1)]
-            }
-            const msg = `❌ ${randomTechnoQuote()}`
-            CommandHandler.replyToCommand({
-                interaction,
-                options: { content: msg }
-            })
+            interaction.reply(`❌ ${technobladeQuotes[getRandomInt(technobladeQuotes.length + 1)]}`)
         }
     }
 }

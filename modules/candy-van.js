@@ -1,6 +1,6 @@
 const { TextChannel, GuildMember, Guild } = require('discord.js')
-const DiscordClient = require('./client.js')
-const { log } = require('./logger.js')
+const DiscordClient = require('./discord_client.js')
+const log = require('./logger.js')
 
 // the discord server, not what you thought
 module.exports = class CandyVan {

@@ -1,12 +1,13 @@
 const base = "https://api.lebyy.me/api";
 const translatte = require("translatte");
 const superagent = require("superagent");
+require('dotenv').config()
 /**
  *
  *
- * @class Client
+ * @class ChatbotClient
  */
-class Client {
+class ChatbotClient {
     enabledForChannels = new Set()
     constructor(token) {
         if (!token) throw new Error("No token provided!");
@@ -264,7 +265,4 @@ class Client {
         });
     }
 }
-
-module.exports = {
-    Client
-};
+module.exports = ChatbotClient

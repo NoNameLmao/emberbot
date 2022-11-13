@@ -1,20 +1,15 @@
-const CommandHandler = require('./handler.js')
-const { SlashCommandBuilder } = require('discord.js')
+const { SlashCommandBuilder } = require('discord.js');
 
-const name = 'ping'
-const description = 'Get bot\'s latency on discord (includes measuring with message timestamps and WebSocket ping)'
-const slashCommandOptions = new SlashCommandBuilder()
-.setName(name)
-.setDescription(description)
-
+/** @type {import('../modules/interfaces').Command} */
 module.exports = {
-    name, description,
-    slashCommandOptions,
+    data: new SlashCommandBuilder()
+        .setName('ping')
+        .setDescription(`Get bot's latency on discord (includes measuring with message timestamps and WebSocket ping)`),
     async run(interaction) {
         const msg = (
             `Message-measured ping: **${interaction.createdTimestamp - Date.now()}**ms\n` +
             `WebSocket ping: **${interaction.client.ws.ping}**ms`
         )
-        CommandHandler.replyToCommand({ interaction, options: { content: msg } })
+        interaction.reply(msg)
     }
 }

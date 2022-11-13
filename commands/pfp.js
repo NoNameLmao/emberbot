@@ -1,33 +1,18 @@
-const { SlashCommandBuilder, SlashCommandUserOption, CommandInteraction } = require('discord.js')
-const CommandHandler = require('./handler.js')
+const { SlashCommandBuilder } = require('discord.js');
 
-const name = 'pfp'
-const description = 'Display someone\'s (or yours) profile picture.'
-const slashCommandOptions = new SlashCommandBuilder()
-.setName(name)
-.setDescription(description)
-.addUserOption(option =>
-    option
-    .setName('guild_member')
-    .setDescription('The guild member you want to display the profile picture of.')
-    .setRequired(false)
-)
-
+/** @type {import('../modules/interfaces').Command} */
 module.exports = {
-    name, description,
-    slashCommandOptions,
-    /** @param {CommandInteraction} interaction */
+    data: new SlashCommandBuilder()
+        .setName('pfp')
+        .setDescription(`Display someone's (or your) profile picture`)
+        .addUserOption(option =>
+            option
+            	.setName('guildmember')
+                .setDescription('The guild member you want to display the profile picture of')
+                .setRequired(true)
+        ),
     async run(interaction) {
-        if (interaction.options.getUser('guild_member')) {
-            const user = interaction.options.getUser('guildMember', false)
-            const pfp = user.displayAvatarURL({ dynamic: true, format: 'png' })
-            const msg = pfp
-            CommandHandler.replyToCommand({ interaction, options: { content: msg } })
-        } else {
-            const user = interaction.user
-            const pfp = user.displayAvatarURL({ dynamic: true, format: 'png' })
-            const msg = pfp
-            CommandHandler.replyToCommand({ interaction, options: { content: msg } })
-        }
+        const user = interaction.options.getUser('guildmember', true)
+        interaction.reply(user.displayAvatarURL({ dynamic: true, format: 'png' }))
     }
 }

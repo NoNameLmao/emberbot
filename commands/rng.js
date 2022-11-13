@@ -1,55 +1,46 @@
-const { getRandomInt, getRandomArbitrary } = require("emberutils")
-const { SlashCommandBuilder, CommandInteraction } = require('discord.js')
-const CommandHandler = require('./handler.js')
+const { SlashCommandBuilder } = require('discord.js');
+const { getRandomInt, getRandomArbitrary } = require('emberutils');
 
-const name = 'rng'
-const description = 'Random number generator'
-const slashCommandOptions = new SlashCommandBuilder()
-.setName(name)
-.setDescription(description)
-.addSubcommand(subcommand =>
-    subcommand
-    .setName('max_only')
-    .setDescription('Will generate a value between 0 and "max"')
-    .addNumberOption(option =>
-        option
-        .setName('max_value')
-        .setDescription('Maximal value to generate')
-    )
-).addSubcommand(subcommand =>
-    subcommand
-    .setName('min_and_max')
-    .setDescription('Specify minimal and maximal values')
-    .addNumberOption(option =>
-        option
-        .setName('min_value')
-        .setDescription('Minimal value to generate')
-    )
-    .addNumberOption(option =>
-        option
-        .setName('max_value')
-        .setDescription('Maximal value to generate')
-    )
-)
-
+/** @type {import('../modules/interfaces').Command} */
 module.exports = {
-    name, description,
-    slashCommandOptions,
-    /** @param {CommandInteraction} interaction */
+    data: new SlashCommandBuilder()
+        .setName('rng')
+        .setDescription(`Random number generator`)
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('maxonly')
+                .setDescription('Only provide the maximal number (0 - max)')
+                .addNumberOption(option =>
+                    option
+                        .setName('maxvalue')
+                        .setDescription('Enter the maximal number')
+                )
+        ).addSubcommand(subcommand =>
+            subcommand
+                .setName('minandmax')
+                .setDescription('Also provide a minimal value (min - max)')
+                .addNumberOption(option =>
+                    option
+                        .setName('minvalue')
+                        .setDescription('Enter the minimal number')
+                ).addNumberOption(option =>
+                    option
+                        .setName('maxvalue')
+                        .setDescription('Enter the maximal number')
+                )
+        ),
     async run(interaction) {
-        /** @type {string} */
-        const subcommand = interaction.options.getSubcommand()
-        if (subcommand == 'max_only') {
-            const max = args.getNumber('maxValue', true)
+        const subcommand = interaction.options.getSubcommand(true)
+        const max = interaction.options.getNumber('maxvalue')
+        if (subcommand == 'maxonly') {
             const randomNumber = getRandomInt(max)
             const msg = `The number is: ${randomNumber}`
-            CommandHandler.replyToCommand({ interaction, options: { content: msg } })
-        } else if (subcommand == 'min_and_max') {
-            const min = args.getNumber('minValue', true)
-            const max = args.getNumber('maxValue', true)
+            interaction.reply(msg)
+        } else {
+            const min = interaction.options.getNumber('minvalue')
             const randomNumber = getRandomArbitrary(min, max)
             const msg = `The number is: ${randomNumber}`
-            CommandHandler.replyToCommand({ interaction, options: { content: msg } })
+            interaction.reply(msg)
         }
     }
 }

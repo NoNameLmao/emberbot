@@ -1,16 +1,11 @@
-const { EmbedBuilder, SlashCommandBuilder, CommandInteraction } = require('discord.js')
-const CommandHandler = require('./handler.js')
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { dcClient } = require('..');
 
-const name = 'info'
-const description = 'See information about the bot'
-const slashCommandOptions = new SlashCommandBuilder()
-.setName(name)
-.setDescription(description)
-
+/** @type {import('../modules/interfaces').Command} */
 module.exports = {
-    name, description,
-    slashCommandOptions,
-    /** @param {CommandInteraction} interaction */
+    data: new SlashCommandBuilder()
+        .setName('info')
+        .setDescription('See information about the bot'),
     async run(interaction) {
         let totalSeconds = interaction.client.uptime / 1000
         let days = Math.floor(totalSeconds / 86400)
@@ -25,18 +20,20 @@ module.exports = {
         .setFields(
             {
                 name: 'Amount of guilds',
-                value: `${interaction.client.guilds.cache.size}`
+                value: `${interaction.client.guilds.cache.size}`,
+                inline: true
             },
             {
                 name: 'Bot uptime',
-                value: `${days}d ${hours}h ${minutes}m ${seconds}s`
+                value: `${days}d ${hours}h ${minutes}m ${seconds}s`,
+                inline: true
+            },
+            {
+                name: 'Total members across all guilds',
+                value: await dcClient.getTotalMembers(),
+                inline: true
             }
         )
-        CommandHandler.replyToCommand({
-            interaction,
-            options: {
-                embeds: [infoEmbed]
-            }
-        })
+        interaction.reply({ embeds: [infoEmbed] })
     }
 }
