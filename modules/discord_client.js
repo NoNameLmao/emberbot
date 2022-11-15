@@ -1,5 +1,5 @@
 const { Client } = require('discord.js')
-const log = require('./logger.js')
+const logger = require('./logger.js')
 const djsvoice = require('@discordjs/voice')
 /**
  * @class Represents a discord.js bot client with more features
@@ -24,30 +24,30 @@ module.exports = class DiscordClient extends Client {
      * @returns {Promise<void>}
      */
     init() {
-        log('info', 'Initializing discord client...')
+        logger.info('Initializing discord client...')
         return new Promise(async (resolve, reject) => {
             try {
                 require('dotenv').config()
                 this.login(process.env.DJS_TOKEN)
                 this.initialized = true
                 resolve()
-                log('info', 'Done initializing discord client')
+                logger.info('Done initializing discord client')
             } catch (err) {
-                log('error', 'Failed to initialize discord client')
+                logger.error('Failed to initialize discord client')
                 reject(err)
             }
-            this.once('ready', () => log('info', `Discord client successfully logged in as ${this.user.tag}`))
+            this.once('ready', () => logger.info(`Discord client successfully logged in as ${this.user.tag}`))
             .on('rateLimit', rateLimitData => {
-                log('warn', `Discord client has been rate limited`)
-                log('warn', `  · Global: ${rateLimitData.global}`)
-                log('warn', `  · Limit: ${rateLimitData.limit}`)
-                log('warn', `  · Method: ${rateLimitData.method}`)
-                log('warn', `  · Timeout: ${rateLimitData.timeout}ms`)
-            }).on('warn', warning => log('warn', `${warning}`))
-            .on('error', error => log('error', `${error}`))
-            .on('invalidated', () => log('error', `Discord session invalidated`))
-            .on('guildCreate', guild => log('info', `➕ Joined "${guild.name}" (${guild.memberCount} members)`))
-            .on('guildDelete', guild => log('info', `➖ Left "${guild.name}" (${guild.memberCount} members)`))
+                logger.warn(`Discord client has been rate limited`)
+                logger.warn(`  · Global: ${rateLimitData.global}`)
+                logger.warn(`  · Limit: ${rateLimitData.limit}`)
+                logger.warn(`  · Method: ${rateLimitData.method}`)
+                logger.warn(`  · Timeout: ${rateLimitData.timeout}ms`)
+            }).on('warn', warning => logger.warn(`${warning}`))
+            .on('error', error => logger.error(`${error}`))
+            .on('invalidated', () => logger.error(`Discord session invalidated`))
+            .on('guildCreate', guild => logger.info(`➕ Joined "${guild.name}" (${guild.memberCount} members)`))
+            .on('guildDelete', guild => logger.info(`➖ Left "${guild.name}" (${guild.memberCount} members)`))
         })
     }
     /** Total amount of guilds the discord bot is in */

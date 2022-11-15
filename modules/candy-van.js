@@ -1,6 +1,6 @@
 const { TextChannel, GuildMember, Guild } = require('discord.js')
 const DiscordClient = require('./discord_client.js')
-const log = require('./logger.js')
+const logger = require('./logger.js')
 
 // the discord server, not what you thought
 module.exports = class CandyVan {
@@ -15,9 +15,9 @@ module.exports = class CandyVan {
         this.discord = {
             server: server,
             welcomeGoodbyeChannel: await server.channels.fetch(this.welcomeGoodbyeChannelID).catch(error => {
-                log('error', `[CandyVan] Error fetching server!!`)
-                log('error', `  · Error message: ${err.message}`)
-                log('error', `  · Full error stack:\n${err.stack}`)
+                logger.error(`[CandyVan] Error fetching server!!`)
+                logger.error(`  · Error message: ${err.message}`)
+                logger.error(`  · Full error stack:\n${err.stack}`)
             }),
             client: discordClient
         }

@@ -1,11 +1,11 @@
 const fetch = require('node-fetch')
-const log = require('./logger.js')
+const logger = require('./logger.js')
 
 /**
  * Send the bot's server count to bots.moe
  */
 module.exports = function botsmoeFetchGuildCount(apikey, guildCount) {
-    log('info', 'Fetching bots.moe...')
+    logger.info('Fetching bots.moe...')
     return new Promise(async (resolve, reject) => {
         try {
             const res = await fetch('https://bots.moe/api/bot/848217938288967710/server_count', {
@@ -19,9 +19,9 @@ module.exports = function botsmoeFetchGuildCount(apikey, guildCount) {
                 }
             })
             resolve(await res.json())
-            log('info', 'Fetched bots.moe successfully')
+            logger.info('Fetched bots.moe successfully')
         } catch (err) {
-            log('warn', 'Failed to fetch bots.moe')
+            logger.warn('Failed to fetch bots.moe')
             reject(err)
         }
     })

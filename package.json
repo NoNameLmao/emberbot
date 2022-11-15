@@ -7,19 +7,19 @@
         "start": "node ."
     },
     "dependencies": {
-        "@discordjs/rest": "^0.3.0",
-        "@discordjs/voice": "^0.8.0",
+        "@discordjs/rest": "^1.3.0",
+        "@discordjs/voice": "^0.13.0",
         "@types/shelljs": "^0.8.11",
-        "discord-api-types": "^0.27.3",
+        "colors.js": "^1.2.4",
+        "discord-api-types": "^0.37.18",
         "discord.js": "^14.6.0",
-        "dotenv": "^14.3.2",
+        "dotenv": "^16.0.3",
         "emberutils": "^1.3.0",
-        "guilded.js": "^0.13.14",
         "node-fetch": "^2.6.7",
         "serverline": "^1.6.0",
         "shelljs": "^0.8.5",
-        "smartestchatbot": "^2.0.1",
-        "winston": "^2.4.6"
+        "superagent": "^8.0.3",
+        "translatte": "^3.0.1"
     },
     "keywords": [],
     "author": "emberglaze",
