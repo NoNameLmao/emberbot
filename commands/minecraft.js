@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const mcdata = require('../modules/mcdata.js');
+const mcdata = require('mcdata');
 
 /** @type {import('../modules/interfaces').Command} */
 module.exports = {
@@ -33,6 +33,7 @@ module.exports = {
         if (subcommand == 'serverinfo') {
             try {
                 const serverip = `${interaction.options.getString('server_ip')}`
+                /** @type {import('../modules/interfaces').ServerInfo} */
                 const serverInfo = await mcdata.serverStatus(serverip)
                 const serverInfoEmbed = new EmbedBuilder()
                     .setTitle('Server Information')

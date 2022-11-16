@@ -9,3 +9,17 @@ export interface MiscJSON {
     technobladeQuotes: string[]
     months: string[]
 }
+export interface ServerInfo {
+    serverStatus: 'online' | 'offline'
+    serverip: string
+    version: string
+    protocol: string
+    players: number
+    maxplayers: number
+    motd: {
+        text: string,
+        legacy: boolean
+    }
+    ping: number
+    icon: string
+}
