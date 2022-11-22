@@ -1,19 +1,22 @@
+const logger = require('./modules/logger.js')
+logger.info('Starting...')
 const startTime = Date.now()
 
 const { limit } = require('emberutils')
 const serverline = require('serverline')
 const CommandHandler = require('./modules/command_handler.js')
-const logger = require('./modules/logger.js')
 const DiscordClient = require('./modules/discord_client.js')
 const CandyVan = require('./modules/candy-van.js')
 const ChatbotClient = require('./modules/chatbot.js')
-logger.info('Starting...')
+const MusicPlayer = require('./modules/music-player.js')
+
 
 const dcClient = new DiscordClient()
 const commandHandler = new CommandHandler()
 const candyVan = new CandyVan()
 const chatbot = new ChatbotClient(process.env.LEBYY_CHATBOT_API_KEY)
-module.exports = { dcClient, commandHandler, chatbot };
+const musicPlayer = new MusicPlayer(dcClient)
+module.exports = { dcClient, commandHandler, chatbot, musicPlayer };
 
 (async () => {
     await dcClient.init()
@@ -32,11 +35,11 @@ module.exports = { dcClient, commandHandler, chatbot };
                 logger.error(`  · Full error stack:\n${err.stack}`)
             }
         })
+        candyVan.monitorJoinsAndLeaves()
         await commandHandler.updateSlashCommands(dcClient)
         logger.info(`Discord bot is ready after ${(Date.now() - startTime) / 1000}s`)
-        candyVan.monitorJoinsAndLeaves()
         dcClient.on('messageCreate', async message => {
-            if (message.content === `<@${dcClient.user.id}>`) message.channel.send(`use slash commands im too lazy to remake it with classic commands`)
+            if (message.content === `<@${dcClient.user.id}>`) message.channel.send(`sorry the machine im being hosted on is not slow enough to make me ignore you`)
             if (message.channel.type === 'DM') {
                 if (message.author.id !== dcClient.user.id) {
                     logger.info('Recieved a direct message!')
@@ -59,28 +62,8 @@ module.exports = { dcClient, commandHandler, chatbot };
                 })
             }
         })
-        // const guilds = dcClient.guilds.cache
-        // for await (const guildCacheCollectionEntry of guilds) {
-        //     const guild = guildCacheCollectionEntry[1]
-        //     commandHandler.resetGuildSlashCommands(dcClient, guild.id)
-            // await commandHandler.updateGuildSlashCommands(dcClient, guild.id).catch(error => {
-            //     if (error.message == ('Missing Access')) {
-            //         logger.warn('No permission to update slash commands.')
-            //         logger.warn('  · Guild:')
-            //         logger.warn(`    - Name: ${guild.name}`)
-            //         logger.warn(`    - ID: ${guild.id}`)
-            //     } else {
-            //         logger.error('Unknown guild slash command update error!')
-            //         logger.error('  · Guild information:')
-            //         logger.error(`    - Name: ${guild.name}`)
-            //         logger.error(`    - ID: ${guild.id}`)
-            //         logger.error('  · Error:')
-            //         logger.error(`    - Message: ${error.message}`)
-            //     }
-            // })
-        // }
         dcClient.on('interactionCreate', interaction => {
-            if (interaction.isCommand()) {
+            if (interaction.isChatInputCommand()) {
                 logger.info('Recieved a command interaction')
                 logger.info(`  · Name: ${interaction.commandName}`)
                 logger.info(`  · Author: ${interaction.user.tag}`)
@@ -88,27 +71,5 @@ module.exports = { dcClient, commandHandler, chatbot };
                 commandHandler.handleCommand(interaction)
             }
         })
-        // dcClient.on('guildCreate', guild => {
-        //     commandHandler.updateGuildSlashCommands(dcClient, guild.id).then(() => {
-        //         logger.info('Successfully updated slash commands')
-        //         logger.warn('  · Guild:')
-        //         logger.warn(`    - Name: ${guild.name}`)
-        //         logger.warn(`    - ID: ${guild.id}`)
-        //     }).catch(error => {
-        //         if (error.message == ('Missing Access')) {
-        //             logger.warn('No permission to update slash commands.')
-        //             logger.warn('  · Guild:')
-        //             logger.warn(`    - Name: ${guild.name}`)
-        //             logger.warn(`    - ID: ${guild.id}`)
-        //         } else {
-        //             logger.error('Unknown guild slash command update error!')
-        //             logger.error('  · Guild information:')
-        //             logger.error(`    - Name: ${guild.name}`)
-        //             logger.error(`    - ID: ${guild.id}`)
-        //             logger.error('  · Error:')
-        //             logger.error(`    - Message: ${error.message}`)
-        //         }
-        //     })
-        // })
     })
 })()

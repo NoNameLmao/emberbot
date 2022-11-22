@@ -8,7 +8,7 @@ module.exports = class DiscordClient extends Client {
     /** emberglaze's user ID */
     emberglazeID = '341123308844220447'
     /** The `@discordjs/voice` module */
-    voice = djsvoice
+    _voice = djsvoice
     /** Whether the class is fully usable or not */
     initialized = false
     constructor() {

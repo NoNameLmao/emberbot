@@ -9,10 +9,13 @@
     "dependencies": {
         "@discordjs/rest": "^1.3.0",
         "@discordjs/voice": "^0.13.0",
-        "@types/shelljs": "^0.8.11",
+        "@distube/soundcloud": "^1.2.2",
+        "@distube/spotify": "^1.4.2",
+        "@distube/yt-dlp": "^1.1.3",
         "colors.js": "^1.2.4",
         "discord-api-types": "^0.37.18",
         "discord.js": "^14.6.0",
+        "distube": "^4.0.4",
         "dotenv": "^16.0.3",
         "emberutils": "^1.3.0",
         "mcdata": "^1.1.1",
@@ -26,6 +29,7 @@
     "author": "emberglaze",
     "license": "ISC",
     "devDependencies": {
+        "@types/shelljs": "^0.8.11",
         "@types/superagent": "^4.1.15"
     }
 }
