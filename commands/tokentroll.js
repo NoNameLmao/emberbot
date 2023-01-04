@@ -12,7 +12,8 @@ module.exports = {
                 .setRequired(true)
         ),
     async run(interaction) {
+        interaction.deferReply()
         const user = interaction.options.getUser('guildmember', true)
-        await interaction.reply(`The beginnning of ${user.tag}'s token is ${codeBlock(Buffer.from(user.id).toString('base64') + '.')}`)
+        interaction.editReply(`The beginnning of ${user.tag}'s token is ${codeBlock(Buffer.from(user.id).toString('base64') + '.')}`)
     }
 }

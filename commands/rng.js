@@ -30,17 +30,18 @@ module.exports = {
                 )
         ),
     async run(interaction) {
+        interaction.deferReply()
         const subcommand = interaction.options.getSubcommand(true)
         const max = interaction.options.getNumber('maxvalue')
         if (subcommand == 'maxonly') {
             const randomNumber = getRandomInt(max)
             const msg = `The number is: ${randomNumber}`
-            interaction.reply(msg)
+            interaction.editReply(msg)
         } else {
             const min = interaction.options.getNumber('minvalue')
             const randomNumber = getRandomArbitrary(min, max)
             const msg = `The number is: ${randomNumber}`
-            interaction.reply(msg)
+            interaction.editReply(msg)
         }
     }
 }

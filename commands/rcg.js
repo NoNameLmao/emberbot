@@ -6,9 +6,10 @@ module.exports = {
         .setName('rcg')
         .setDescription(`Random country picker`),
     async run(interaction) {
+        interaction.deferReply()
         /** @type {import('../modules/interfaces').MiscJSON} */
         const { countryList } = await jsonRead('./misc.json')
         const msg = `Random country generator: \`${countryList[Math.floor(Math.random() * countryList.length)]}\``
-        interaction.reply(msg)
+        interaction.editReply(msg)
     }
 }

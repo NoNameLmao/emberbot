@@ -3,12 +3,14 @@ logger.info('Starting...')
 const startTime = Date.now()
 
 const { limit } = require('emberutils')
+/** @type {import('./modules/interfaces.js').Serverline} */
 const serverline = require('serverline')
 const CommandHandler = require('./modules/command_handler.js')
 const DiscordClient = require('./modules/discord_client.js')
 const CandyVan = require('./modules/candy-van.js')
 const ChatbotClient = require('./modules/chatbot.js')
 const MusicPlayer = require('./modules/music-player.js')
+const WordHippo = require('./modules/wordhippo.js')
 
 
 const dcClient = new DiscordClient()
@@ -16,16 +18,53 @@ const commandHandler = new CommandHandler()
 const candyVan = new CandyVan()
 const chatbot = new ChatbotClient(process.env.LEBYY_CHATBOT_API_KEY)
 const musicPlayer = new MusicPlayer(dcClient)
-module.exports = { dcClient, commandHandler, chatbot, musicPlayer };
+const wordhippo = new WordHippo()
+module.exports = { dcClient, commandHandler, chatbot, musicPlayer, wordhippo };
 
 (async () => {
     await dcClient.init()
     await commandHandler.init()
+    await wordhippo.init()
     await candyVan.init(dcClient)
     serverline.init()
     serverline.setPrompt('eval > ')
-    serverline.on('line', line => eval(line))
-
+    let serverline_mode = 'eval'
+    serverline.on('line', async line => {
+        if (serverline_mode == 'eval') {
+            if (line == 'commandmode') {
+                serverline.setPrompt('cmd > ')
+                serverline_mode = 'command'
+            } else {
+                eval(line)
+            }
+        } else if (serverline_mode == 'command') {
+            if (line.startsWith('clearconsole')) {
+                console.clear()
+            } else if (line.startsWith('sendmessage')) {
+                const commandarr = line.split(' ')
+                const args = commandarr.slice(1)
+                const channelid = args[0]
+                const text = args.slice(1).join(' ')
+                dcClient.channels.fetch(channelid).then(channel => {
+                    if (channel.isTextBased() && !channel.isVoiceBased()) {
+                        channel.send(text)
+                        console.log('Message sent')
+                    } else {
+                        console.log('FAILED Channel either isn\'t text based or is voice based.')
+                    }
+                }).catch(console.error)
+            } else if (line == 'evalmode') {
+                serverline_mode = 'eval'
+                serverline.setPrompt('eval > ')
+            } else if (line == 'help') {
+                console.log(
+                    `All commands:\n` +
+                    `clearconsole - clear the console\n` +
+                    `sendmessage  - send a message to a channel`
+                )
+            }
+        }
+    })
     dcClient.once('ready', async () => {
         process.on('uncaughtException', err => {
             if (err.message.includes('Cannot send an empty message')) logger.warn('Empty message error')

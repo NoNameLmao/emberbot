@@ -7,8 +7,9 @@ module.exports = {
         .setName('technoblade')
         .setDescription('random technoblade quote'),
     async run(interaction) {
+        interaction.deferReply()
         /** @type {import('../modules/interfaces').MiscJSON} */
         const { technobladeQuotes } = await jsonRead('./misc.json')
-        interaction.reply(technobladeQuotes[getRandomInt(technobladeQuotes.length + 1)])
+        interaction.editReply(technobladeQuotes[getRandomInt(technobladeQuotes.length + 1)])
     }
 }

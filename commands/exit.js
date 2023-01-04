@@ -7,14 +7,15 @@ module.exports = {
         .setName('exit')
         .setDescription('shortcut to process.exit(0)'),
     async run(interaction) {
+        interaction.deferReply()
         if (interaction.user.id === '341123308844220447') {
-            interaction.reply('im not gonna go offline forever, am i?')
+            interaction.editReply('im not gonna go offline forever, am i?')
             await sleep(500)
             process.exit(0)
         } else {
             /** @type {import('../modules/interfaces').MiscJSON} */
             const { technobladeQuotes } = await jsonRead('./misc.json')
-            interaction.reply(`❌ ${technobladeQuotes[getRandomInt(technobladeQuotes.length + 1)]}`)
+            interaction.editReply(`❌ ${technobladeQuotes[getRandomInt(technobladeQuotes.length + 1)]}`)
         }
     }
 }

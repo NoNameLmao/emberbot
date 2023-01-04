@@ -12,7 +12,8 @@ module.exports = {
                 .setRequired(true)
         ),
     async run(interaction) {
+        interaction.deferReply()
         const user = interaction.options.getUser('guildmember', true)
-        interaction.reply(user.displayAvatarURL({ dynamic: true, format: 'png' }))
+        interaction.editReply(user.displayAvatarURL({ dynamic: true, format: 'png' }))
     }
 }

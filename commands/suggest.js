@@ -12,9 +12,10 @@ module.exports = {
                 .setRequired(true)
         ),
     async run(interaction) {
+        interaction.deferReply()
         const suggestion = interaction.options.getString('suggestion')
         const emberglaze = await interaction.client.users.fetch('341123308844220447')
         emberglaze.send(`Bot suggestion by ${interaction.user.tag}:\n\`${suggestion}\`\nSent at ${interaction.createdAt} in <#${interaction.channel.id}>`)
-        interaction.reply('Your suggestion has been sent and will be reviewed soon')
+        interaction.editReply('Your suggestion has been sent and will be reviewed soon')
     }
 }

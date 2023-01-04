@@ -29,6 +29,7 @@ module.exports = {
                 )
         ),
     async run(interaction) {
+        interaction.deferReply()
         const subcommand = interaction.options.getSubcommand(true)
         if (subcommand == 'serverinfo') {
             try {
@@ -71,9 +72,9 @@ module.exports = {
                             inline: true
                         }
                     )
-                interaction.reply({ embeds: [serverInfoEmbed] })
+                interaction.editReply({ embeds: [serverInfoEmbed] })
             } catch (error) {
-                interaction.reply(`❌ Error while pinging:\n\`${error}\``)
+                interaction.editReply(`❌ Error while pinging:\n\`${error}\``)
             }
         } else if (subcommand == 'playerinfo') {
             try {
@@ -94,9 +95,9 @@ module.exports = {
                         value: `${playerInfo.nameHistory}`
                     }
                 )
-                interaction.reply({ embeds: [playerInfoEmbed] })
+                interaction.editReply({ embeds: [playerInfoEmbed] })
             } catch (error) {
-                interaction.reply(`There was an error!\n${error}`)
+                interaction.editReply(`There was an error!\n${error}`)
             }
         }
         /** @param {string} string */

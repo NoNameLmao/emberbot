@@ -1,5 +1,5 @@
 const { musicPlayer } = require('..')
-const { SlashCommandBuilder, ChannelType } = require('discord.js');
+const { SlashCommandBuilder } = require('discord.js');
 
 /** @type {import('../modules/interfaces').Command} */
 module.exports = {
@@ -24,6 +24,7 @@ module.exports = {
                 )
         ),
     async run(interaction) {
+        interaction.deferReply()
         const subcommand = interaction.options.getSubcommand(true)
         if (subcommand == 'join') {
             try {
@@ -32,30 +33,30 @@ module.exports = {
                     const user = interaction.guild.members.cache.get(userId)
                     const voiceChannel = user.voice.channel
                     if (!voiceChannel) {
-                        interaction.reply(`❌ The user is not in a voice channel that is visible to me!`)
+                        interaction.editReply(`❌ The user is not in a voice channel that is visible to me!`)
                         return
                     }
                     await musicPlayer.joinVC(voiceChannel).then(() => {
-                        interaction.reply(`✅ Joined voice channel "${voiceChannel.name}"!`)
+                        interaction.editReply(`✅ Joined voice channel "${voiceChannel.name}"!`)
                     }).catch(err => {
-                        interaction.reply(`⚠️ Error joining the voice channel!\n\`\`\`${err.message}\`\`\``)
+                        interaction.editReply(`⚠️ Error joining the voice channel!\n\`\`\`${err.message}\`\`\``)
                     })
                 }
                 if (interaction.options.getString('channelid', false)) {
                     const channelId = interaction.options.getString('channelid')
                     const channel = interaction.guild.channels.cache.get(channelId)
                     if (!channel.isVoiceBased()) {
-                        interaction.reply('❌ The channel that I found is not a voice channel!')
+                        interaction.editReply('❌ The channel that I found is not a voice channel!')
                         return
                     }
                     await musicPlayer.joinVC(channel).then(() => {
-                        interaction.reply(`✅ Joined voice channel "${voiceChannel.name}"!`)
+                        interaction.editReply(`✅ Joined voice channel "${voiceChannel.name}"!`)
                     }).catch(err => {
-                        interaction.reply(`⚠️ Error joining the voice channel!\n\`\`\`${err.message}\`\`\``)
+                        interaction.editReply(`⚠️ Error joining the voice channel!\n\`\`\`${err.message}\`\`\``)
                     })
                 }
             } catch (err) {
-                interaction.reply(`❌⚠️ Critical uncaught error, please contact emberglaze\n\`\`\`${err.message}\`\`\``)
+                interaction.editReply(`❌⚠️ Critical uncaught error, please contact emberglaze\n\`\`\`${err.message}\`\`\``)
             }
         }
     }
