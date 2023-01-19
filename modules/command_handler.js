@@ -46,7 +46,8 @@ module.exports = class CommandHandler {
         try {
             matchingCommand.default.run(interaction)
         } catch (error) {
-            interaction.reply(`❌ Error has occured while running this command: \`${error.message}\`. Please contact emberglaze about this`)
+            if (!interaction.deferred) interaction.reply(`❌ Error has occured while running this command: \`${error.message}\`. Please contact emberglaze about this`)
+            else interaction.editReply(`❌ Error has occured while running this command: \`${error.message}\`. Please contact emberglaze about this`)
             logger.error(`❌ Command execution error!`)
             logger.error(`  · Error message: ${error.message}`)
             logger.error(`  · Full stack trace:\n${error.stack}`)

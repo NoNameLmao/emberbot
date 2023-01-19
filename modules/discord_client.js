@@ -31,12 +31,12 @@ module.exports = class DiscordClient extends Client {
                 this.login(process.env.DJS_TOKEN)
                 this.initialized = true
                 resolve()
-                logger.info('Done initializing discord client')
+                logger.ok('Done initializing discord client')
             } catch (err) {
                 logger.error('Failed to initialize discord client')
                 reject(err)
             }
-            this.once('ready', () => logger.info(`Discord client successfully logged in as ${this.user.tag}`))
+            this.once('ready', () => logger.ok(`Discord client successfully logged in as ${this.user.tag}`))
             .on('rateLimit', rateLimitData => {
                 logger.warn(`Discord client has been rate limited`)
                 logger.warn(`  · Global: ${rateLimitData.global}`)

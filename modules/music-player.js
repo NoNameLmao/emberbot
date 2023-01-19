@@ -22,9 +22,13 @@ module.exports = class MusicPlayer {
     }
     /** @param {discord.VoiceBasedChannel} voiceChannel */
     joinVC(voiceChannel) {
-        return new Promise(async (resolve, reject) => {
-            this.currentVC = await this.distube.voices.join(voiceChannel).catch(reject)
-            resolve(this.currentVC)
-        })
+        try {
+            return new Promise(async (resolve, reject) => {
+                this.currentVC = await this.distube.voices.join(voiceChannel).catch(err => reject(err))
+                resolve(this.currentVC)
+            })
+        } catch (err) {
+            reject(err)
+        }
     }
 }

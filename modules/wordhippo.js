@@ -30,7 +30,7 @@ module.exports = class WordHippo {
         const wordIndex = getRandomInt(antonymsByDefinitions[definitionIndex].antonyms.length - 1)
         const definition = definitions[definitionIndex].replace('\n', '')
         const antonym = antonymsByDefinitions[definitionIndex].antonyms[wordIndex].replace('\n', '')
-        logger.info(`[WordHippo] Parsed after ${(Date.now() - startTime) / 1000}s! ${antonym} - ${definition}`)
+        logger.ok(`[WordHippo] Parsed in ${(Date.now() - startTime) / 1000}s! | ${antonym} - ${definition}`)
         return {
             antonym: antonym,
             definition: definition,
@@ -44,7 +44,7 @@ module.exports = class WordHippo {
         for (let i = 1; i < amount; i++) {
             theword = await this.oppositeOf(theword.antonym)
         }
-        logger.info(`[WordHippo] Finished after ${(Date.now() - startTime) / 1000}s! ${theword.antonym} - ${theword.definition}`)
+        logger.ok(`[WordHippo] Finished after ${(Date.now() - startTime) / 1000}s! | ${theword.antonym} - ${theword.definition}`)
         return {
             antonym: theword.antonym,
             definition: theword.definition,
