@@ -235,7 +235,7 @@ brace-expansion@^1.1.7:
 
 busboy@^1.6.0:
   version "1.6.0"
-  resolved "https://registry.npmjs.org/busboy/-/busboy-1.6.0.tgz"
+  resolved "https://registry.yarnpkg.com/busboy/-/busboy-1.6.0.tgz#966ea36a9502e43cdb9146962523b92f531f6893"
   dependencies:
     streamsearch "^1.1.0"
 
@@ -1097,7 +1097,7 @@ spotify-web-api-node@^5.0.2:
 
 streamsearch@^1.1.0:
   version "1.1.0"
-  resolved "https://registry.npmjs.org/streamsearch/-/streamsearch-1.1.0.tgz"
+  resolved "https://registry.yarnpkg.com/streamsearch/-/streamsearch-1.1.0.tgz#404dd1e2247ca94af554e841a8ef0eaa238da764"
 
 string_decoder@^1.1.1:
   version "1.3.0"
@@ -1217,8 +1217,8 @@ type-check@~0.3.2:
     prelude-ls "~1.1.2"
 
 undici@^5.13.0, undici@^5.14.0, undici@^5.7.0, undici@^5.8.0:
-  version "5.14.0"
-  resolved "https://registry.npmjs.org/undici/-/undici-5.14.0.tgz"
+  version "5.19.1"
+  resolved "https://registry.yarnpkg.com/undici/-/undici-5.19.1.tgz#92b1fd3ab2c089b5a6bd3e579dcda8f1934ebf6d"
   dependencies:
     busboy "^1.6.0"
 
