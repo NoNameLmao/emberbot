@@ -11,6 +11,7 @@ const CandyVan = require('./modules/candy-van.js')
 const ChatbotClient = require('./modules/chatbot.js')
 const MusicPlayer = require('./modules/music-player.js')
 const WordHippo = require('./modules/wordhippo.js')
+const { Basement } = require('./modules/basement.js')
 
 
 const dcClient = new DiscordClient()
@@ -19,6 +20,7 @@ const candyVan = new CandyVan()
 const chatbot = new ChatbotClient(process.env.LEBYY_CHATBOT_API_KEY)
 const musicPlayer = new MusicPlayer(dcClient)
 const wordhippo = new WordHippo()
+const basement = new Basement()
 module.exports = { dcClient, commandHandler, chatbot, musicPlayer, wordhippo };
 
 (async () => {
@@ -76,6 +78,14 @@ module.exports = { dcClient, commandHandler, chatbot, musicPlayer, wordhippo };
         })
         candyVan.monitorJoinsAndLeaves()
         await commandHandler.updateSlashCommands(dcClient)
+        logger.info('Updating basement guild commands...')
+        const basementGuild = dcClient.guilds.cache.get(basement.guildID)
+        await basementGuild.commands.set(basement.economy.commands.map(command => command.data)).catch(error => {
+            console.log(basement.economy.commands.map(command => command.data))
+            logger.error('Basement slash command update failed!')
+            logger.error(`  · Error message: ${error.message}`)
+            logger.error(`  · Full stack trace:\n${error.stack}`)
+        })
         logger.info(`Discord bot is ready after ${(Date.now() - startTime) / 1000}s`)
         dcClient.on('messageCreate', async message => {
             if (message.content === `<@${dcClient.user.id}>`) message.channel.send(`sorry the machine im being hosted on is not slow enough to make me ignore you`)

@@ -20,8 +20,8 @@ module.exports = {
                 .setMinValue(2)
                 .setMaxValue(10)
         ),
-    async run(interaction) {
-        interaction.deferReply()
+    async execute(interaction) {
+        await interaction.deferReply()
         const query = interaction.options.getString('word')
         const amount = interaction.options.getNumber('amount')
         const res = await wordhippo.oppositeOfChain(query, amount)

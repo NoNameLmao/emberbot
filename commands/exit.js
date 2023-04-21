@@ -6,8 +6,8 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('exit')
         .setDescription('shortcut to process.exit(0)'),
-    async run(interaction) {
-        interaction.deferReply()
+    async execute(interaction) {
+        await interaction.deferReply()
         if (interaction.user.id === '341123308844220447') {
             interaction.editReply('im not gonna go offline forever, am i?')
             await sleep(500)

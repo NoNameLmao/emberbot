@@ -23,8 +23,8 @@ module.exports = {
                         .setRequired(false)
                 )
         ),
-    async run(interaction) {
-        await interaction.deferReply()
+    async execute(interaction) {
+        await await interaction.deferReply()
         const subcommand = interaction.options.getSubcommand(true)
         if (subcommand == 'join') {
             /** @type {NodeJS.UncaughtExceptionListener} */

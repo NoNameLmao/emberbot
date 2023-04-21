@@ -4,7 +4,7 @@ import * as rl from "readline"
 
 export interface Command {
     data: SlashCommandBuilder
-    async run: (interaction: ChatInputCommandInteraction) => void
+    async execute: (interaction: ChatInputCommandInteraction) => void
 }
 export interface MiscJSON {
     countryList: string[]

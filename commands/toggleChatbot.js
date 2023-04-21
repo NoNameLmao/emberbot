@@ -6,8 +6,8 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('togglechatbot')
         .setDescription('Used to toggle chatbot in the channel where you used this command (gets reset every bot restart)'),
-    async run(interaction) {
-        interaction.deferReply()
+    async execute(interaction) {
+        await interaction.deferReply()
         /** @param {Message} message */
         function messageListener(message) {
             if (!chatbot.enabledForChannels.has(message.channel.id) || message.author.bot || !message.content) return

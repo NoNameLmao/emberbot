@@ -29,8 +29,8 @@ module.exports = {
                         .setDescription('Enter the maximal number')
                 )
         ),
-    async run(interaction) {
-        interaction.deferReply()
+    async execute(interaction) {
+        await interaction.deferReply()
         const subcommand = interaction.options.getSubcommand(true)
         const max = interaction.options.getNumber('maxvalue')
         if (subcommand == 'maxonly') {

@@ -3,6 +3,8 @@ const { Routes } = require('discord.js')
 const logger = require('./logger.js')
 const fs = require('fs').promises
 const { REST } = require('@discordjs/rest')
+const { Basement } = require('./basement.js')
+const basement = new Basement()
 
 module.exports = class CommandHandler {
     /** @type {import('./interfaces').Command[]} */
@@ -41,6 +43,18 @@ module.exports = class CommandHandler {
     handleCommand(interaction) {
         if (!this.initialized) throw new ErrorNotInitialized()
         if (!interaction.isCommand()) return
+        if (basement.economy.commands.map(command => command.data.name).includes(interaction.commandName)) {
+            const matchingCommand = basement.economy.commands.filter(command => interaction.commandName === command.data.name)[0]
+            try {
+                matchingCommand.run(interaction)
+            } catch (error) {
+                if (!interaction.deferred) interaction.reply(`❌ Error has occured while running this command: \`${error.message}\`. Please contact emberglaze about this`)
+                else interaction.editReply(`❌ Error has occured while running this command: \`${error.message}\`. Please contact emberglaze about this`)
+                logger.error(`❌ Command execution error!`)
+                logger.error(`  · Error message: ${error.message}`)
+                logger.error(`  · Full stack trace:\n${error.stack}`)
+            }
+        }
         const matchingCommand = this.commands.filter(command => interaction.commandName === command.data.name)[0]
         if (!matchingCommand) return
         try {

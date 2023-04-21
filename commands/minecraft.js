@@ -28,8 +28,8 @@ module.exports = {
                         .setRequired(true)
                 )
         ),
-    async run(interaction) {
-        interaction.deferReply()
+    async execute(interaction) {
+        await interaction.deferReply()
         const subcommand = interaction.options.getSubcommand(true)
         if (subcommand == 'serverinfo') {
             try {

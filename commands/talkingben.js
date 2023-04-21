@@ -6,7 +6,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('ben')
         .setDescription('you still remember talking ben? you know, the "yes" and "hohohoho" guy'),
-    async run(interaction) {
+    async execute(interaction) {
         await new Ben(interaction).newCall()
     }
 }

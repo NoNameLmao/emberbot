@@ -7,8 +7,8 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('info')
         .setDescription('See information about the bot'),
-    async run(interaction) {
-        interaction.deferReply()
+    async execute(interaction) {
+        await interaction.deferReply()
         let totalSeconds = interaction.client.uptime / 1000
         let days = Math.floor(totalSeconds / 86400)
         totalSeconds %= 86400

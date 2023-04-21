@@ -11,8 +11,8 @@ module.exports = {
                 .setDescription('The guild member you want to display the profile picture of')
                 .setRequired(true)
         ),
-    async run(interaction) {
-        interaction.deferReply()
+    async execute(interaction) {
+        await interaction.deferReply()
         const user = interaction.options.getUser('guildmember', true)
         interaction.editReply(user.displayAvatarURL({ dynamic: true, format: 'png' }))
     }

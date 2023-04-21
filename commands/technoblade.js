@@ -6,8 +6,8 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('technoblade')
         .setDescription('random technoblade quote'),
-    async run(interaction) {
-        interaction.deferReply()
+    async execute(interaction) {
+        await interaction.deferReply()
         /** @type {import('../modules/interfaces').MiscJSON} */
         const { technobladeQuotes } = await jsonRead('./misc.json')
         interaction.editReply(technobladeQuotes[getRandomInt(technobladeQuotes.length + 1)])

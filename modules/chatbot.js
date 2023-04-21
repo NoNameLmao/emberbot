@@ -1,6 +1,5 @@
-const base = "https://api.lebyy.me/api";
-const translatte = require("translatte");
-const superagent = require("superagent");
+const base = "https://api.lebyy.me/api"
+const translatte = require("translatte")
 require('dotenv').config()
 /**
  *
@@ -10,14 +9,12 @@ require('dotenv').config()
 class ChatbotClient {
     enabledForChannels = new Set()
     constructor(token) {
-        if (!token) throw new Error("No token provided!");
-        
+        if (!token) throw new Error("No token provided!")
         /**
          * The token of the API
          * @type {string}
          */
-        this.token = token;
-
+        this.token = token
         /**
          * The function to fetch respone from the Lebyy API
          * @type {Function}
@@ -26,42 +23,47 @@ class ChatbotClient {
          */
         this.fetchResponse = (ops, language, translatteoptions) => {
             return new Promise(async (resolve, reject) => {
-                if (translatte.languages.getCode(language) === "en") {
-                    resolve(
-                        (
-                            await superagent
-                                .get(`${base}/chatbot?${new URLSearchParams(ops).toString()}`)
-                                .set("Authorization", this.token)
-                                .type("json")
-                                .accept("json")
-                        ).body.message
-                    );
-                } else {
-                    translatteoptions.to = "en";
-                    const translatedQuestion = await translatte(ops.message, translatteoptions).catch((e) => {
-                        reject(e);
-                    });
-                    ops.message = translatedQuestion.text;
-
-                    const englishResponse = (
-                        await superagent
-                            .get(`${base}/chatbot?${new URLSearchParams(ops).toString()}`)
-                            .set("Authorization", this.token)
-                            .type("json")
-                            .accept("json")
-                    ).body.message;
-
-                    translatteoptions.to = language;
-                    const translatedResponse = await translatte(englishResponse, translatteoptions).catch((e) => {
-                        reject(e);
-                    });
-
-                    resolve(translatedResponse.text);
+                const headers = {
+                    'Authorization': this.token,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
                 }
-            });
-        };
+                if (translatte.languages.getCode(language) === "en") {
+                    try {
+                        const response = await fetch(`${base}/chatbot?${new URLSearchParams(ops).toString()}`, {
+                            method: 'GET',
+                            headers
+                        })
+                        const data = await response.json()
+                        resolve(data.message)
+                    } catch (error) {
+                        reject(error)
+                    }
+                } else {
+                    translatteoptions.to = "en"
+                    const translatedQuestion = await translatte(ops.message, translatteoptions).catch(e => {
+                        reject(e)
+                    })
+                    ops.message = translatedQuestion.text
+                    try {
+                        const englishResponse = await fetch(`${base}/chatbot?${new URLSearchParams(ops).toString()}`, {
+                            method: 'GET',
+                            headers
+                        })
+                        const englishData = await englishResponse.json()
+                        const englishMessage = englishData.message
+                        translatteoptions.to = language
+                        const translatedResponse = await translatte(englishMessage, translatteoptions).catch(e => {
+                            reject(e)
+                        })
+                        resolve(translatedResponse.text)
+                    } catch (error) {
+                        reject(error)
+                    }
+                }
+            })
+        }
     }
-
     /**
      * @param {object} ops - The options
      * @param {string} ops.message - The message
@@ -250,19 +252,17 @@ class ChatbotClient {
         translatteoptions = {}
     ) {
         return new Promise(async (resolve, reject) => {
-            if (!ops.message) reject("No message was provided");
+            if (!ops.message) reject("No message was provided")
             for (const key in ops) {
-                if (key !== "user" && ops[key] && typeof ops[key] !== "string") reject(`${key} must be a string!`);
-                else if (key === "user" && typeof ops[key] !== "number" && typeof ops[key] !== "bigint" && typeof ops[key] !== "string") reject(`${key} must be a number / bigint / string!`);
+                if (key !== "user" && ops[key] && typeof ops[key] !== "string") reject(`${key} must be a string!`)
+                else if (key === "user" && typeof ops[key] !== "number" && typeof ops[key] !== "bigint" && typeof ops[key] !== "string") reject(`${key} must be a number / bigint / string!`)
             }
-
             if (language) {
-                if (!translatte.languages.isSupported(language)) reject(`Language ${language} is not supported!\nCurrently supported languages are:\n\n${JSON.stringify(translatte.languages)}`);
+                if (!translatte.languages.isSupported(language)) reject(`Language ${language} is not supported!\nCurrently supported languages are:\n\n${JSON.stringify(translatte.languages)}`)
             }
-            if (typeof translatteoptions !== "object") reject("translatteoptions must be an object!");
-
-            resolve(await this.fetchResponse(ops, language, translatteoptions));
-        });
+            if (typeof translatteoptions !== "object") reject("translatteoptions must be an object!")
+            resolve(await this.fetchResponse(ops, language, translatteoptions))
+        })
     }
 }
 module.exports = ChatbotClient

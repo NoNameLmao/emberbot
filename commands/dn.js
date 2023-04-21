@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder } = require('discord.js')
 
 /** @type {import('../modules/interfaces').Command} */
 module.exports = {

@@ -23,6 +23,7 @@
         "node-fetch": "^2.6.7",
         "serverline": "^1.6.0",
         "shelljs": "^0.8.5",
+        "sqlite3": "^5.1.6",
         "superagent": "^8.0.6",
         "translatte": "^3.0.1"
     },
