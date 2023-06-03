@@ -9,16 +9,19 @@ module.exports = class CandyVan {
     /** @param { DiscordClient } discordClient */
     async init(discordClient) {
         const server = await discordClient.guilds.fetch(this.serverID).catch(err => {
-            if (err.includes('Unknown Guild')) {
+            if (err.message.includes('Unknown Guild')) {
                 return undefined;
             }
         })
+        if (!server) {
+            return; // maybe a better way to do this but whatever
+        }
         /**
          * @type {{server: Guild, welcomeGoodbyeChannel: TextChannel, client: DiscordClient}}
          */
         this.discord = {
             server: server,
-            welcomeGoodbyeChannel: await server.channels.fetch(this.welcomeGoodbyeChannelID).catch(error => {
+            welcomeGoodbyeChannel: await server.channels.fetch(this.welcomeGoodbyeChannelID).catch(err => {
                 logger.error(`[CandyVan] Error fetching server!!`)
                 logger.error(`  · Error message: ${err.message}`)
                 logger.error(`  · Full error stack:\n${err.stack}`)
