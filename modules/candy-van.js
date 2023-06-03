@@ -6,9 +6,13 @@ const logger = require('./logger.js')
 module.exports = class CandyVan {
     serverID = "1039235267824988180"
     welcomeGoodbyeChannelID = "1039261475660890213"
-    /** @param {import('./client.js')} discordClient */
+    /** @param { DiscordClient } discordClient */
     async init(discordClient) {
-        const server = await discordClient.guilds.fetch(this.serverID)
+        const server = await discordClient.guilds.fetch(this.serverID).catch(err => {
+            if (err.includes('Unknown Guild')) {
+                return undefined;
+            }
+        })
         /**
          * @type {{server: Guild, welcomeGoodbyeChannel: TextChannel, client: DiscordClient}}
          */
