@@ -13,6 +13,9 @@ module.exports = class CandyVan {
                 return undefined;
             }
         })
+        if (!server) {
+            return; // maybe a better way to do this but whatever
+        }
         /**
          * @type {{server: Guild, welcomeGoodbyeChannel: TextChannel, client: DiscordClient}}
          */
@@ -20,8 +23,8 @@ module.exports = class CandyVan {
             server: server,
             welcomeGoodbyeChannel: await server.channels.fetch(this.welcomeGoodbyeChannelID).catch(error => {
                 logger.error(`[CandyVan] Error fetching server!!`)
-                logger.error(`  · Error message: ${err.message}`)
-                logger.error(`  · Full error stack:\n${err.stack}`)
+                logger.error(`  · Error message: ${error.message}`)
+                logger.error(`  · Full error stack:\n${error.stack}`)
             }),
             client: discordClient
         }

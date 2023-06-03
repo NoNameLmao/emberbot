@@ -9,6 +9,7 @@ export interface Command {
 export interface MiscJSON {
     countryList: string[]
     technobladeQuotes: string[]
+	obamaQuotes: string[]
     months: string[]
 }
 export interface ServerInfo {
