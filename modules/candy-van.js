@@ -21,10 +21,10 @@ module.exports = class CandyVan {
          */
         this.discord = {
             server: server,
-            welcomeGoodbyeChannel: await server.channels.fetch(this.welcomeGoodbyeChannelID).catch(err => {
+            welcomeGoodbyeChannel: await server.channels.fetch(this.welcomeGoodbyeChannelID).catch(error => {
                 logger.error(`[CandyVan] Error fetching server!!`)
-                logger.error(`  · Error message: ${err.message}`)
-                logger.error(`  · Full error stack:\n${err.stack}`)
+                logger.error(`  · Error message: ${error.message}`)
+                logger.error(`  · Full error stack:\n${error.stack}`)
             }),
             client: discordClient
         }
