@@ -9,7 +9,7 @@ module.exports = class CandyVan {
     /** @param { DiscordClient } discordClient */
     async init(discordClient) {
         const server = await discordClient.guilds.fetch(this.serverID).catch(err => {
-            if (err.includes('Unknown Guild')) {
+            if (err.message.includes('Unknown Guild')) {
                 return undefined;
             }
         })
